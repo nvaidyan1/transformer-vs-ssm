@@ -1,0 +1,21 @@
+arch: transformer
+seed: 42
+seq_len: 1024
+batch_size: 16
+grad_accum_steps: 1
+max_steps: 50000
+warmup_steps: 2000
+lr: 3.0e-4
+weight_decay: 0.1
+grad_clip: 1.0
+log_every: 100
+save_every: 5000
+checkpoint_dir: checkpoints/transformer
+
+model:
+  n_layers: 11      # → 9,790,720 params
+  d_model: 256
+  n_heads: 4
+  d_ff: 1024
+  dropout: 0.1
+  max_seq_len: 4096
