@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python src/train.py --config configs/transformer.yaml --max_steps 50 --log_every 10)"
+    ]
+  }
+}
