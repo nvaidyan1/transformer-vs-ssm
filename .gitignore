@@ -33,3 +33,6 @@ README.md
 # IDE
 .vscode/
 .idea/
+
+# Claude
+.claude/
