@@ -1,0 +1,35 @@
+# Data
+data/
+
+# Checkpoints
+checkpoints/
+
+# Figures
+figures/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Docs (temporary)
+Readme.md
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
