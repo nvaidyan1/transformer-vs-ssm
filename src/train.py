@@ -17,6 +17,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
+from torch.amp import GradScaler, autocast
 import yaml
 
 # Allow `python src/train.py` from repo root
@@ -167,18 +168,22 @@ def main():
     print(f"params: {n_params:,}")
 
     # Data loaders
+    num_workers = cfg.get("num_workers", 4)
+    pin_memory  = cfg.get("pin_memory", True)
     train_loader = get_dataloader(
         "train",
         seq_len=cfg["seq_len"],
         batch_size=cfg["batch_size"],
-        num_workers=0,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
         shuffle=True,
     )
     val_loader = get_dataloader(
         "val",
         seq_len=cfg["seq_len"],
         batch_size=cfg["batch_size"],
-        num_workers=0,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
         shuffle=False,
     )
 
@@ -193,6 +198,11 @@ def main():
         weight_decay=cfg["weight_decay"],
         betas=(0.9, 0.95),
     )
+
+    # AMP: enabled only on CUDA; MPS/CPU use full precision
+    amp_device_type = "cuda" if device.type == "cuda" else "cpu"
+    use_amp = device.type == "cuda"
+    scaler = GradScaler(device=amp_device_type, enabled=use_amp)
 
     # Resume if a checkpoint exists
     step = 0
@@ -233,18 +243,21 @@ def main():
                 x, y = next(train_iter)
 
             x, y = x.to(device), y.to(device)
-            logits = model(x)
-            loss = nn.functional.cross_entropy(
-                logits.reshape(-1, logits.size(-1)),
-                y.reshape(-1),
-            )
-            loss = loss / grad_accum
-            loss.backward()
+            with autocast(device_type=amp_device_type, enabled=use_amp):
+                logits = model(x)
+                loss = nn.functional.cross_entropy(
+                    logits.reshape(-1, logits.size(-1)),
+                    y.reshape(-1),
+                )
+                loss = loss / grad_accum
+            scaler.scale(loss).backward()
             accum_loss += loss.item()
 
         # ── Gradient clip + step ──────────────────────────────────────────────
+        scaler.unscale_(optimizer)
         nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
-        optimizer.step()
+        scaler.step(optimizer)
+        scaler.update()
         step += 1
 
         # ── Logging ───────────────────────────────────────────────────────────
@@ -252,7 +265,7 @@ def main():
             val_metrics = evaluate(model, val_loader, device)
             last_val_bpc = val_metrics["bpc"]
             elapsed = time.time() - t0
-            train_bpc = accum_loss / math.log(2)
+            train_bpc = (accum_loss / log_every) / math.log(2)
             print(
                 f"step {step:>6d} | "
                 f"lr {lr_now:.2e} | "

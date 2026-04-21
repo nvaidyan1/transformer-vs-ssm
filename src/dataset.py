@@ -26,7 +26,8 @@ class ByteSequenceDataset(Dataset):
     """
 
     def __init__(self, data: np.ndarray, seq_len: int) -> None:
-        self.data = data
+        # Cast once at construction so __getitem__ does zero allocation.
+        self.data = data.astype(np.int64)
         self.seq_len = seq_len
         # Number of full non-overlapping windows where we can still read
         # seq_len+1 bytes (needed for the target's last position).
@@ -38,8 +39,8 @@ class ByteSequenceDataset(Dataset):
     def __getitem__(self, idx: int):
         start = idx * self.seq_len
         chunk = self.data[start : start + self.seq_len + 1]
-        x = torch.from_numpy(chunk[:-1].astype(np.int64))
-        y = torch.from_numpy(chunk[1:].astype(np.int64))
+        x = torch.from_numpy(chunk[:-1])
+        y = torch.from_numpy(chunk[1:])
         return x, y
 
 
@@ -47,7 +48,8 @@ def get_dataloader(
     split: str,
     seq_len: int,
     batch_size: int,
-    num_workers: int = 0,
+    num_workers: int = 4,
+    pin_memory: bool = True,
     shuffle: bool = False,
 ) -> DataLoader:
     """Build a DataLoader for the given split.
@@ -56,7 +58,8 @@ def get_dataloader(
         split:       'train' or 'val'
         seq_len:     sequence length for each sample
         batch_size:  number of sequences per batch
-        num_workers: DataLoader worker processes
+        num_workers: DataLoader worker processes (>0 enables async prefetch)
+        pin_memory:  pin host memory for faster CPU→GPU transfers
         shuffle:     whether to shuffle (default False — stride order is canonical)
 
     Returns:
@@ -69,6 +72,7 @@ def get_dataloader(
         batch_size=batch_size,
         shuffle=shuffle,
         num_workers=num_workers,
-        pin_memory=False,
+        pin_memory=pin_memory,
+        persistent_workers=num_workers > 0,
         drop_last=False,
     )

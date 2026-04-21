@@ -23,6 +23,7 @@ env/
 
 # Jupyter
 .ipynb_checkpoints/
+notebooks/transformer-vs-ssm.ipynb
 
 # Docs (temporary)
 README.md
