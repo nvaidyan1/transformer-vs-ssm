@@ -5,9 +5,12 @@ Architecture choices (per project spec):
 - No Triton kernels, no mamba-ssm package — plain PyTorch throughout
 - Input-dependent delta_t, B_t, C_t projected from each token
 - A initialised as diagonal negative reals, parameterised in log space (stable by construction)
-- Sequential scan in the forward pass for clarity
-  (production Mamba uses a parallel associative scan — O(T log T) vs O(T) here,
-   but the two are mathematically identical)
+- Sequential scan in the forward pass (O(n) memory, O(n) FLOPs)
+  Production Mamba uses Triton-fused parallel associative scan for wall-clock speed;
+  without custom kernels, the parallel scan in plain PyTorch uses more memory and
+  is slower due to tensor allocation overhead — so we keep the sequential scan here.
+  The honest efficiency claim is O(n) memory (vs transformer O(n²)) and O(1) memory
+  at inference (recurrent mode, one token at a time).
 - Optional return of delta_t across the sequence for visualisation
 
 Reference: Gu & Dao, "Mamba: Linear-Time Sequence Modeling with Selective State Spaces" (2023)
@@ -17,8 +20,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-MAMBA_SCAN = "parallel-associative"
-print(f"[mamba.py] scan='{MAMBA_SCAN}' (Hillis-Steele, no Python loop over T)")
+MAMBA_SCAN = "sequential"
+print(f"[mamba.py] scan='{MAMBA_SCAN}' (O(n) memory, honest wall-clock — see docstring)")
 
 
 def _associative_scan(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
@@ -130,33 +133,39 @@ class MambaSSM(nn.Module):
 
         delta = F.softplus(delta)                   # enforce positivity  (B, T, E)
 
-        # ── 4. Discretise A and compute Bu — fully vectorised ────────────────
-        # A is (E, N), negative real
+        # ── 4. Discretise A ──────────────────────────────────────────────────
+        # A is (E, N), negative real; keep it fixed-shape for the scan
         A = -torch.exp(self.A_log)                  # (E, N)
 
-        # A_bar_t = exp(delta_t * A)  ∈ (0, 1)  — shape (B, T, E, N)
-        A_bar = torch.exp(delta.unsqueeze(-1) * A)   # (B, T, E, N)
-
-        # Bu_t = B_bar_t * x_t  — shape (B, T, E, N)
-        Bu = (delta.unsqueeze(-1)                    # (B, T, E, 1)
-              * B_ssm.unsqueeze(2)                   # (B, T, 1, N)
-              * h_conv.unsqueeze(-1))                # (B, T, E, 1)
-
-        # ── 5. Numerically stable parallel prefix scan ────────────────────────
-        # Solves h_t = A_bar_t * h_{t-1} + Bu_t for all t simultaneously.
+        # ── 5. Sequential selective scan ─────────────────────────────────────
+        # State h: (B, E, N)
         #
-        # Uses the Hillis-Steele associative scan over pairs (a, b) representing
-        # the affine map h → a*h + b, with composition:
-        #   (a_left, b_left) ∘ (a_right, b_right) = (a_left*a_right, a_right*b_left + b_right)
-        #
-        # A_bar ∈ (0,1) at every step, so products never overflow — unlike the
-        # naive cumsum-of-logs approach which loses precision at long sequences.
-        # O(T log T) work across log(T) sequential tensor ops (no Python loop over T).
+        # Wall-clock note: this Python loop is slower than the transformer at
+        # all measured sequence lengths on CUDA. That is expected and honest:
+        # - Memory is O(n) — Mamba's real efficiency advantage at training time
+        # - Compute is also O(n) in FLOPs, but the constant factor is high in
+        #   pure PyTorch (the real mamba-ssm package uses Triton kernels)
+        # - At inference (one token at a time), Mamba runs as a true RNN with
+        #   O(1) memory per step regardless of context length — that is the
+        #   hardware-verifiable efficiency claim in Post B
+        state = torch.zeros(B, self.d_inner, self.d_state, device=x.device, dtype=x.dtype)
+        ys = []
 
-        h = _associative_scan(A_bar, Bu)            # (B, T, E, N)
+        for t in range(T):
+            dt = delta[:, t, :]                     # (B, E)
+            b_t = B_ssm[:, t, :]                    # (B, N)
+            c_t = C_ssm[:, t, :]                    # (B, N)
+            x_t = h_conv[:, t, :]                   # (B, E)
 
-        # Output: y_t = sum_N(C_t * h_t)
-        y = (h * C_ssm.unsqueeze(2)).sum(-1)         # (B, T, E)
+            # Discretise: zero-order hold
+            A_bar = torch.exp(dt.unsqueeze(-1) * A.unsqueeze(0))   # (B, E, N)
+            B_bar = dt.unsqueeze(-1) * b_t.unsqueeze(1)            # (B, E, N)
+
+            state = A_bar * state + B_bar * x_t.unsqueeze(-1)      # (B, E, N)
+            y_t = (state * c_t.unsqueeze(1)).sum(-1)               # (B, E)
+            ys.append(y_t)
+
+        y = torch.stack(ys, dim=1)                  # (B, T, E)
 
         # ── 6. Skip connection + gate ─────────────────────────────────────────
         y = y + h_conv * self.D.unsqueeze(0).unsqueeze(0)
