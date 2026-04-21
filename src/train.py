@@ -185,6 +185,9 @@ def main():
     else:
         print(f"  Device      : CPU (no GPU detected)")
         print(f"  AMP         : disabled")
+    num_workers = min(cfg.get("num_workers", 4), multiprocessing.cpu_count())
+    pin_memory  = cfg.get("pin_memory", True)
+
     print(_sep)
     print("  TRAINING CONFIG")
     print(_sep)
@@ -210,9 +213,7 @@ def main():
     print(f"  params      : {n_params:,}")
     print(_sep)
 
-    # Data loaders — cap workers to what the system actually has
-    num_workers = min(cfg.get("num_workers", 4), multiprocessing.cpu_count())
-    pin_memory  = cfg.get("pin_memory", True)
+    # Data loaders
     train_loader = get_dataloader(
         "train",
         seq_len=cfg["seq_len"],
