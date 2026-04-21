@@ -17,6 +17,45 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+MAMBA_SCAN = "parallel-associative"
+print(f"[mamba.py] scan='{MAMBA_SCAN}' (Hillis-Steele, no Python loop over T)")
+
+
+def _associative_scan(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
+    """Parallel prefix scan for the linear recurrence h_t = a_t * h_{t-1} + b_t, h_0 = 0.
+
+    Implements the Hillis-Steele inclusive prefix scan over affine maps.
+    Each element is a pair (a, b) representing h → a*h + b.
+    Composition (left applied first, then right):
+        (a_L, b_L) ∘ (a_R, b_R)  =  (a_L * a_R,  a_R * b_L + b_R)
+
+    Args:
+        a: (B, T, E, N) — A_bar values, should be in (0, 1) for numerical stability
+        b: (B, T, E, N) — Bu values (input terms)
+
+    Returns:
+        h: (B, T, E, N) — hidden states at every position
+    """
+    B, T, E, N = a.shape
+    acc_a = a.clone()
+    acc_b = b.clone()
+
+    step = 1
+    while step < T:
+        # Shift right by `step`: pad with identity element (1, 0) on the left
+        left_a = torch.cat([torch.ones( B, step, E, N, device=a.device, dtype=a.dtype),
+                            acc_a[:, :-step]], dim=1)
+        left_b = torch.cat([torch.zeros(B, step, E, N, device=a.device, dtype=a.dtype),
+                            acc_b[:, :-step]], dim=1)
+        # Compose: (left_a, left_b) ∘ (acc_a, acc_b)
+        # = (left_a * acc_a,  acc_a * left_b + acc_b)
+        new_a = left_a * acc_a
+        acc_b = acc_a * left_b + acc_b   # use original acc_a before overwriting
+        acc_a = new_a
+        step *= 2
+
+    return acc_b   # h_t = B_1t when h_0 = 0
+
 
 class MambaSSM(nn.Module):
     """
@@ -91,35 +130,33 @@ class MambaSSM(nn.Module):
 
         delta = F.softplus(delta)                   # enforce positivity  (B, T, E)
 
-        # ── 4. Discretise A ──────────────────────────────────────────────────
-        # A is (E, N), negative real; keep it fixed-shape for the scan
+        # ── 4. Discretise A and compute Bu — fully vectorised ────────────────
+        # A is (E, N), negative real
         A = -torch.exp(self.A_log)                  # (E, N)
 
-        # ── 5. Sequential selective scan ─────────────────────────────────────
-        # State h: (B, E, N)
-        state = torch.zeros(B, self.d_inner, self.d_state, device=x.device, dtype=x.dtype)
-        ys = []
+        # A_bar_t = exp(delta_t * A)  ∈ (0, 1)  — shape (B, T, E, N)
+        A_bar = torch.exp(delta.unsqueeze(-1) * A)   # (B, T, E, N)
 
-        for t in range(T):
-            dt = delta[:, t, :]                     # (B, E)
-            b_t = B_ssm[:, t, :]                    # (B, N)
-            c_t = C_ssm[:, t, :]                    # (B, N)
-            x_t = h_conv[:, t, :]                   # (B, E)
+        # Bu_t = B_bar_t * x_t  — shape (B, T, E, N)
+        Bu = (delta.unsqueeze(-1)                    # (B, T, E, 1)
+              * B_ssm.unsqueeze(2)                   # (B, T, 1, N)
+              * h_conv.unsqueeze(-1))                # (B, T, E, 1)
 
-            # Discretise: zero-order hold
-            # A_bar: (B, E, N)  —  exp(dt * A)
-            A_bar = torch.exp(dt.unsqueeze(-1) * A.unsqueeze(0))   # (B, E, N)
-            # B_bar: (B, E, N)  —  dt * b_t broadcast
-            B_bar = dt.unsqueeze(-1) * b_t.unsqueeze(1)            # (B, E, N)
+        # ── 5. Numerically stable parallel prefix scan ────────────────────────
+        # Solves h_t = A_bar_t * h_{t-1} + Bu_t for all t simultaneously.
+        #
+        # Uses the Hillis-Steele associative scan over pairs (a, b) representing
+        # the affine map h → a*h + b, with composition:
+        #   (a_left, b_left) ∘ (a_right, b_right) = (a_left*a_right, a_right*b_left + b_right)
+        #
+        # A_bar ∈ (0,1) at every step, so products never overflow — unlike the
+        # naive cumsum-of-logs approach which loses precision at long sequences.
+        # O(T log T) work across log(T) sequential tensor ops (no Python loop over T).
 
-            # State update: h = A_bar * h + B_bar * x_t
-            state = A_bar * state + B_bar * x_t.unsqueeze(-1)      # (B, E, N)
+        h = _associative_scan(A_bar, Bu)            # (B, T, E, N)
 
-            # Output: y_t = sum_N(C * h)
-            y_t = (state * c_t.unsqueeze(1)).sum(-1)               # (B, E)
-            ys.append(y_t)
-
-        y = torch.stack(ys, dim=1)                  # (B, T, E)
+        # Output: y_t = sum_N(C_t * h_t)
+        y = (h * C_ssm.unsqueeze(2)).sum(-1)         # (B, T, E)
 
         # ── 6. Skip connection + gate ─────────────────────────────────────────
         y = y + h_conv * self.D.unsqueeze(0).unsqueeze(0)
