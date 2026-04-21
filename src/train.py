@@ -14,6 +14,7 @@ import sys
 import time
 from pathlib import Path
 
+import multiprocessing
 import numpy as np
 import torch
 import torch.nn as nn
@@ -157,18 +158,60 @@ def main():
     set_seed(cfg["seed"])
     device = get_device()
 
-    print(f"arch:   {cfg['arch']}")
-    print(f"device: {device}")
-    print(f"seed:   {cfg['seed']}")
+    _sep = "=" * 56
+    print(_sep)
+    print("  ENVIRONMENT")
+    print(_sep)
+    if device.type == "cuda":
+        props = torch.cuda.get_device_properties(0)
+        vram_total = props.total_memory / 1024 ** 3
+        vram_free  = torch.cuda.mem_get_info(0)[0] / 1024 ** 3
+        print(f"  GPU         : {props.name}")
+        print(f"  VRAM        : {vram_free:.1f} GB free / {vram_total:.1f} GB total")
+        print(f"  CUDA        : {torch.version.cuda}")
+        print(f"  AMP         : enabled (float16, Tensor Cores active)")
+        # Batch size guidance based on free VRAM
+        if vram_free < 8:
+            suggested_bs = 8
+        elif vram_free < 12:
+            suggested_bs = 16
+        else:
+            suggested_bs = 32
+        print(f"  Suggested batch_size for this GPU: {suggested_bs} "
+              f"(current: {cfg['batch_size']})")
+    elif device.type == "mps":
+        print(f"  GPU         : Apple MPS")
+        print(f"  AMP         : disabled (MPS)")
+    else:
+        print(f"  Device      : CPU (no GPU detected)")
+        print(f"  AMP         : disabled")
+    print(_sep)
+    print("  TRAINING CONFIG")
+    print(_sep)
+    print(f"  arch        : {cfg['arch']}")
+    print(f"  seed        : {cfg['seed']}")
+    print(f"  num_workers : {num_workers} (system CPUs: {multiprocessing.cpu_count()})")
+    print(f"  pin_memory  : {pin_memory}")
+    print(f"  batch_size  : {cfg['batch_size']}")
+    print(f"  seq_len     : {cfg['seq_len']}")
+    print(f"  max_steps   : {cfg['max_steps']:,}")
+    print(f"  log_every   : {cfg['log_every']}")
+    print(f"  grad_accum  : {cfg['grad_accum_steps']}")
+    print(f"  checkpoint  : {cfg['checkpoint_dir']}")
+    print(_sep)
+    print("  NOTE: training auto-resumes if a checkpoint exists in")
+    print("  the checkpoint dir — safe to restart interrupted runs.")
+    print(_sep)
 
     # Build model
     model = build_model(cfg["arch"], **cfg["model"])
     model = model.to(device)
     n_params = count_parameters(model)
-    print(f"params: {n_params:,}")
+    print(f"  params      : {n_params:,}")
+    print(_sep)
 
-    # Data loaders
-    num_workers = cfg.get("num_workers", 4)
+    # Data loaders — cap workers to what the system actually has
+    num_workers = min(cfg.get("num_workers", 4), multiprocessing.cpu_count())
     pin_memory  = cfg.get("pin_memory", True)
     train_loader = get_dataloader(
         "train",
