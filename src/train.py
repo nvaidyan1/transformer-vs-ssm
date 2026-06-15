@@ -10,6 +10,7 @@ import argparse
 import math
 import os
 import random
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -112,28 +113,76 @@ def evaluate(model: nn.Module, loader, device: torch.device) -> dict:
 
 # ── Checkpoint helpers ────────────────────────────────────────────────────────
 
+# Fix 1 — Pre-flight disk check
+def assert_disk_headroom(path: Path, min_gb: float = 2.0) -> float:
+    """Raise RuntimeError if free disk space at `path` is below `min_gb` GB.
+
+    Called at training startup and at the top of save_checkpoint so that a
+    near-full disk causes a clean, early failure rather than a torn write that
+    corrupts a checkpoint mid-serialisation.
+
+    Returns free space in GB so callers can log it.
+    """
+    free_gb = shutil.disk_usage(path).free / 1024 ** 3
+    if free_gb < min_gb:
+        raise RuntimeError(
+            f"Disk headroom too low: {free_gb:.2f} GB free at {path} "
+            f"(need {min_gb:.1f} GB). Free space before continuing."
+        )
+    return free_gb
+
+
+# Fix 2 + Fix 3 — Atomic write and bounded retention
 def save_checkpoint(ckpt_dir: Path, model: nn.Module, optimizer, step: int,
-                    val_bpc: float, cfg: dict):
+                    val_bpc: float, cfg: dict, keep_last: int = 2) -> Path:
+    """Write checkpoint atomically and evict old files to bound disk usage.
+
+    Fix 2 — Atomic write:
+        Serialises to <name>.tmp then calls os.replace() (POSIX rename(2)),
+        which is atomic from the filesystem's perspective. A crash mid-write
+        leaves a corrupt .tmp, never a corrupt .pt, so find_latest_checkpoint
+        (which globs *.pt) never picks up torn state.
+
+    Fix 3 — Bounded retention:
+        After promoting .tmp → .pt, deletes all but the `keep_last` most
+        recent numbered checkpoints. Default keep_last=2 gives one rollback
+        option without accumulating unbounded disk usage.
+    """
+    # Pre-flight: fail cleanly before touching the filesystem
+    assert_disk_headroom(ckpt_dir)
+
     state = {
-        "model_state": model.state_dict(),
+        "model_state":     model.state_dict(),
         "optimizer_state": optimizer.state_dict(),
-        "config": cfg,
-        "step": step,
-        "val_bpc": val_bpc,
-        "seed": cfg["seed"],
+        "config":          cfg,
+        "step":            step,
+        "val_bpc":         val_bpc,
+        "seed":            cfg["seed"],
     }
-    path = ckpt_dir / f"ckpt_{step:07d}.pt"
-    torch.save(state, path)
-    # Keep a stable "latest" symlink for easy resume detection
+
+    final_path = ckpt_dir / f"ckpt_{step:07d}.pt"
+    tmp_path   = ckpt_dir / f"ckpt_{step:07d}.tmp"
+
+    # Write to .tmp, then atomically rename to .pt
+    torch.save(state, tmp_path)
+    os.replace(tmp_path, final_path)
+
+    # Update latest.pt symlink
     latest = ckpt_dir / "latest.pt"
     if latest.is_symlink() or latest.exists():
         latest.unlink()
-    latest.symlink_to(path.name)
-    return path
+    latest.symlink_to(final_path.name)
+
+    # Evict old checkpoints — keep only the `keep_last` most recent
+    all_pts = sorted(ckpt_dir.glob("ckpt_???????.pt"))
+    for old in all_pts[:-keep_last]:
+        old.unlink(missing_ok=True)
+
+    return final_path
 
 
 def find_latest_checkpoint(ckpt_dir: Path):
-    """Return path to latest checkpoint, or None if none exist."""
+    """Return path to the latest valid checkpoint, or None if none exist."""
     latest = ckpt_dir / "latest.pt"
     if latest.exists():
         return latest.resolve()
@@ -142,7 +191,7 @@ def find_latest_checkpoint(ckpt_dir: Path):
 
 def load_checkpoint(ckpt_path: Path, model: nn.Module, optimizer, device):
     """Load checkpoint in-place. Returns step and val_bpc."""
-    state = torch.load(ckpt_path, map_location=device)
+    state = torch.load(ckpt_path, map_location=device, weights_only=False)
     model.load_state_dict(state["model_state"])
     optimizer.load_state_dict(state["optimizer_state"])
     print(f"Resumed from {ckpt_path} (step {state['step']}, val_bpc {state['val_bpc']:.4f})")
@@ -234,6 +283,8 @@ def main():
     # Checkpoint directory
     ckpt_dir = Path(cfg["checkpoint_dir"])
     ckpt_dir.mkdir(parents=True, exist_ok=True)
+    free_gb = assert_disk_headroom(ckpt_dir)
+    print(f"  disk free   : {free_gb:.1f} GB")
 
     # Optimizer
     optimizer = torch.optim.AdamW(
