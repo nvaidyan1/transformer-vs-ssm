@@ -48,9 +48,10 @@ def parse_args():
     parser.add_argument("--max_steps",   type=int,   default=None)
     parser.add_argument("--log_every",   type=int,   default=None)
     parser.add_argument("--save_every",  type=int,   default=None)
-    parser.add_argument("--batch_size",  type=int,   default=None)
-    parser.add_argument("--lr",          type=float, default=None)
-    parser.add_argument("--seed",        type=int,   default=None)
+    parser.add_argument("--batch_size",   type=int,   default=None)
+    parser.add_argument("--lr",           type=float, default=None)
+    parser.add_argument("--seed",         type=int,   default=None)
+    parser.add_argument("--num_workers",  type=int,   default=None)
     args = parser.parse_args()
 
     overrides = {k: v for k, v in vars(args).items()

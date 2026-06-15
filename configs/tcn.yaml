@@ -2,7 +2,7 @@ arch: tcn
 seed: 42
 seq_len: 1024
 batch_size: 16
-num_workers: 4
+num_workers: 0
 pin_memory: true
 grad_accum_steps: 1
 max_steps: 50000
