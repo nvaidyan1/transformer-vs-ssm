@@ -2,11 +2,14 @@
 Causal Dilated Convolutional Network (TCN) for byte-level language modelling.
 
 Architecture choices (per project spec):
-- Dilation doubles each layer: dilation = 2^i at layer i
+- Dilation cycles every 8 layers: dilation = 2^(i % 8) at layer i
+  One cycle covers RF = 1 + (kernel_size-1) * 255 = 1531 bytes.
+  18 layers (2+ cycles) gives RF ~3k bytes, well above seq_len=1024.
+  Unbounded exponential growth (2^17 = 131k) requires ~12 GiB padding on T4 — OOM.
 - Causal padding: pad (kernel_size-1)*dilation zeros on the left only
 - Residual connections with 1x1 convolution for dimension matching
 - Weight norm on all convolutional layers
-- Receptive field = 1 + (kernel_size - 1) * sum(2^i for i in range(n_layers))
+- Receptive field = 1 + (kernel_size - 1) * sum(2^(i%8) for i in range(n_layers))
 """
 
 import torch
@@ -68,7 +71,7 @@ class TCN(nn.Module):
         dropout:     dropout probability
 
     Receptive field (in bytes):
-        1 + (kernel_size - 1) * sum(2^i for i in range(n_layers))
+        1 + (kernel_size - 1) * sum(2^(i%8) for i in range(n_layers))
     """
 
     def __init__(
@@ -83,14 +86,14 @@ class TCN(nn.Module):
         self.tok_emb = nn.Embedding(vocab_size, d_model)
 
         self.blocks = nn.ModuleList([
-            TCNBlock(d_model, kernel_size, dilation=2 ** i, dropout=dropout)
+            TCNBlock(d_model, kernel_size, dilation=2 ** (i % 8), dropout=dropout)
             for i in range(n_layers)
         ])
 
         self.ln_f = nn.LayerNorm(d_model)
         self.head = nn.Linear(d_model, vocab_size, bias=False)
 
-        self.receptive_field = 1 + (kernel_size - 1) * sum(2 ** i for i in range(n_layers))
+        self.receptive_field = 1 + (kernel_size - 1) * sum(2 ** (i % 8) for i in range(n_layers))
 
         self._init_weights()
 
