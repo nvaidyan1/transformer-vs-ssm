@@ -29,9 +29,22 @@ class CausalSelfAttention(nn.Module):
         self.attn_drop = nn.Dropout(dropout)
         self.resid_drop = nn.Dropout(dropout)
 
-        # Lower-triangular causal mask — registered as a buffer (not a parameter)
-        mask = torch.tril(torch.ones(max_seq_len, max_seq_len))
-        self.register_buffer("mask", mask.view(1, 1, max_seq_len, max_seq_len))
+        # Lower-triangular causal mask.
+        #
+        # persistent=False keeps it OUT of state_dict(). The mask is a constant
+        # derived entirely from max_seq_len, so serialising it stores nothing that
+        # cannot be recreated at __init__. With max_seq_len=4096 and n_layers=11 a
+        # persistent float32 mask added 11 x 64 MiB = 704 MiB to every checkpoint,
+        # making a 112 MiB model produce an 816 MiB file (7.3x bloat). It is
+        # invisible to count_parameters(), which only walks parameters().
+        #
+        # dtype=torch.bool costs 1 byte per element instead of 4, cutting resident
+        # VRAM for the masks from 704 MiB to 176 MiB. The `== 0` comparison in
+        # forward() behaves identically on a bool tensor (False == 0 is True).
+        mask = torch.tril(torch.ones(max_seq_len, max_seq_len, dtype=torch.bool))
+        self.register_buffer(
+            "mask", mask.view(1, 1, max_seq_len, max_seq_len), persistent=False
+        )
 
     def forward(self, x: torch.Tensor, return_attention: bool = False):
         B, T, C = x.shape
