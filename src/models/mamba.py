@@ -19,8 +19,25 @@ Reference: Gu & Dao, "Mamba: Linear-Time Sequence Modeling with Selective State 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.checkpoint import checkpoint
 
 MAMBA_SCAN = "sequential"
+
+# Recompute each block's activations during backward instead of storing them.
+#
+# The sequential scan keeps ~4 (B, d_inner, d_state) tensors alive per timestep
+# for the backward pass: A_bar, the exp() output, B_bar, and the new state. At
+# B=16, d_inner=512, d_state=16 that is 2.0 MiB per timestep, so 1024 timesteps
+# cost 2.0 GiB per layer and 14 layers need 28.0 GiB — more than a 16 GB T4.
+# (Observed: OOM at 14.42 GiB allocated, roughly halfway through the stack.)
+#
+# Checkpointing keeps only one layer's scan live at a time, plus the 14 stored
+# layer inputs (0.22 GiB), for a peak near 2.2 GiB. The trade is one extra
+# forward pass through the scan during backward, roughly +30% step time.
+#
+# This changes no mathematics, no parameter count, and no result — only the
+# memory/time trade-off. Set to False to recover the original behaviour.
+MAMBA_GRAD_CHECKPOINT = True
 print(f"[mamba.py] scan='{MAMBA_SCAN}' (O(n) memory, honest wall-clock — see docstring)")
 
 
@@ -252,8 +269,25 @@ class Mamba(nn.Module):
         h = self.tok_emb(x)                        # (B, T, d_model)
 
         all_deltas = [] if return_delta else None
+
+        # Checkpoint only while training and only when deltas are not needed:
+        # inference has no backward graph to trade against, and the delta
+        # tensors are an extra output that would be recomputed for nothing.
+        use_ckpt = (
+            MAMBA_GRAD_CHECKPOINT
+            and self.training
+            and torch.is_grad_enabled()
+            and not return_delta
+        )
+
         for block in self.blocks:
-            h, delta = block(h, return_delta=return_delta)
+            if use_ckpt:
+                # use_reentrant=False preserves RNG state across the recompute,
+                # so dropout draws the same mask in both passes, and composes
+                # correctly with torch.amp.autocast.
+                h, delta = checkpoint(block, h, False, use_reentrant=False)
+            else:
+                h, delta = block(h, return_delta=return_delta)
             if return_delta:
                 all_deltas.append(delta)
 
