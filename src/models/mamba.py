@@ -16,10 +16,26 @@ Architecture choices (per project spec):
 Reference: Gu & Dao, "Mamba: Linear-Time Sequence Modeling with Selective State Spaces" (2023)
 """
 
+import math
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.checkpoint import checkpoint
+
+# Delta (the selection timestep) must be initialised small, per Gu & Dao's reference
+# implementation, or the state decays to nothing within a few steps regardless of
+# what the model learns. This is not a tuning nicety -- with bias-free projections
+# and default nn.Linear init, softplus(pre-activation) lands at softplus(0) = ln(2)
+# = 0.693, and A initialised at -1..-16 gives a state half-life of ~1 STEP. A model
+# built this way cannot retain information across a 64-token sequence no matter how
+# it trains; the Selective Copying gate confirmed this (mean acc 0.022, at chance).
+#
+# Fix: a dedicated dt_proj whose bias is initialised so softplus(bias) is log-uniform
+# in [DT_MIN, DT_MAX] BEFORE any input-dependent contribution is added (see
+# MambaSSM.__init__). These are Gu & Dao's defaults.
+DT_MIN = 0.001
+DT_MAX = 0.1
 
 # Default scan implementation. "sequential" is a Python loop over timesteps;
 # "parallel" uses the Hillis-Steele prefix scan in _associative_scan below.
@@ -103,7 +119,8 @@ class MambaSSM(nn.Module):
     Shapes throughout (B=batch, T=seq_len, E=d_inner, N=d_state):
         in_proj  : (B, T, d_model) → (B, T, 2*E)   — x and gate z
         conv1d   : (B, E, T)       → (B, E, T)      — causal depthwise conv
-        x_proj   : (B, T, E)       → (B, T, E+2*N)  — delta, B, C
+        x_proj   : (B, T, E)       → (B, T, 2*N)    — B, C
+        dt_proj  : (B, T, E)       → (B, T, E)      — delta, pre-softplus (see DT_MIN/DT_MAX)
         SSM scan : runs T steps, state h ∈ ℝ^(B, E, N)
         out_proj : (B, T, E)       → (B, T, d_model)
     """
@@ -130,8 +147,32 @@ class MambaSSM(nn.Module):
             bias=True,
         )
 
-        # Project x → (delta, B, C) — delta has same width as d_inner for clarity
-        self.x_proj = nn.Linear(self.d_inner, self.d_inner + 2 * d_state, bias=False)
+        # Project x → (B, C). No bias: these have no equivalent of the delta collapse
+        # below, since a zero-mean B/C only zeros out that step's contribution rather
+        # than freezing every step's decay rate.
+        self.x_proj = nn.Linear(self.d_inner, 2 * d_state, bias=False)
+
+        # Project x → delta (pre-softplus), with the dedicated init that keeps Delta
+        # small: weight small so the input-dependent term starts near zero, bias set
+        # so softplus(bias) alone is log-uniform in [DT_MIN, DT_MAX] per channel.
+        self.dt_proj = nn.Linear(self.d_inner, self.d_inner, bias=True)
+        dt_init_std = self.d_inner ** -0.5
+        nn.init.uniform_(self.dt_proj.weight, -dt_init_std, dt_init_std)
+        dt = torch.exp(
+            torch.rand(self.d_inner) * (math.log(DT_MAX) - math.log(DT_MIN))
+            + math.log(DT_MIN)
+        )
+        # inverse softplus: softplus(inv_softplus(dt)) == dt
+        inv_softplus_dt = dt + torch.log(-torch.expm1(-dt))
+        with torch.no_grad():
+            self.dt_proj.bias.copy_(inv_softplus_dt)
+        # Mamba._init_weights() re-initialises every nn.Linear after construction
+        # (a uniform normal(0, 0.02) + zero bias, applied model-wide). Left alone,
+        # that silently overwrites this init and reintroduces the exact bug this
+        # module exists to fix. Mark both tensors so it skips them — same
+        # convention as the reference implementation's `_no_reinit`.
+        self.dt_proj.weight._no_reinit = True
+        self.dt_proj.bias._no_reinit = True
 
         # A: (d_inner, d_state) — stored as log so exp(A_log) > 0,
         # and we negate to get stable negative-real diagonal eigenvalues
@@ -177,12 +218,11 @@ class MambaSSM(nn.Module):
         h_conv = F.silu(h_conv).transpose(1, 2)                 # (B, T, E)
 
         # ── 3. SSM projections ───────────────────────────────────────────────
-        dBC = self.x_proj(h_conv)                   # (B, T, E + 2*N)
-        delta = dBC[:, :, : self.d_inner]           # (B, T, E)
-        B_ssm = dBC[:, :, self.d_inner : self.d_inner + self.d_state]  # (B, T, N)
-        C_ssm = dBC[:, :, self.d_inner + self.d_state :]               # (B, T, N)
+        BC = self.x_proj(h_conv)                     # (B, T, 2*N)
+        B_ssm = BC[:, :, : self.d_state]             # (B, T, N)
+        C_ssm = BC[:, :, self.d_state :]              # (B, T, N)
 
-        delta = F.softplus(delta)                   # enforce positivity  (B, T, E)
+        delta = F.softplus(self.dt_proj(h_conv))     # (B, T, E); see DT_MIN/DT_MAX above
 
         if input_independent:
             # Ablation: collapse the position axis so every timestep sees the same
@@ -307,8 +347,9 @@ class Mamba(nn.Module):
     def _init_weights(self):
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                nn.init.normal_(m.weight, mean=0.0, std=0.02)
-                if m.bias is not None:
+                if not getattr(m.weight, "_no_reinit", False):
+                    nn.init.normal_(m.weight, mean=0.0, std=0.02)
+                if m.bias is not None and not getattr(m.bias, "_no_reinit", False):
                     nn.init.zeros_(m.bias)
             elif isinstance(m, nn.Embedding):
                 nn.init.normal_(m.weight, mean=0.0, std=0.02)

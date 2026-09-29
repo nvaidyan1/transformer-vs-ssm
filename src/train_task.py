@@ -112,6 +112,9 @@ def main():
     ap.add_argument("--task_args", default="", help="e.g. n_pairs=4,seq_len=128")
     ap.add_argument("--steps", type=int, default=None, help="override max_steps")
     ap.add_argument("--lr", type=float, default=None, help="override config lr")
+    ap.add_argument("--ssm_lr_scale", type=float, default=None,
+                    help="LR multiplier for dt_proj/x_proj/A_log (see src/optim.py). "
+                         "Overrides config; default 1.0 if set nowhere.")
     ap.add_argument("--seed", type=int, default=None, help="override config seed")
     ap.add_argument("--batch_size", type=int, default=None)
     ap.add_argument("--device", default=None)
@@ -124,6 +127,7 @@ def main():
     args = ap.parse_args()
 
     cfg = yaml.safe_load(open(args.config))
+    cfg.setdefault("ssm_lr_scale", 1.0)
     if args.steps is not None:
         cfg["max_steps"] = args.steps
     if args.lr is not None:
@@ -132,6 +136,8 @@ def main():
         cfg["seed"] = args.seed
     if args.batch_size is not None:
         cfg["batch_size"] = args.batch_size
+    if args.ssm_lr_scale is not None:
+        cfg["ssm_lr_scale"] = args.ssm_lr_scale
 
     task_kwargs = parse_task_args(args.task_args)
     task_kwargs.setdefault("vocab_size", cfg["vocab_size"])
@@ -153,7 +159,7 @@ def main():
               + ("  [ABLATED: no position-wise selectivity]" if args.ablate else ""))
         print(f"device : {device}   lr={cfg['lr']}  steps={cfg['max_steps']}  "
               f"batch={cfg['batch_size']}  seed={cfg['seed']}")
-        print(describe_param_groups(model))
+        print(describe_param_groups(model, ssm_lr_scale=cfg["ssm_lr_scale"]))
 
     batcher = make_batcher(args.task, **task_kwargs)
 
@@ -162,14 +168,19 @@ def main():
                    for i in range(cfg["eval_batches"])]
 
     optimizer = torch.optim.AdamW(
-        build_param_groups(model, cfg["weight_decay"]), lr=cfg["lr"], betas=(0.9, 0.95))
+        build_param_groups(model, cfg["weight_decay"], ssm_lr_scale=cfg["ssm_lr_scale"]),
+        lr=cfg["lr"], betas=(0.9, 0.95))
 
     history, t0, stopped_early = [], time.time(), False
     model.train()
     for step in range(cfg["max_steps"]):
-        lr = get_lr(step, cfg["warmup_steps"], cfg["max_steps"], cfg["lr"])
+        base_lr = get_lr(step, cfg["warmup_steps"], cfg["max_steps"], cfg["lr"])
         for g in optimizer.param_groups:
-            g["lr"] = lr
+            # Every group carries its own lr_scale from build_param_groups (default
+            # 1.0). Multiplying it in here, every step, is required: writing the
+            # scheduled lr straight into g["lr"] would silently erase the multiplier
+            # set at construction the moment the schedule first updates.
+            g["lr"] = base_lr * g.get("lr_scale", 1.0)
 
         tok, tgt, _, _ = to_torch(
             batcher(cfg["batch_size"], TRAIN_SEED_BASE + step + cfg["seed"] * 10_000_000),
@@ -202,7 +213,8 @@ def main():
     record = {
         "task": args.task, "task_args": task_kwargs, "arch": arch,
         "ablate": bool(args.ablate), "n_params": n_params,
-        "lr": cfg["lr"], "seed": cfg["seed"], "batch_size": cfg["batch_size"],
+        "lr": cfg["lr"], "ssm_lr_scale": cfg["ssm_lr_scale"],
+        "seed": cfg["seed"], "batch_size": cfg["batch_size"],
         "steps_run": history[-1]["step"] if history else 0,
         "max_steps": cfg["max_steps"], "stopped_early": stopped_early,
         "final_val_acc": final["acc"], "final_val_loss": final["loss"],
