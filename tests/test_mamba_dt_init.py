@@ -27,10 +27,62 @@ from src.models.mamba import DT_MAX, DT_MIN, MambaSSM
 
 
 def test_dt_proj_bias_is_no_reinit_marked():
-    """The exact regression: Mamba._init_weights() must not touch dt_proj."""
+    """The exact regression: Mamba._init_weights() must not zero dt_proj.bias.
+
+    Only the bias needs marking (matching the reference exactly, verified against
+    github.com/state-spaces/mamba): _init_weights() no longer touches Linear.weight
+    at all except out_proj's depth-scaled reinit, so dt_proj.weight's own init
+    (set in MambaSSM.__init__) is safe without a weight-level mark. An earlier
+    version of this fix marked both, because an earlier version of _init_weights
+    still blanket-reinitialised every weight -- that blanket reinit is itself the
+    bug this test now guards against never coming back."""
     ssm = MambaSSM(d_model=64, d_state=16, d_conv=4, expand=2)
-    assert getattr(ssm.dt_proj.weight, "_no_reinit", False) is True
     assert getattr(ssm.dt_proj.bias, "_no_reinit", False) is True
+
+
+def test_init_weights_does_not_touch_non_out_proj_linear_weights():
+    """The regression this test exists for: Mamba._init_weights() must not
+    reinitialise Linear.weight in general -- only out_proj.weight (depth-scaled)
+    is special-cased, matching the reference model-level init exactly."""
+    torch.manual_seed(0)
+    ssm_before = MambaSSM(d_model=64, d_state=16, d_conv=4, expand=2)
+    w_before = {
+        "in_proj": ssm_before.in_proj.weight.clone(),
+        "x_proj": ssm_before.x_proj.weight.clone(),
+        "dt_proj": ssm_before.dt_proj.weight.clone(),
+    }
+    # Re-running _init_weights() on the *containing* Mamba model must be a no-op
+    # for these weights (it would not have been, under the old blanket reinit).
+    m = build_model("mamba", vocab_size=64, n_layers=1, d_model=64, d_state=16,
+                    d_conv=4, expand=2, dropout=0.0)
+    ssm = m.blocks[0].ssm
+    before = {n: p.clone() for n, p in
+             [("in_proj", ssm.in_proj.weight), ("x_proj", ssm.x_proj.weight),
+              ("dt_proj", ssm.dt_proj.weight)]}
+    m._init_weights()
+    for name, p in [("in_proj", ssm.in_proj.weight), ("x_proj", ssm.x_proj.weight),
+                    ("dt_proj", ssm.dt_proj.weight)]:
+        assert torch.equal(p, before[name]), f"{name}.weight changed after re-running _init_weights()"
+
+
+def test_out_proj_weight_gets_depth_scaled_reinit():
+    """out_proj.weight IS meant to change under _init_weights() -- the GPT-2/Megatron
+    residual-depth scheme, matching the reference's n_residuals_per_layer=1 case."""
+    n_layers = 6
+    m = build_model("mamba", vocab_size=64, n_layers=n_layers, d_model=64, d_state=16,
+                    d_conv=4, expand=2, dropout=0.0)
+    for block in m.blocks:
+        w = block.ssm.out_proj.weight
+        # kaiming_uniform_(a=sqrt(5)) on a Linear(d_inner, d_model) has a known
+        # bound; after /sqrt(n_layers) the std should shrink accordingly relative
+        # to an unscaled kaiming_uniform_ draw of the same shape.
+        torch.manual_seed(0)
+        unscaled = torch.empty_like(w)
+        torch.nn.init.kaiming_uniform_(unscaled, a=math.sqrt(5))
+        ratio = w.std().item() / unscaled.std().item()
+        assert abs(ratio - n_layers ** -0.5) < 0.15, (
+            f"out_proj.weight std ratio {ratio:.3f} doesn't match expected "
+            f"1/sqrt(n_layers)={n_layers**-0.5:.3f}")
 
 
 def test_dt_bias_gives_softplus_in_reference_range():

@@ -37,6 +37,25 @@ from torch.utils.checkpoint import checkpoint
 DT_MIN = 0.001
 DT_MAX = 0.1
 
+# Two further divergences from the reference (found via external review, then
+# confirmed against github.com/state-spaces/mamba's mamba_simple.py /
+# mixer_seq_simple.py directly, 2026-09-29) that the dt_proj fix alone did not
+# address:
+#
+# 1. Reference Delta is NOT a direct d_inner->d_inner projection. x_proj emits a
+#    combined (dt_rank + 2*d_state)-wide output; dt_proj is dt_rank->d_inner, where
+#    dt_rank = ceil(d_model/16). This low-rank bottleneck changes both the parameter
+#    count and, more importantly, the WEIGHT init scale: dt_init_std = dt_rank**-0.5,
+#    not d_inner**-0.5. Since dt_rank << d_inner, this is a substantially larger
+#    per-weight variance than a naive full-width projection would get.
+# 2. Reference _init_weights() does NOT reinitialise Linear.weight at all (Embedding
+#    excepted) -- it only zeros non-_no_reinit biases, plus a GPT-2-style 1/sqrt(N)
+#    depth rescaling of residual OUTPUT projections (out_proj.weight) specifically.
+#    Our earlier blanket normal(0, 0.02) on every Linear.weight was never reference
+#    behaviour; it's also why dt_proj needed a weight-level _no_reinit hack that the
+#    reference doesn't need (it only marks dt_proj.bias).
+DT_RANK_DIVISOR = 16   # dt_rank = ceil(d_model / DT_RANK_DIVISOR), reference default
+
 # Default scan implementation. "sequential" is a Python loop over timesteps;
 # "parallel" uses the Hillis-Steele prefix scan in _associative_scan below.
 #
@@ -112,15 +131,55 @@ def _associative_scan(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
     return acc_b   # h_t = B_1t when h_0 = 0
 
 
+def selective_scan(delta: torch.Tensor, A: torch.Tensor, B_ssm: torch.Tensor,
+                   C_ssm: torch.Tensor, u: torch.Tensor, scan: str = "sequential"
+                   ) -> torch.Tensor:
+    """Core selective-scan recurrence: h_t = A_bar_t h_{t-1} + B_bar_t u_t, y_t = C_t h_t.
+
+    Factored out of MambaSSM.forward so it has exactly one implementation, callable
+    directly with raw tensors -- this is what tests/test_selective_scan_parity.py
+    compares against the vendored official `selective_scan_ref`
+    (tests/vendor/selective_scan_ref.py) for forward and gradient agreement.
+
+    Shapes: delta (B,T,E) positive (already softplus'd), A (E,N) negative real,
+    B_ssm/C_ssm (B,T,N) -- shared across the E axis, matching MambaSSM's B/C
+    projection -- u (B,T,E) is the scan input (h_conv in MambaSSM.forward).
+
+    Returns y: (B,T,E), BEFORE the D skip connection and z gating (those are
+    applied by the caller, matching the reference's `out = y + D*u; out *= silu(z)`
+    ordering).
+    """
+    Bsz, T, E = u.shape
+    if scan == "parallel":
+        a = torch.exp(delta.unsqueeze(-1) * A.unsqueeze(0).unsqueeze(0))
+        b = (delta.unsqueeze(-1) * B_ssm.unsqueeze(2)) * u.unsqueeze(-1)
+        h = _associative_scan(a, b)                             # (B, T, E, N)
+        return (h * C_ssm.unsqueeze(2)).sum(-1)                 # (B, T, E)
+
+    state = torch.zeros(Bsz, E, A.shape[1], device=u.device, dtype=u.dtype)
+    ys = []
+    for t in range(T):
+        dt = delta[:, t, :]                     # (B, E)
+        b_t = B_ssm[:, t, :]                    # (B, N)
+        c_t = C_ssm[:, t, :]                    # (B, N)
+        x_t = u[:, t, :]                        # (B, E)
+        A_bar = torch.exp(dt.unsqueeze(-1) * A.unsqueeze(0))   # (B, E, N)
+        B_bar = dt.unsqueeze(-1) * b_t.unsqueeze(1)             # (B, E, N)
+        state = A_bar * state + B_bar * x_t.unsqueeze(-1)       # (B, E, N)
+        y_t = (state * c_t.unsqueeze(1)).sum(-1)                # (B, E)
+        ys.append(y_t)
+    return torch.stack(ys, dim=1)               # (B, T, E)
+
+
 class MambaSSM(nn.Module):
     """
     The selective SSM mixer at the core of each Mamba block.
 
-    Shapes throughout (B=batch, T=seq_len, E=d_inner, N=d_state):
-        in_proj  : (B, T, d_model) → (B, T, 2*E)   — x and gate z
-        conv1d   : (B, E, T)       → (B, E, T)      — causal depthwise conv
-        x_proj   : (B, T, E)       → (B, T, 2*N)    — B, C
-        dt_proj  : (B, T, E)       → (B, T, E)      — delta, pre-softplus (see DT_MIN/DT_MAX)
+    Shapes throughout (B=batch, T=seq_len, E=d_inner, N=d_state, R=dt_rank):
+        in_proj  : (B, T, d_model) → (B, T, 2*E)     — x and gate z
+        conv1d   : (B, E, T)       → (B, E, T)        — causal depthwise conv
+        x_proj   : (B, T, E)       → (B, T, R+2*N)    — delta (low-rank), B, C
+        dt_proj  : (B, T, R)       → (B, T, E)        — delta, pre-softplus (see DT_MIN/DT_MAX)
         SSM scan : runs T steps, state h ∈ ℝ^(B, E, N)
         out_proj : (B, T, E)       → (B, T, d_model)
     """
@@ -134,6 +193,7 @@ class MambaSSM(nn.Module):
         self.d_inner = d_model * expand
         self.d_state = d_state
         self.d_conv = d_conv
+        self.dt_rank = math.ceil(d_model / DT_RANK_DIVISOR)
 
         # Project input to x and gate in one matmul
         self.in_proj = nn.Linear(d_model, 2 * self.d_inner, bias=False)
@@ -147,16 +207,19 @@ class MambaSSM(nn.Module):
             bias=True,
         )
 
-        # Project x → (B, C). No bias: these have no equivalent of the delta collapse
-        # below, since a zero-mean B/C only zeros out that step's contribution rather
-        # than freezing every step's decay rate.
-        self.x_proj = nn.Linear(self.d_inner, 2 * d_state, bias=False)
+        # Project x → (delta_low, B, C) combined, matching the reference: delta goes
+        # through a low-rank bottleneck (dt_rank) rather than a direct d_inner-wide
+        # projection. bias=False for the whole thing -- B/C need no special init,
+        # and delta's bias lives on dt_proj below, not here.
+        self.x_proj = nn.Linear(self.d_inner, self.dt_rank + 2 * d_state, bias=False)
 
-        # Project x → delta (pre-softplus), with the dedicated init that keeps Delta
-        # small: weight small so the input-dependent term starts near zero, bias set
-        # so softplus(bias) alone is log-uniform in [DT_MIN, DT_MAX] per channel.
-        self.dt_proj = nn.Linear(self.d_inner, self.d_inner, bias=True)
-        dt_init_std = self.d_inner ** -0.5
+        # Low-rank -> full-width delta projection. Weight init variance is scaled by
+        # dt_rank (not d_inner) to preserve variance through the bottleneck -- this
+        # is a real magnitude difference, not just a shape difference, since
+        # dt_rank << d_inner. Bias set so softplus(bias) alone is log-uniform in
+        # [DT_MIN, DT_MAX], before any input-dependent contribution is added.
+        self.dt_proj = nn.Linear(self.dt_rank, self.d_inner, bias=True)
+        dt_init_std = self.dt_rank ** -0.5
         nn.init.uniform_(self.dt_proj.weight, -dt_init_std, dt_init_std)
         dt = torch.exp(
             torch.rand(self.d_inner) * (math.log(DT_MAX) - math.log(DT_MIN))
@@ -166,12 +229,9 @@ class MambaSSM(nn.Module):
         inv_softplus_dt = dt + torch.log(-torch.expm1(-dt))
         with torch.no_grad():
             self.dt_proj.bias.copy_(inv_softplus_dt)
-        # Mamba._init_weights() re-initialises every nn.Linear after construction
-        # (a uniform normal(0, 0.02) + zero bias, applied model-wide). Left alone,
-        # that silently overwrites this init and reintroduces the exact bug this
-        # module exists to fix. Mark both tensors so it skips them — same
-        # convention as the reference implementation's `_no_reinit`.
-        self.dt_proj.weight._no_reinit = True
+        # Only the BIAS needs protecting from Mamba._init_weights() -- that function
+        # no longer touches Linear.weight at all (see its docstring), matching the
+        # reference, which likewise marks only dt_proj.bias `_no_reinit`.
         self.dt_proj.bias._no_reinit = True
 
         # A: (d_inner, d_state) — stored as log so exp(A_log) > 0,
@@ -218,11 +278,12 @@ class MambaSSM(nn.Module):
         h_conv = F.silu(h_conv).transpose(1, 2)                 # (B, T, E)
 
         # ── 3. SSM projections ───────────────────────────────────────────────
-        BC = self.x_proj(h_conv)                     # (B, T, 2*N)
-        B_ssm = BC[:, :, : self.d_state]             # (B, T, N)
-        C_ssm = BC[:, :, self.d_state :]              # (B, T, N)
+        dBC = self.x_proj(h_conv)                    # (B, T, R+2*N)
+        delta_low = dBC[:, :, : self.dt_rank]        # (B, T, R) -- low-rank, per DT_RANK_DIVISOR
+        B_ssm = dBC[:, :, self.dt_rank : self.dt_rank + self.d_state]      # (B, T, N)
+        C_ssm = dBC[:, :, self.dt_rank + self.d_state :]                   # (B, T, N)
 
-        delta = F.softplus(self.dt_proj(h_conv))     # (B, T, E); see DT_MIN/DT_MAX above
+        delta = F.softplus(self.dt_proj(delta_low))  # (B, T, E); see DT_MIN/DT_MAX above
 
         if input_independent:
             # Ablation: collapse the position axis so every timestep sees the same
@@ -247,34 +308,7 @@ class MambaSSM(nn.Module):
         # - At inference (one token at a time), Mamba runs as a true RNN with
         #   O(1) memory per step regardless of context length — that is the
         #   hardware-verifiable efficiency claim in Post B
-        if self.scan == "parallel":
-            # Same recurrence, evaluated with a prefix scan over all timesteps at once.
-            #   a_t = exp(delta_t * A)            (B, T, E, N)
-            #   b_t = (delta_t * B_t) * x_t       (B, T, E, N)
-            a = torch.exp(delta.unsqueeze(-1) * A.unsqueeze(0).unsqueeze(0))
-            b = (delta.unsqueeze(-1) * B_ssm.unsqueeze(2)) * h_conv.unsqueeze(-1)
-            h = _associative_scan(a, b)                            # (B, T, E, N)
-            y = (h * C_ssm.unsqueeze(2)).sum(-1)                   # (B, T, E)
-        else:
-            state = torch.zeros(B, self.d_inner, self.d_state,
-                                device=x.device, dtype=x.dtype)
-            ys = []
-
-            for t in range(T):
-                dt = delta[:, t, :]                     # (B, E)
-                b_t = B_ssm[:, t, :]                    # (B, N)
-                c_t = C_ssm[:, t, :]                    # (B, N)
-                x_t = h_conv[:, t, :]                   # (B, E)
-
-                # Discretise: zero-order hold
-                A_bar = torch.exp(dt.unsqueeze(-1) * A.unsqueeze(0))   # (B, E, N)
-                B_bar = dt.unsqueeze(-1) * b_t.unsqueeze(1)            # (B, E, N)
-
-                state = A_bar * state + B_bar * x_t.unsqueeze(-1)      # (B, E, N)
-                y_t = (state * c_t.unsqueeze(1)).sum(-1)               # (B, E)
-                ys.append(y_t)
-
-            y = torch.stack(ys, dim=1)                  # (B, T, E)
+        y = selective_scan(delta, A, B_ssm, C_ssm, h_conv, scan=self.scan)
 
         # ── 6. Skip connection + gate ─────────────────────────────────────────
         y = y + h_conv * self.D.unsqueeze(0).unsqueeze(0)
@@ -342,17 +376,41 @@ class Mamba(nn.Module):
         # Weight tying
         self.head.weight = self.tok_emb.weight
 
+        self.n_layers = n_layers
         self._init_weights()
 
     def _init_weights(self):
+        """Matches the reference model-level init exactly (see DT_RANK_DIVISOR
+        docstring in this file for how this was found to differ from what we had).
+
+        Reference behaviour, reproduced here:
+          - nn.Linear biases are zeroed, UNLESS marked `_no_reinit` (dt_proj.bias).
+            Conv1d bias is untouched -- the reference's check is `isinstance(m,
+            nn.Linear)`, which a name-suffix rule like `name.endswith(".bias")`
+            would get wrong for conv1d.bias.
+          - nn.Embedding weight: normal(0, 0.02).
+          - Every other Linear.weight (in_proj, x_proj, dt_proj, ...) is left at
+            whatever it was after construction -- PyTorch's own default init, or a
+            module's own deliberate init (dt_proj.weight is already set in
+            MambaSSM.__init__ and is no longer at risk of being overwritten, since
+            this function no longer touches Linear.weight in general).
+          - EXCEPT `out_proj.weight`: the GPT-2 / Megatron residual-depth scheme
+            (kaiming_uniform_, then divided by sqrt(n_layers)) -- each block's
+            ssm.out_proj is one residual write, matching n_residuals_per_layer=1
+            in the reference (we have no per-block MLP, same as their case).
+        """
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                if not getattr(m.weight, "_no_reinit", False):
-                    nn.init.normal_(m.weight, mean=0.0, std=0.02)
                 if m.bias is not None and not getattr(m.bias, "_no_reinit", False):
                     nn.init.zeros_(m.bias)
             elif isinstance(m, nn.Embedding):
                 nn.init.normal_(m.weight, mean=0.0, std=0.02)
+
+        for name, p in self.named_parameters():
+            if name.endswith("out_proj.weight"):
+                nn.init.kaiming_uniform_(p, a=math.sqrt(5))
+                with torch.no_grad():
+                    p /= math.sqrt(self.n_layers)
 
     def forward(self, x: torch.Tensor, return_delta: bool = False,
                 input_independent: bool = False):
