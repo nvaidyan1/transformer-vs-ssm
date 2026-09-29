@@ -1,0 +1,23 @@
+# Small transformer for synthetic-task experiments.
+# Parameter count matched to tcn_small / mamba_small within 1.6% (see PLAN.md §4).
+arch: transformer
+seed: 0
+vocab_size: 64
+
+# Optimisation
+max_steps: 4000
+warmup_steps: 200
+lr: 3.0e-4          # override per-architecture from the LR sweep
+weight_decay: 0.1   # applied via src/optim.py grouping, not uniformly
+grad_clip: 1.0
+batch_size: 32
+eval_every: 250
+eval_batches: 8
+
+model:
+  n_layers: 3       # -> 667,264 params at vocab_size 64
+  d_model: 128
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.0
+  max_seq_len: 512

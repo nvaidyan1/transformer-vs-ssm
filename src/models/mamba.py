@@ -21,6 +21,25 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.checkpoint import checkpoint
 
+# Default scan implementation. "sequential" is a Python loop over timesteps;
+# "parallel" uses the Hillis-Steele prefix scan in _associative_scan below.
+#
+# Which is faster depends on shape, and the crossover is sharp (measured by
+# scripts/bench_mamba_scan.py at d_inner=512, d_state=16):
+#
+#     device  batch  seq_len   sequential   parallel   result
+#     MPS        16       64       5.7 ms     1.6 ms   3.5x faster
+#     MPS        16      128      14.3 ms     2.1 ms   6.9x faster
+#     MPS        16      256      30.0 ms   120.7 ms   4.0x slower
+#     MPS        16     1024     102.6 ms   729.0 ms   7.1x slower
+#
+# The parallel scan materialises O(B*T*d_inner*d_state) tensors log2(T) times, so it
+# wins at short sequences (few kernel launches) and loses badly at long ones (memory
+# traffic). Synthetic-task runs are short and should set scan="parallel"; the enwik8
+# configuration is long and keeps the sequential default.
+#
+# The two are numerically equivalent to float32 rounding (~1e-7); tests/test_mamba_scan.py
+# asserts identical model outputs.
 MAMBA_SCAN = "sequential"
 
 # Recompute each block's activations during backward instead of storing them.
@@ -89,8 +108,12 @@ class MambaSSM(nn.Module):
         out_proj : (B, T, E)       → (B, T, d_model)
     """
 
-    def __init__(self, d_model: int, d_state: int, d_conv: int, expand: int):
+    def __init__(self, d_model: int, d_state: int, d_conv: int, expand: int,
+                 scan: str = None):
         super().__init__()
+        self.scan = scan or MAMBA_SCAN
+        if self.scan not in ("sequential", "parallel"):
+            raise ValueError(f"scan must be 'sequential' or 'parallel', got {self.scan!r}")
         self.d_inner = d_model * expand
         self.d_state = d_state
         self.d_conv = d_conv
@@ -121,11 +144,22 @@ class MambaSSM(nn.Module):
 
         self.out_proj = nn.Linear(self.d_inner, d_model, bias=False)
 
-    def forward(self, x: torch.Tensor, return_delta: bool = False):
+    def forward(self, x: torch.Tensor, return_delta: bool = False,
+                input_independent: bool = False):
         """
         Args:
             x:            (B, T, d_model)
             return_delta: if True, also return delta_t for visualisation
+            input_independent: ABLATION. Replace delta/B/C with their sequence means,
+                removing position-wise selectivity while keeping every parameter and
+                shape identical. Used as the control for the Selective Copying gate
+                (see src/tasks/selective_copy.py): a working selective implementation
+                must beat this ablation by a wide margin.
+
+                Note this is a *stronger* baseline than a time-invariant SSM such as
+                S4 — the frozen values still depend on the sequence as a whole, just
+                not on position. It isolates exactly the position-wise variation the
+                scan consumes. It is not an S4 reimplementation.
 
         Returns:
             out:   (B, T, d_model)
@@ -150,6 +184,14 @@ class MambaSSM(nn.Module):
 
         delta = F.softplus(delta)                   # enforce positivity  (B, T, E)
 
+        if input_independent:
+            # Ablation: collapse the position axis so every timestep sees the same
+            # selection parameters. Shapes are unchanged, so the scan below is
+            # untouched and the comparison isolates selectivity alone.
+            delta = delta.mean(dim=1, keepdim=True).expand_as(delta)
+            B_ssm = B_ssm.mean(dim=1, keepdim=True).expand_as(B_ssm)
+            C_ssm = C_ssm.mean(dim=1, keepdim=True).expand_as(C_ssm)
+
         # ── 4. Discretise A ──────────────────────────────────────────────────
         # A is (E, N), negative real; keep it fixed-shape for the scan
         A = -torch.exp(self.A_log)                  # (E, N)
@@ -165,24 +207,34 @@ class MambaSSM(nn.Module):
         # - At inference (one token at a time), Mamba runs as a true RNN with
         #   O(1) memory per step regardless of context length — that is the
         #   hardware-verifiable efficiency claim in Post B
-        state = torch.zeros(B, self.d_inner, self.d_state, device=x.device, dtype=x.dtype)
-        ys = []
+        if self.scan == "parallel":
+            # Same recurrence, evaluated with a prefix scan over all timesteps at once.
+            #   a_t = exp(delta_t * A)            (B, T, E, N)
+            #   b_t = (delta_t * B_t) * x_t       (B, T, E, N)
+            a = torch.exp(delta.unsqueeze(-1) * A.unsqueeze(0).unsqueeze(0))
+            b = (delta.unsqueeze(-1) * B_ssm.unsqueeze(2)) * h_conv.unsqueeze(-1)
+            h = _associative_scan(a, b)                            # (B, T, E, N)
+            y = (h * C_ssm.unsqueeze(2)).sum(-1)                   # (B, T, E)
+        else:
+            state = torch.zeros(B, self.d_inner, self.d_state,
+                                device=x.device, dtype=x.dtype)
+            ys = []
 
-        for t in range(T):
-            dt = delta[:, t, :]                     # (B, E)
-            b_t = B_ssm[:, t, :]                    # (B, N)
-            c_t = C_ssm[:, t, :]                    # (B, N)
-            x_t = h_conv[:, t, :]                   # (B, E)
+            for t in range(T):
+                dt = delta[:, t, :]                     # (B, E)
+                b_t = B_ssm[:, t, :]                    # (B, N)
+                c_t = C_ssm[:, t, :]                    # (B, N)
+                x_t = h_conv[:, t, :]                   # (B, E)
 
-            # Discretise: zero-order hold
-            A_bar = torch.exp(dt.unsqueeze(-1) * A.unsqueeze(0))   # (B, E, N)
-            B_bar = dt.unsqueeze(-1) * b_t.unsqueeze(1)            # (B, E, N)
+                # Discretise: zero-order hold
+                A_bar = torch.exp(dt.unsqueeze(-1) * A.unsqueeze(0))   # (B, E, N)
+                B_bar = dt.unsqueeze(-1) * b_t.unsqueeze(1)            # (B, E, N)
 
-            state = A_bar * state + B_bar * x_t.unsqueeze(-1)      # (B, E, N)
-            y_t = (state * c_t.unsqueeze(1)).sum(-1)               # (B, E)
-            ys.append(y_t)
+                state = A_bar * state + B_bar * x_t.unsqueeze(-1)      # (B, E, N)
+                y_t = (state * c_t.unsqueeze(1)).sum(-1)               # (B, E)
+                ys.append(y_t)
 
-        y = torch.stack(ys, dim=1)                  # (B, T, E)
+            y = torch.stack(ys, dim=1)                  # (B, T, E)
 
         # ── 6. Skip connection + gate ─────────────────────────────────────────
         y = y + h_conv * self.D.unsqueeze(0).unsqueeze(0)
@@ -197,14 +249,17 @@ class MambaSSM(nn.Module):
 class MambaBlock(nn.Module):
     """Pre-LN residual block wrapping one MambaSSM mixer."""
 
-    def __init__(self, d_model: int, d_state: int, d_conv: int, expand: int, dropout: float):
+    def __init__(self, d_model: int, d_state: int, d_conv: int, expand: int,
+                 dropout: float, scan: str = None):
         super().__init__()
         self.norm = nn.LayerNorm(d_model)
-        self.ssm = MambaSSM(d_model, d_state, d_conv, expand)
+        self.ssm = MambaSSM(d_model, d_state, d_conv, expand, scan=scan)
         self.drop = nn.Dropout(dropout)
 
-    def forward(self, x: torch.Tensor, return_delta: bool = False):
-        h, delta = self.ssm(self.norm(x), return_delta=return_delta)
+    def forward(self, x: torch.Tensor, return_delta: bool = False,
+                input_independent: bool = False):
+        h, delta = self.ssm(self.norm(x), return_delta=return_delta,
+                            input_independent=input_independent)
         return x + self.drop(h), delta
 
 
@@ -219,6 +274,8 @@ class Mamba(nn.Module):
         d_conv:     width of the local causal depthwise conv
         expand:     inner expansion factor; d_inner = d_model * expand
         dropout:    dropout probability
+        scan:       "sequential" (default) or "parallel" — see MAMBA_SCAN above.
+                    Numerically equivalent; pick by sequence length.
     """
 
     def __init__(
@@ -230,12 +287,13 @@ class Mamba(nn.Module):
         d_conv: int,
         expand: int,
         dropout: float,
+        scan: str = None,
     ):
         super().__init__()
         self.tok_emb = nn.Embedding(vocab_size, d_model)
 
         self.blocks = nn.ModuleList([
-            MambaBlock(d_model, d_state, d_conv, expand, dropout)
+            MambaBlock(d_model, d_state, d_conv, expand, dropout, scan=scan)
             for _ in range(n_layers)
         ])
 
@@ -255,11 +313,13 @@ class Mamba(nn.Module):
             elif isinstance(m, nn.Embedding):
                 nn.init.normal_(m.weight, mean=0.0, std=0.02)
 
-    def forward(self, x: torch.Tensor, return_delta: bool = False):
+    def forward(self, x: torch.Tensor, return_delta: bool = False,
+                input_independent: bool = False):
         """
         Args:
             x:            LongTensor of shape (batch, seq_len)
             return_delta: if True, also return delta_t from every block
+            input_independent: ablate position-wise selectivity (see MambaSSM.forward)
 
         Returns:
             logits:     FloatTensor of shape (batch, seq_len, vocab_size)
@@ -285,9 +345,11 @@ class Mamba(nn.Module):
                 # use_reentrant=False preserves RNG state across the recompute,
                 # so dropout draws the same mask in both passes, and composes
                 # correctly with torch.amp.autocast.
-                h, delta = checkpoint(block, h, False, use_reentrant=False)
+                h, delta = checkpoint(block, h, False, input_independent,
+                                      use_reentrant=False)
             else:
-                h, delta = block(h, return_delta=return_delta)
+                h, delta = block(h, return_delta=return_delta,
+                                 input_independent=input_independent)
             if return_delta:
                 all_deltas.append(delta)
 

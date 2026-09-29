@@ -1,0 +1,22 @@
+# Small Mamba for synthetic-task experiments.
+# Parameter count matched to transformer_small / tcn_small within 1.6%.
+arch: mamba
+seed: 0
+vocab_size: 64
+
+max_steps: 4000
+warmup_steps: 200
+lr: 3.0e-4
+weight_decay: 0.1   # A_log and D are exempt via src/optim.py
+grad_clip: 1.0
+batch_size: 32
+eval_every: 250
+eval_batches: 8
+
+model:
+  n_layers: 4       # -> 677,784 params at vocab_size 64
+  d_model: 124
+  d_state: 16
+  d_conv: 4
+  expand: 2
+  dropout: 0.0

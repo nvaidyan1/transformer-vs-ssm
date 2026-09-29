@@ -37,3 +37,12 @@ README.md
 
 # Claude
 .claude/
+# Expert reviews (private)
+expert_review/
+.kaggle/
+# Local-only working documents — remove a line here when ready to publish it
+posts/
+SERIES_REVIEW.md
+PLAN.md
+scripts/verify_post1.py
+scripts/verify_post2_mamba.py

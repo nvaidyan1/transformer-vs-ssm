@@ -43,11 +43,14 @@ _CLASSES = {
 }
 
 
-def build_model(arch: str, **overrides):
+def build_model(arch: str, vocab_size: int = 256, **overrides):
     """Instantiate a model by name with optional config overrides.
 
     Args:
         arch:        one of 'transformer', 'tcn', 'mamba'
+        vocab_size:  token vocabulary (256 = raw bytes, the enwik8 setting).
+                     Synthetic-task runs may use a smaller vocabulary; it must be
+                     identical across architectures or the comparison is unfair.
         **overrides: any config key to override the default
 
     Returns:
@@ -56,7 +59,8 @@ def build_model(arch: str, **overrides):
     if arch not in _CLASSES:
         raise ValueError(f"Unknown arch {arch!r}. Choose from {list(_CLASSES)}")
     cfg = {**_CONFIGS[arch], **overrides}
-    return _CLASSES[arch](vocab_size=256, **cfg)
+    cfg.pop("vocab_size", None)
+    return _CLASSES[arch](vocab_size=vocab_size, **cfg)
 
 
 def count_parameters(model) -> int:

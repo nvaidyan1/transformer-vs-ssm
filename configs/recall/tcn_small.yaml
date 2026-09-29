@@ -1,0 +1,25 @@
+# Small TCN for synthetic-task experiments.
+# Parameter count matched to transformer_small / mamba_small within 1.6%.
+#
+# Receptive field is 769 with these settings. That is DELIBERATELY larger than any
+# sequence length used, so the TCN can see every position. Reach is therefore removed
+# as an explanation, and any failure is attributable to its fixed communication graph
+# rather than to not being able to reach the key. See PLAN.md §5.
+arch: tcn
+seed: 0
+vocab_size: 64
+
+max_steps: 4000
+warmup_steps: 200
+lr: 3.0e-4
+weight_decay: 0.1
+grad_clip: 1.0
+batch_size: 32
+eval_every: 250
+eval_batches: 8
+
+model:
+  n_layers: 9       # -> 670,080 params at vocab_size 64; receptive field 769
+  d_model: 120
+  kernel_size: 4
+  dropout: 0.0

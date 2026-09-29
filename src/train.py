@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.dataset import get_dataloader
 from src.models import build_model, count_parameters
+from src.optim import build_param_groups, describe_param_groups
 
 
 # ── Config helpers ────────────────────────────────────────────────────────────
@@ -288,10 +289,14 @@ def main():
     print(f"  disk free   : {free_gb:.1f} GB")
 
     # Optimizer
+    # Parameters are split into decay / no-decay groups (see src/optim.py):
+    # SSM dynamics (A_log, D), weight-norm gains, LayerNorm gains and biases are
+    # exempt from weight decay. A single uniform group penalises Mamba and the TCN
+    # in architecture-specific ways and invalidates cross-architecture comparison.
+    print(describe_param_groups(model))
     optimizer = torch.optim.AdamW(
-        model.parameters(),
+        build_param_groups(model, cfg["weight_decay"]),
         lr=cfg["lr"],
-        weight_decay=cfg["weight_decay"],
         betas=(0.9, 0.95),
     )
 
