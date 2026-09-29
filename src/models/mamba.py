@@ -245,22 +245,47 @@ class MambaSSM(nn.Module):
 
         self.out_proj = nn.Linear(self.d_inner, d_model, bias=False)
 
+        # ── Ablation-only, time-invariant Delta/B/C (see forward's input_independent) ──
+        # Learned but NEVER a function of input -- broadcast over batch and time.
+        # Only used when input_independent=True; dt_proj/x_proj are bypassed entirely
+        # in that path, so no input-dependent computation reaches delta/B/C at all.
+        # Init: fixed_delta_pre gets the same inverse-softplus targeting as dt_proj's
+        # bias, so this ablation starts from a comparable Delta range rather than
+        # being handicapped by a poor init; fixed_B/fixed_C get a modest-scale normal
+        # init, since there is no equivalent "reference" init for a constant B/C.
+        dt = torch.exp(
+            torch.rand(self.d_inner) * (math.log(DT_MAX) - math.log(DT_MIN))
+            + math.log(DT_MIN)
+        )
+        self.fixed_delta_pre = nn.Parameter(dt + torch.log(-torch.expm1(-dt)))
+        self.fixed_B = nn.Parameter(torch.randn(d_state) * 0.1)
+        self.fixed_C = nn.Parameter(torch.randn(d_state) * 0.1)
+
     def forward(self, x: torch.Tensor, return_delta: bool = False,
                 input_independent: bool = False):
         """
         Args:
             x:            (B, T, d_model)
             return_delta: if True, also return delta_t for visualisation
-            input_independent: ABLATION. Replace delta/B/C with their sequence means,
-                removing position-wise selectivity while keeping every parameter and
-                shape identical. Used as the control for the Selective Copying gate
-                (see src/tasks/selective_copy.py): a working selective implementation
+            input_independent: ABLATION. Replace delta/B/C with genuinely time-invariant
+                LEARNED parameters (fixed_delta_pre/fixed_B/fixed_C) that never see
+                the input at all -- dt_proj and x_proj are bypassed entirely in this
+                path. Used as the control for the Selective Copying gate (see
+                src/tasks/selective_copy.py): a working selective implementation
                 must beat this ablation by a wide margin.
 
-                Note this is a *stronger* baseline than a time-invariant SSM such as
-                S4 — the frozen values still depend on the sequence as a whole, just
-                not on position. It isolates exactly the position-wise variation the
-                scan consumes. It is not an S4 reimplementation.
+                An earlier version of this ablation averaged delta/B/C over the time
+                axis instead. That was contaminated: the "fixed" value at an early
+                position depended on the whole sequence, including future positions,
+                so it wasn't actually input-independent (external review,
+                2026-09-29). This version has no such leak -- same recurrence
+                (u, A, D unchanged), only the source of delta/B/C differs:
+
+                    input-dependent selective SSM  vs  time-invariant learned SSM
+
+                which is closer in spirit to a non-selective S4D-style model, though
+                A here is still per-channel diagonal rather than S4's structured
+                initialisation -- not a full S4 reimplementation.
 
         Returns:
             out:   (B, T, d_model)
@@ -278,20 +303,20 @@ class MambaSSM(nn.Module):
         h_conv = F.silu(h_conv).transpose(1, 2)                 # (B, T, E)
 
         # ── 3. SSM projections ───────────────────────────────────────────────
-        dBC = self.x_proj(h_conv)                    # (B, T, R+2*N)
-        delta_low = dBC[:, :, : self.dt_rank]        # (B, T, R) -- low-rank, per DT_RANK_DIVISOR
-        B_ssm = dBC[:, :, self.dt_rank : self.dt_rank + self.d_state]      # (B, T, N)
-        C_ssm = dBC[:, :, self.dt_rank + self.d_state :]                   # (B, T, N)
-
-        delta = F.softplus(self.dt_proj(delta_low))  # (B, T, E); see DT_MIN/DT_MAX above
-
         if input_independent:
-            # Ablation: collapse the position axis so every timestep sees the same
-            # selection parameters. Shapes are unchanged, so the scan below is
-            # untouched and the comparison isolates selectivity alone.
-            delta = delta.mean(dim=1, keepdim=True).expand_as(delta)
-            B_ssm = B_ssm.mean(dim=1, keepdim=True).expand_as(B_ssm)
-            C_ssm = C_ssm.mean(dim=1, keepdim=True).expand_as(C_ssm)
+            # Ablation: delta/B/C come from learned constants, never from h_conv.
+            # dt_proj/x_proj are not called at all -- no input-dependent computation
+            # reaches delta/B/C on this path. u (h_conv), A, and D are unchanged.
+            delta = F.softplus(self.fixed_delta_pre).unsqueeze(0).unsqueeze(0).expand(B, T, -1)
+            B_ssm = self.fixed_B.unsqueeze(0).unsqueeze(0).expand(B, T, -1)
+            C_ssm = self.fixed_C.unsqueeze(0).unsqueeze(0).expand(B, T, -1)
+        else:
+            dBC = self.x_proj(h_conv)                    # (B, T, R+2*N)
+            delta_low = dBC[:, :, : self.dt_rank]        # (B, T, R) -- low-rank, per DT_RANK_DIVISOR
+            B_ssm = dBC[:, :, self.dt_rank : self.dt_rank + self.d_state]      # (B, T, N)
+            C_ssm = dBC[:, :, self.dt_rank + self.d_state :]                   # (B, T, N)
+
+            delta = F.softplus(self.dt_proj(delta_low))  # (B, T, E); see DT_MIN/DT_MAX above
 
         # ── 4. Discretise A ──────────────────────────────────────────────────
         # A is (E, N), negative real; keep it fixed-shape for the scan
