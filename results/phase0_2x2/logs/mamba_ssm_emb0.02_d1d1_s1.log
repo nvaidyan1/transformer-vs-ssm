@@ -1,0 +1,1 @@
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)

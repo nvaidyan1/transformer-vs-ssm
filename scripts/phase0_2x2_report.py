@@ -134,7 +134,8 @@ def plot(records: list, summary: dict, path: Path):
                 steps = [h["step"] for h in r["history"]]
                 accs = [h["val_acc"] for h in r["history"]]
                 ax.plot(steps, accs, color=COLORS[arch], lw=2, alpha=0.85,
-                        label=f"{LABELS[arch]} (3 seeds)" if i == 0 else None)
+                        label=(f"{LABELS[arch]} ({len(runs)} seed"
+                               f"{'s' if len(runs) != 1 else ''})") if i == 0 else None)
             if runs:
                 last = max(runs, key=lambda r: r["history"][-1]["val_acc"])
                 h = last["history"][-1]
