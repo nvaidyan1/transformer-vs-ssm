@@ -1,0 +1,49 @@
+[{"stream_name":"stdout","time":1.10932729,"data":"\n"}
+,{"stream_name":"stdout","time":1.109354877,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":1.148936899,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":1.900757214,"data":"\n"}
+,{"stream_name":"stdout","time":1.9007960480000001,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":1.909871452,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":1.910112993,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":1.9152794279999998,"data":"\n"}
+,{"stream_name":"stdout","time":1.9152948570000001,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":1.946432529,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":1.9464517940000001,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":1.9529834080000001,"data":"\n"}
+,{"stream_name":"stdout","time":1.95300006,"data":"$ pip install -q packaging ninja wheel psutil pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":7.414189012,"data":"\n"}
+,{"stream_name":"stdout","time":7.414219583,"data":"$ pip install -q 'causal-conv1d\u003e=1.4.0' --no-build-isolation\n"}
+,{"stream_name":"stdout","time":30.619134856,"data":"\n"}
+,{"stream_name":"stdout","time":30.619179373,"data":"$ pip install -q mamba-ssm --no-build-isolation\n"}
+,{"stream_name":"stdout","time":32.190477149,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.4/216.4 kB 766.5 kB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":37.756532177,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 MB 44.9 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":37.832475377,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 62.0 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":37.888093551,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 729.6/729.6 kB 32.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.011459403,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 86.8 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.946524856,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 MB 21.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.013468014,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 51.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.349437563,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 29.3/29.3 MB 56.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.407245426,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 897.8/897.8 kB 37.0 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":60.540194733999996,"data":"\n"}
+,{"stream_name":"stdout","time":60.540230539,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":94.687280906,"data":"........................................................................ [ 73%]\n"}
+,{"stream_name":"stdout","time":96.206214011,"data":"..........................                                               [100%]\n"}
+,{"stream_name":"stdout","time":96.206258451,"data":"98 passed in 32.62s\n"}
+,{"stream_name":"stdout","time":1253.60473546,"data":"[ 19.3 min] mamba_emb1.0_d1d0_s1             done        1155.8s\n"}
+,{"stream_name":"stdout","time":1254.607130097,"data":"[ 19.3 min] mamba_emb0.02_d1d0_s1            done        1156.8s\n"}
+,{"stream_name":"stdout","time":1282.193785274,"data":"[ 19.7 min] mamba_emb1.0_d1d1_s1             done        1184.4s\n"}
+,{"stream_name":"stdout","time":1297.438067125,"data":"[ 20.0 min] mamba_emb0.02_d1d1_s1            done        1199.6s\n"}
+,{"stream_name":"stdout","time":2445.645855016,"data":"[ 39.1 min] mamba_emb1.0_d1d0_s2             done        1163.5s\n"}
+,{"stream_name":"stdout","time":2452.287565716,"data":"[ 39.2 min] mamba_emb0.02_d1d1_s2            done        1197.7s\n"}
+,{"stream_name":"stdout","time":2457.897852031,"data":"[ 39.3 min] mamba_emb0.02_d1d0_s2            done        1204.3s\n"}
+,{"stream_name":"stdout","time":2472.326883117,"data":"[ 39.6 min] mamba_emb1.0_d1d1_s2             done        1174.9s\n"}
+,{"stream_name":"stdout","time":2472.327818215,"data":"\n"}
+,{"stream_name":"stdout","time":2472.327843355,"data":"8/8 jobs done in 39.58 min (commit 651d51f)\n"}
+,{"stream_name":"stdout","time":2472.327856406,"data":"PHASE0_2X2 COMPLETE\n"}
+,{"stream_name":"stderr","time":2474.423409121,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":2474.423432932,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":2474.682424203,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":2474.682452244,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":2475.338456011,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":2476.638913615,"data":"[NbConvertApp] Writing 293965 bytes to __results__.html\n"}
+]

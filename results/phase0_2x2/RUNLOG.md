@@ -16,3 +16,14 @@ the eval, the model, the optimizer or any training argument. Changes, logged per
 - `scripts/phase0_2x2_report.py` excludes `complete: false` records from the table and
   gate and draws them dashed.
 - Runner: `--quiet` dropped; deadline 54 min. Manifest: `manifest_run2.json`.
+
+### Run 2 outcome, commit 651d51f, ~42 GPU-min
+
+All 8 runs finished (39.6 min of training, 98 tests passed on Kaggle). Total for 0.2 so
+far: ~95 GPU-min over two approved budgets.
+
+Gate: **FAIL** in one cell, `emb_init_std=0.02, decay_1d=True`. Custom range
+[0.086, 0.353] vs official [0.035, 0.079] at step 2000: no overlap (by 0.007), mean
+difference +0.130 (tolerance 0.1). Custom is ABOVE official in that cell. The other
+three cells pass on overlap. Per plan2.md and rule 4: stopped, no tuning. The
+prescribed weight-copy follow-up has not been run.

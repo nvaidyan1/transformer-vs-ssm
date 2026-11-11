@@ -1,0 +1,88 @@
+{
+  "commit": "651d51f",
+  "workers": 4,
+  "train_deadline_min": 54,
+  "train_wall_min": 39.58,
+  "jobs": [
+    {
+      "name": "mamba_emb0.02_d1d0_s1",
+      "arch": "mamba",
+      "seed": 1,
+      "emb_init_std": 0.02,
+      "decay_1d": false,
+      "cmd": "python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 --lr 3e-4 --device cuda --arch mamba --seed 1 --emb_init_std 0.02 --out_proj_depth_scale true --decay_1d false --out /kaggle/working/phase0_2x2/mamba_emb0.02_d1d0_s1.json",
+      "status": "done",
+      "wall_s": 1156.8
+    },
+    {
+      "name": "mamba_emb0.02_d1d1_s1",
+      "arch": "mamba",
+      "seed": 1,
+      "emb_init_std": 0.02,
+      "decay_1d": true,
+      "cmd": "python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 --lr 3e-4 --device cuda --arch mamba --seed 1 --emb_init_std 0.02 --out_proj_depth_scale true --decay_1d true --out /kaggle/working/phase0_2x2/mamba_emb0.02_d1d1_s1.json",
+      "status": "done",
+      "wall_s": 1199.6
+    },
+    {
+      "name": "mamba_emb1.0_d1d0_s1",
+      "arch": "mamba",
+      "seed": 1,
+      "emb_init_std": 1.0,
+      "decay_1d": false,
+      "cmd": "python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 --lr 3e-4 --device cuda --arch mamba --seed 1 --emb_init_std 1.0 --out_proj_depth_scale true --decay_1d false --out /kaggle/working/phase0_2x2/mamba_emb1.0_d1d0_s1.json",
+      "status": "done",
+      "wall_s": 1155.8
+    },
+    {
+      "name": "mamba_emb1.0_d1d1_s1",
+      "arch": "mamba",
+      "seed": 1,
+      "emb_init_std": 1.0,
+      "decay_1d": true,
+      "cmd": "python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 --lr 3e-4 --device cuda --arch mamba --seed 1 --emb_init_std 1.0 --out_proj_depth_scale true --decay_1d true --out /kaggle/working/phase0_2x2/mamba_emb1.0_d1d1_s1.json",
+      "status": "done",
+      "wall_s": 1184.4
+    },
+    {
+      "name": "mamba_emb0.02_d1d0_s2",
+      "arch": "mamba",
+      "seed": 2,
+      "emb_init_std": 0.02,
+      "decay_1d": false,
+      "cmd": "python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 --lr 3e-4 --device cuda --arch mamba --seed 2 --emb_init_std 0.02 --out_proj_depth_scale true --decay_1d false --out /kaggle/working/phase0_2x2/mamba_emb0.02_d1d0_s2.json",
+      "status": "done",
+      "wall_s": 1204.3
+    },
+    {
+      "name": "mamba_emb0.02_d1d1_s2",
+      "arch": "mamba",
+      "seed": 2,
+      "emb_init_std": 0.02,
+      "decay_1d": true,
+      "cmd": "python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 --lr 3e-4 --device cuda --arch mamba --seed 2 --emb_init_std 0.02 --out_proj_depth_scale true --decay_1d true --out /kaggle/working/phase0_2x2/mamba_emb0.02_d1d1_s2.json",
+      "status": "done",
+      "wall_s": 1197.7
+    },
+    {
+      "name": "mamba_emb1.0_d1d0_s2",
+      "arch": "mamba",
+      "seed": 2,
+      "emb_init_std": 1.0,
+      "decay_1d": false,
+      "cmd": "python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 --lr 3e-4 --device cuda --arch mamba --seed 2 --emb_init_std 1.0 --out_proj_depth_scale true --decay_1d false --out /kaggle/working/phase0_2x2/mamba_emb1.0_d1d0_s2.json",
+      "status": "done",
+      "wall_s": 1163.5
+    },
+    {
+      "name": "mamba_emb1.0_d1d1_s2",
+      "arch": "mamba",
+      "seed": 2,
+      "emb_init_std": 1.0,
+      "decay_1d": true,
+      "cmd": "python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 --lr 3e-4 --device cuda --arch mamba --seed 2 --emb_init_std 1.0 --out_proj_depth_scale true --decay_1d true --out /kaggle/working/phase0_2x2/mamba_emb1.0_d1d1_s2.json",
+      "status": "done",
+      "wall_s": 1174.9
+    }
+  ]
+}

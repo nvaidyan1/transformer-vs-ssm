@@ -1,0 +1,21 @@
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+task   : selective_copy  {'n_data': 4, 'seq_len': 64, 'vocab_size': 64}
+arch   : mamba  (449,752 params, 1,120 of them ablation-only)
+device : cuda   lr=0.0003  steps=2000  batch=32  seed=1
+init   : emb_init_std=1.0  out_proj_depth_scale=True
+  param groups (decay_1d=True):
+    decay, base-lr        :  39 tensors / 384,280 params
+    decay, 1.0x-lr        :  12 tensors / 48,608 params
+    no-decay, base-lr     :   4 tensors / 992 params
+    no-decay, 1.0x-lr     :   4 tensors / 15,872 params
+  step    250  train_loss 4.2514  val_loss 4.2022  val_acc 0.0127  (154s)
+  step    500  train_loss 4.2794  val_loss 4.2225  val_acc 0.0137  (303s)
+  step    750  train_loss 4.0253  val_loss 4.1020  val_acc 0.0293  (448s)
+  step   1000  train_loss 3.8934  val_loss 3.8649  val_acc 0.0625  (594s)
+  step   1250  train_loss 3.4981  val_loss 3.5210  val_acc 0.1191  (741s)
+  step   1500  train_loss 3.3499  val_loss 3.2961  val_acc 0.1709  (887s)
+  step   1750  train_loss 3.2191  val_loss 3.1552  val_acc 0.1797  (1032s)
+  step   2000  train_loss 2.9482  val_loss 3.0789  val_acc 0.2158  (1177s)
+
+final val_acc 0.2158  (chance ~0.0323)  in 1177.7s
+saved -> /kaggle/working/phase0_2x2/mamba_emb1.0_d1d1_s1.json
