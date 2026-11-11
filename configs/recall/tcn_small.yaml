@@ -1,6 +1,6 @@
 # Small TCN for synthetic-task experiments.
-# 670,080 params; matched to transformer_small (667,264) within 0.5%. mamba_small is
-# 448,632 (+1,120 ablation-only), NOT matched; re-matching is plan2.md 0.3.
+# 450,212 params: matched to mamba_ssm_small / mamba_small (448,632 trainable) within
+# 0.4% (plan2.md 0.3). Was d_model 120 / 670,080; n_layers unchanged, so RF unchanged.
 #
 # Receptive field is 769 with these settings. That is DELIBERATELY larger than any
 # sequence length used, so the TCN can see every position. Reach is therefore removed
@@ -20,7 +20,7 @@ eval_every: 250
 eval_batches: 8
 
 model:
-  n_layers: 9       # -> 670,080 params at vocab_size 64; receptive field 769
-  d_model: 120
+  n_layers: 9       # -> 450,212 params at vocab_size 64; receptive field 769
+  d_model: 98
   kernel_size: 4
   dropout: 0.0

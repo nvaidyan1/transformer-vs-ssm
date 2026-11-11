@@ -1,0 +1,36 @@
+# Small Mamba (official mamba-ssm kernels) for synthetic-task experiments. Reported
+# Mamba numbers come from this config (recap.md section 7).
+# Parameters: 448,632 at vocab_size 64 (same dimensions as mamba_small.yaml, the
+# custom model, minus its 1,120 ablation-only params).
+# Matched (plan2.md 0.3): transformer_small 452,296, tcn_small 450,212.
+#
+# Locked recipe (plan2.md 0.3 as amended 2026-11-11; do not change in later phases):
+#   emb_init_std 1.0, out_proj_depth_scale true, decay_1d false.
+# Why: in the 0.2 2x2 (results/phase0_2x2/) mamba_ssm learned far faster with
+# emb_init_std 1.0 than 0.02 (val_acc at step 2000, 3-seed mean 0.40 vs 0.06), and
+# decay_1d made no visible difference. Depth scaling was held at true in every 0.2
+# cell, so that is the tested setting.
+arch: mamba_ssm
+seed: 0
+vocab_size: 64
+
+max_steps: 4000
+warmup_steps: 200
+lr: 3.0e-4
+weight_decay: 0.1   # A_log and D are exempt via src/optim.py
+decay_1d: false
+grad_clip: 1.0
+batch_size: 32
+eval_every: 250
+eval_batches: 8
+
+model:
+  n_layers: 4       # -> 448,632 params at vocab_size 64
+  d_model: 124
+  d_state: 16
+  d_conv: 4
+  expand: 2
+  dropout: 0.0
+  emb_init_std: 1.0
+  out_proj_depth_scale: true
+  use_fast_path: true
