@@ -33,3 +33,15 @@ No numeric gate was set for this item; the outcome is descriptive.
 
 ~18 GPU-min left of the second approved budget. Pair run capped at 13 min by the kernel;
 a cut run keeps its curve (record rewritten every eval).
+
+## Outcome (appended after the run; prediction above unchanged)
+
+Kaggle T4, commit f0611ee, ~12 GPU-min (second budget: ~54 of 60 used). 103 tests passed.
+Real mamba-ssm init-std check: no tensor differs by >10% at either emb_init_std.
+1. Step-0 max |logit diff| 3.05e-05: as predicted.
+2. Curves coincide through step 1000 (|diff| <= 0.001) and separate only slightly later:
+   max |diff| 0.0049 at step 2000. Smaller separation than anticipated.
+3. Official 0.196 at step 2000 vs 0.193 in the 2x2 seed-0 run: as predicted.
+4. Custom below official at step 2000 by 0.005 (0.191 vs 0.196): sign as predicted,
+   size negligible against the seed-to-seed spread in the 2x2 (0.16 to 0.68).
+Not investigated further, per the amendment.

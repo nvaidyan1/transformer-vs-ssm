@@ -1,0 +1,159 @@
+[{"stream_name":"stdout","time":0.738899256,"data":"\n"}
+,{"stream_name":"stdout","time":0.738941449,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":0.77347825,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":1.440791147,"data":"\n"}
+,{"stream_name":"stdout","time":1.440819407,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":1.449765162,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":1.449966317,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":1.450510325,"data":"\n"}
+,{"stream_name":"stdout","time":1.450526274,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":1.45431284,"data":"f0611ee Phase 0.2 follow-up: init-std check, weight-copied pair (before the run)\n"}
+,{"stream_name":"stdout","time":1.454716388,"data":"\n"}
+,{"stream_name":"stdout","time":1.454731127,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":1.485462065,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":1.485480144,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":1.491800822,"data":"\n"}
+,{"stream_name":"stdout","time":1.491819172,"data":"$ pip install -q packaging ninja wheel psutil pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":6.202040053,"data":"\n"}
+,{"stream_name":"stdout","time":6.202080312,"data":"$ pip install -q 'causal-conv1d\u003e=1.4.0' --no-build-isolation\n"}
+,{"stream_name":"stdout","time":25.64676376,"data":"\n"}
+,{"stream_name":"stdout","time":25.646791816,"data":"$ pip install -q mamba-ssm --no-build-isolation\n"}
+,{"stream_name":"stdout","time":26.901687442,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.4/216.4 kB 4.3 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":32.154165437,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 MB 47.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":32.391913884,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 10.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":32.432720964,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 729.6/729.6 kB 37.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":32.514652689,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 100.1 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":33.41018444,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 MB 22.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":33.456381815,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 65.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":33.67987831,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 29.3/29.3 MB 77.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":33.721601148,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 897.8/897.8 kB 42.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":56.205637718,"data":"\n"}
+,{"stream_name":"stdout","time":56.20566927,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":86.455551001,"data":"........................................................................ [ 69%]\n"}
+,{"stream_name":"stdout","time":88.423030059,"data":"...............................                                          [100%]\n"}
+,{"stream_name":"stdout","time":88.423056794,"data":"103 passed in 29.62s\n"}
+,{"stream_name":"stdout","time":89.986022801,"data":"\n"}
+,{"stream_name":"stdout","time":89.986055562,"data":"$ python scripts/init_std_compare.py --out /kaggle/working/phase0_weight_copy/init_std_mamba_ssm.json\n"}
+,{"stream_name":"stdout","time":103.936440481,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":103.936467806,"data":"\n"}
+,{"stream_name":"stdout","time":103.936473273,"data":"== emb_init_std=0.02  (official mixer: mamba_ssm)\n"}
+,{"stream_name":"stdout","time":103.936477811,"data":"param                             custom std official std   ratio\n"}
+,{"stream_name":"stdout","time":103.936482612,"data":"tok_emb.weight                       0.02025      0.02021   1.002\n"}
+,{"stream_name":"stdout","time":103.936487724,"data":"blocks.0.norm.weight                 0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936492788,"data":"blocks.0.norm.bias                   0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936497216,"data":"blocks.0.ssm.A_log                   0.76420      0.76420   1.000\n"}
+,{"stream_name":"stdout","time":103.936501715,"data":"blocks.0.ssm.D                       0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936506467,"data":"blocks.0.ssm.in_proj.weight          0.05173      0.05173   1.000\n"}
+,{"stream_name":"stdout","time":103.93651112,"data":"blocks.0.ssm.conv1d.weight           0.28501      0.28501   1.000\n"}
+,{"stream_name":"stdout","time":103.936516184,"data":"blocks.0.ssm.conv1d.bias             0.28987      0.28987   1.000\n"}
+,{"stream_name":"stdout","time":103.936521338,"data":"blocks.0.ssm.x_proj.weight           0.03665      0.03665   1.000\n"}
+,{"stream_name":"stdout","time":103.936525964,"data":"blocks.0.ssm.dt_proj.weight          0.20608      0.20608   1.000\n"}
+,{"stream_name":"stdout","time":103.936530657,"data":"blocks.0.ssm.dt_proj.bias            1.36094      1.36094   1.000\n"}
+,{"stream_name":"stdout","time":103.936535714,"data":"blocks.0.ssm.out_proj.weight         0.01831      0.01832   1.000\n"}
+,{"stream_name":"stdout","time":103.936540928,"data":"blocks.1.norm.weight                 0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.93654551,"data":"blocks.1.norm.bias                   0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936550688,"data":"blocks.1.ssm.A_log                   0.76420      0.76420   1.000\n"}
+,{"stream_name":"stdout","time":103.936555934,"data":"blocks.1.ssm.D                       0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936560581,"data":"blocks.1.ssm.in_proj.weight          0.05196      0.05196   1.000\n"}
+,{"stream_name":"stdout","time":103.936565294,"data":"blocks.1.ssm.conv1d.weight           0.28689      0.28540   1.005\n"}
+,{"stream_name":"stdout","time":103.936570035,"data":"blocks.1.ssm.conv1d.bias             0.28547      0.30271   0.943\n"}
+,{"stream_name":"stdout","time":103.936575318,"data":"blocks.1.ssm.x_proj.weight           0.03649      0.03649   1.000\n"}
+,{"stream_name":"stdout","time":103.93657995,"data":"blocks.1.ssm.dt_proj.weight          0.20524      0.20673   0.993\n"}
+,{"stream_name":"stdout","time":103.936584668,"data":"blocks.1.ssm.dt_proj.bias            1.34105      1.30139   1.030\n"}
+,{"stream_name":"stdout","time":103.936599763,"data":"blocks.1.ssm.out_proj.weight         0.01836      0.01836   1.000\n"}
+,{"stream_name":"stdout","time":103.936603836,"data":"blocks.2.norm.weight                 0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936607936,"data":"blocks.2.norm.bias                   0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936612133,"data":"blocks.2.ssm.A_log                   0.76420      0.76420   1.000\n"}
+,{"stream_name":"stdout","time":103.936615826,"data":"blocks.2.ssm.D                       0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936619536,"data":"blocks.2.ssm.in_proj.weight          0.05187      0.05187   1.000\n"}
+,{"stream_name":"stdout","time":103.936625398,"data":"blocks.2.ssm.conv1d.weight           0.29182      0.28868   1.011\n"}
+,{"stream_name":"stdout","time":103.936629511,"data":"blocks.2.ssm.conv1d.bias             0.29305      0.28637   1.023\n"}
+,{"stream_name":"stdout","time":103.936633439,"data":"blocks.2.ssm.x_proj.weight           0.03663      0.03664   1.000\n"}
+,{"stream_name":"stdout","time":103.936637147,"data":"blocks.2.ssm.dt_proj.weight          0.20490      0.20612   0.994\n"}
+,{"stream_name":"stdout","time":103.93664087,"data":"blocks.2.ssm.dt_proj.bias            1.31906      1.32286   0.997\n"}
+,{"stream_name":"stdout","time":103.9366451,"data":"blocks.2.ssm.out_proj.weight         0.01826      0.01827   1.000\n"}
+,{"stream_name":"stdout","time":103.936648872,"data":"blocks.3.norm.weight                 0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936652655,"data":"blocks.3.norm.bias                   0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.93665652,"data":"blocks.3.ssm.A_log                   0.76420      0.76420   1.000\n"}
+,{"stream_name":"stdout","time":103.93666046,"data":"blocks.3.ssm.D                       0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936664734,"data":"blocks.3.ssm.in_proj.weight          0.05177      0.05179   1.000\n"}
+,{"stream_name":"stdout","time":103.936668294,"data":"blocks.3.ssm.conv1d.weight           0.28270      0.28941   0.977\n"}
+,{"stream_name":"stdout","time":103.936672572,"data":"blocks.3.ssm.conv1d.bias             0.28761      0.28776   0.999\n"}
+,{"stream_name":"stdout","time":103.936676232,"data":"blocks.3.ssm.x_proj.weight           0.03673      0.03670   1.001\n"}
+,{"stream_name":"stdout","time":103.936679617,"data":"blocks.3.ssm.dt_proj.weight          0.20506      0.20601   0.995\n"}
+,{"stream_name":"stdout","time":103.936696232,"data":"blocks.3.ssm.dt_proj.bias            1.39447      1.32266   1.054\n"}
+,{"stream_name":"stdout","time":103.936699937,"data":"blocks.3.ssm.out_proj.weight         0.01826      0.01826   1.000\n"}
+,{"stream_name":"stdout","time":103.936703515,"data":"ln_f.weight                          0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.93670735,"data":"ln_f.bias                            0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936711065,"data":"differ by \u003e10%: none (of 47)\n"}
+,{"stream_name":"stdout","time":103.936715249,"data":"\n"}
+,{"stream_name":"stdout","time":103.936719011,"data":"== emb_init_std=1.0  (official mixer: mamba_ssm)\n"}
+,{"stream_name":"stdout","time":103.936722446,"data":"param                             custom std official std   ratio\n"}
+,{"stream_name":"stdout","time":103.936725768,"data":"tok_emb.weight                       1.01226      1.01036   1.002\n"}
+,{"stream_name":"stdout","time":103.936729043,"data":"blocks.0.norm.weight                 0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936736158,"data":"blocks.0.norm.bias                   0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.9367397,"data":"blocks.0.ssm.A_log                   0.76420      0.76420   1.000\n"}
+,{"stream_name":"stdout","time":103.936742956,"data":"blocks.0.ssm.D                       0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936746358,"data":"blocks.0.ssm.in_proj.weight          0.05173      0.05173   1.000\n"}
+,{"stream_name":"stdout","time":103.936749698,"data":"blocks.0.ssm.conv1d.weight           0.28501      0.28501   1.000\n"}
+,{"stream_name":"stdout","time":103.93675315,"data":"blocks.0.ssm.conv1d.bias             0.28987      0.28987   1.000\n"}
+,{"stream_name":"stdout","time":103.936756582,"data":"blocks.0.ssm.x_proj.weight           0.03665      0.03665   1.000\n"}
+,{"stream_name":"stdout","time":103.936760965,"data":"blocks.0.ssm.dt_proj.weight          0.20608      0.20608   1.000\n"}
+,{"stream_name":"stdout","time":103.936764929,"data":"blocks.0.ssm.dt_proj.bias            1.36094      1.36094   1.000\n"}
+,{"stream_name":"stdout","time":103.936768366,"data":"blocks.0.ssm.out_proj.weight         0.01831      0.01832   1.000\n"}
+,{"stream_name":"stdout","time":103.93677155,"data":"blocks.1.norm.weight                 0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936774773,"data":"blocks.1.norm.bias                   0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936778256,"data":"blocks.1.ssm.A_log                   0.76420      0.76420   1.000\n"}
+,{"stream_name":"stdout","time":103.936782113,"data":"blocks.1.ssm.D                       0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936785826,"data":"blocks.1.ssm.in_proj.weight          0.05196      0.05196   1.000\n"}
+,{"stream_name":"stdout","time":103.936789775,"data":"blocks.1.ssm.conv1d.weight           0.28689      0.28540   1.005\n"}
+,{"stream_name":"stdout","time":103.93679386,"data":"blocks.1.ssm.conv1d.bias             0.28547      0.30271   0.943\n"}
+,{"stream_name":"stdout","time":103.936797675,"data":"blocks.1.ssm.x_proj.weight           0.03649      0.03649   1.000\n"}
+,{"stream_name":"stdout","time":103.936800695,"data":"blocks.1.ssm.dt_proj.weight          0.20524      0.20673   0.993\n"}
+,{"stream_name":"stdout","time":103.93680416,"data":"blocks.1.ssm.dt_proj.bias            1.34105      1.30139   1.030\n"}
+,{"stream_name":"stdout","time":103.936807321,"data":"blocks.1.ssm.out_proj.weight         0.01836      0.01836   1.000\n"}
+,{"stream_name":"stdout","time":103.93681105,"data":"blocks.2.norm.weight                 0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936814882,"data":"blocks.2.norm.bias                   0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936818808,"data":"blocks.2.ssm.A_log                   0.76420      0.76420   1.000\n"}
+,{"stream_name":"stdout","time":103.936822948,"data":"blocks.2.ssm.D                       0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936827526,"data":"blocks.2.ssm.in_proj.weight          0.05187      0.05187   1.000\n"}
+,{"stream_name":"stdout","time":103.936854018,"data":"blocks.2.ssm.conv1d.weight           0.29182      0.28868   1.011\n"}
+,{"stream_name":"stdout","time":103.936858255,"data":"blocks.2.ssm.conv1d.bias             0.29305      0.28637   1.023\n"}
+,{"stream_name":"stdout","time":103.936861914,"data":"blocks.2.ssm.x_proj.weight           0.03663      0.03664   1.000\n"}
+,{"stream_name":"stdout","time":103.936865257,"data":"blocks.2.ssm.dt_proj.weight          0.20490      0.20612   0.994\n"}
+,{"stream_name":"stdout","time":103.936873887,"data":"blocks.2.ssm.dt_proj.bias            1.31906      1.32286   0.997\n"}
+,{"stream_name":"stdout","time":103.936877532,"data":"blocks.2.ssm.out_proj.weight         0.01826      0.01827   1.000\n"}
+,{"stream_name":"stdout","time":103.936880747,"data":"blocks.3.norm.weight                 0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.93688402,"data":"blocks.3.norm.bias                   0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936887272,"data":"blocks.3.ssm.A_log                   0.76420      0.76420   1.000\n"}
+,{"stream_name":"stdout","time":103.936890762,"data":"blocks.3.ssm.D                       0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936894147,"data":"blocks.3.ssm.in_proj.weight          0.05177      0.05179   1.000\n"}
+,{"stream_name":"stdout","time":103.936897541,"data":"blocks.3.ssm.conv1d.weight           0.28270      0.28941   0.977\n"}
+,{"stream_name":"stdout","time":103.936912312,"data":"blocks.3.ssm.conv1d.bias             0.28761      0.28776   0.999\n"}
+,{"stream_name":"stdout","time":103.936915757,"data":"blocks.3.ssm.x_proj.weight           0.03673      0.03670   1.001\n"}
+,{"stream_name":"stdout","time":103.936919031,"data":"blocks.3.ssm.dt_proj.weight          0.20506      0.20601   0.995\n"}
+,{"stream_name":"stdout","time":103.936922171,"data":"blocks.3.ssm.dt_proj.bias            1.39447      1.32266   1.054\n"}
+,{"stream_name":"stdout","time":103.93692521,"data":"blocks.3.ssm.out_proj.weight         0.01826      0.01826   1.000\n"}
+,{"stream_name":"stdout","time":103.936928912,"data":"ln_f.weight                          0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936932199,"data":"ln_f.bias                            0.00000      0.00000   1.000\n"}
+,{"stream_name":"stdout","time":103.936935792,"data":"differ by \u003e10%: none (of 47)\n"}
+,{"stream_name":"stdout","time":105.171135071,"data":"\n"}
+,{"stream_name":"stdout","time":105.17116409,"data":"$ python scripts/phase0_weight_copy.py --emb_init_std 1.0 --decay_1d false --seed 0 --steps 2000 --device cuda --out /kaggle/working/phase0_weight_copy/pair_emb1.0_d1d0_s0.json\n"}
+,{"stream_name":"stdout","time":116.662985928,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":116.663026903,"data":"max |logit diff| at step 0 after copy: 3.052e-05\n"}
+,{"stream_name":"stdout","time":190.123785153,"data":"  step   250  official 0.0137  custom 0.0137  diff +0.0000  (73s)\n"}
+,{"stream_name":"stdout","time":262.28032166,"data":"  step   500  official 0.0195  custom 0.0195  diff +0.0000  (146s)\n"}
+,{"stream_name":"stdout","time":335.021258204,"data":"  step   750  official 0.0225  custom 0.0234  diff +0.0010  (218s)\n"}
+,{"stream_name":"stdout","time":407.593276875,"data":"  step  1000  official 0.0156  custom 0.0156  diff +0.0000  (291s)\n"}
+,{"stream_name":"stdout","time":480.218882419,"data":"  step  1250  official 0.0576  custom 0.0596  diff +0.0020  (364s)\n"}
+,{"stream_name":"stdout","time":553.578781745,"data":"  step  1500  official 0.1025  custom 0.1045  diff +0.0020  (437s)\n"}
+,{"stream_name":"stdout","time":626.158436043,"data":"  step  1750  official 0.1436  custom 0.1406  diff -0.0029  (509s)\n"}
+,{"stream_name":"stdout","time":698.59447257,"data":"  step  2000  official 0.1963  custom 0.1914  diff -0.0049  (582s)\n"}
+,{"stream_name":"stdout","time":699.987432715,"data":"PAIR COMPLETE\n"}
+,{"stream_name":"stderr","time":701.939186139,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":701.939238365,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":702.143424681,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":702.143450254,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":702.735214542,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":703.845542174,"data":"[NbConvertApp] Writing 280137 bytes to __results__.html\n"}
+]

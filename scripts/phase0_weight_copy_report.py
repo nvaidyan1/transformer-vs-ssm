@@ -44,8 +44,6 @@ def plot(record: dict, path: Path):
     for k in ("official", "custom"):
         ys = [r[k] for r in rs]
         a1.plot(steps, ys, color=COLORS[k], lw=2, marker="o", ms=4, label=k)
-        a1.annotate(k, (steps[-1], ys[-1]), xytext=(4, 0), textcoords="offset points",
-                    fontsize=8, color="#555", va="center")
     a1.axhline(record["chance_acc"], color="#999", lw=1, ls="--")
     a1.set_title("val_acc, weight-copied start", fontsize=9)
     a1.set_ylabel("val_acc (answer positions)")
