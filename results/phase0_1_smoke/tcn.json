@@ -1,0 +1,41 @@
+{
+  "task": "selective_copy",
+  "task_args": {
+    "n_data": 4,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "arch": "tcn",
+  "ablate": false,
+  "n_params": 670080,
+  "n_params_ablation_only": 0,
+  "lr": 0.0003,
+  "ssm_lr_scale": 1.0,
+  "decay_1d": false,
+  "emb_init_std": null,
+  "out_proj_depth_scale": null,
+  "model_cfg": {
+    "n_layers": 9,
+    "d_model": 120,
+    "kernel_size": 4,
+    "dropout": 0.0
+  },
+  "seed": 0,
+  "batch_size": 32,
+  "steps_run": 50,
+  "max_steps": 50,
+  "stopped_early": false,
+  "final_val_acc": 0.013671875,
+  "final_val_loss": 4.149708092212677,
+  "chance_acc": 0.03225806451612903,
+  "wall_clock_s": 6.8,
+  "device": "cuda",
+  "history": [
+    {
+      "step": 50,
+      "train_loss": 4.152841567993164,
+      "val_loss": 4.149708092212677,
+      "val_acc": 0.013671875
+    }
+  ]
+}

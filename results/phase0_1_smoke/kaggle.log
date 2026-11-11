@@ -1,0 +1,222 @@
+[{"stream_name":"stdout","time":1.226246516,"data":"\n"}
+,{"stream_name":"stdout","time":1.226298042,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":1.271934479,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":2.059684035,"data":"\n"}
+,{"stream_name":"stdout","time":2.05970827,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":2.067954634,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":2.068206632,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":2.068799918,"data":"\n"}
+,{"stream_name":"stdout","time":2.06881065,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":2.072752174,"data":"b1ffaf3 Phase 0.1: one harness for custom and official Mamba\n"}
+,{"stream_name":"stdout","time":2.073208007,"data":"\n"}
+,{"stream_name":"stdout","time":2.073221737,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":2.103012158,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.103027673,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.109979459,"data":"\n"}
+,{"stream_name":"stdout","time":2.109996742,"data":"$ pip install -q packaging ninja wheel psutil pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":7.87259341,"data":"\n"}
+,{"stream_name":"stdout","time":7.872630328,"data":"$ pip install causal-conv1d\u003e=1.4.0 --no-build-isolation\n"}
+,{"stream_name":"stdout","time":31.674124782,"data":"\n"}
+,{"stream_name":"stdout","time":31.674159357,"data":"$ pip install mamba-ssm --no-build-isolation\n"}
+,{"stream_name":"stdout","time":32.883287171,"data":"Collecting mamba-ssm\n"}
+,{"stream_name":"stdout","time":32.991645043,"data":"  Downloading mamba_ssm-2.3.2.post1.tar.gz (216 kB)\n"}
+,{"stream_name":"stdout","time":33.080093312,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.4/216.4 kB 2.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":33.122626692,"data":"  Preparing metadata (pyproject.toml): started\n"}
+,{"stream_name":"stdout","time":36.44583382,"data":"  Preparing metadata (pyproject.toml): finished with status 'done'\n"}
+,{"stream_name":"stdout","time":36.454092941,"data":"Requirement already satisfied: torch in /usr/local/lib/python3.12/dist-packages (from mamba-ssm) (2.10.0+cu128)\n"}
+,{"stream_name":"stdout","time":36.528852952,"data":"Collecting tilelang==0.1.8 (from mamba-ssm)\n"}
+,{"stream_name":"stdout","time":36.562266343,"data":"  Downloading tilelang-0.1.8-cp38-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (15 kB)\n"}
+,{"stream_name":"stdout","time":36.813490528,"data":"Collecting apache-tvm-ffi\u003c=0.1.9 (from mamba-ssm)\n"}
+,{"stream_name":"stdout","time":36.845086444,"data":"  Downloading apache_tvm_ffi-0.1.9-cp312-abi3-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (6.1 kB)\n"}
+,{"stream_name":"stdout","time":36.948003917,"data":"Collecting quack-kernels\u003e=0.3.4 (from mamba-ssm)\n"}
+,{"stream_name":"stdout","time":36.979642966,"data":"  Downloading quack_kernels-0.6.5-py3-none-any.whl.metadata (834 bytes)\n"}
+,{"stream_name":"stdout","time":36.993779915,"data":"Requirement already satisfied: triton\u003e=3.5.0 in /usr/local/lib/python3.12/dist-packages (from mamba-ssm) (3.6.0)\n"}
+,{"stream_name":"stdout","time":36.994782273,"data":"Requirement already satisfied: ninja in /usr/local/lib/python3.12/dist-packages (from mamba-ssm) (1.13.0)\n"}
+,{"stream_name":"stdout","time":36.996152352,"data":"Requirement already satisfied: einops in /usr/local/lib/python3.12/dist-packages (from mamba-ssm) (0.8.2)\n"}
+,{"stream_name":"stdout","time":36.999868591,"data":"Requirement already satisfied: transformers in /usr/local/lib/python3.12/dist-packages (from mamba-ssm) (5.0.0)\n"}
+,{"stream_name":"stdout","time":37.001519475,"data":"Requirement already satisfied: packaging in /usr/local/lib/python3.12/dist-packages (from mamba-ssm) (26.1)\n"}
+,{"stream_name":"stdout","time":37.003346143,"data":"Requirement already satisfied: setuptools\u003e=61.0.0 in /usr/local/lib/python3.12/dist-packages (from mamba-ssm) (81.0.0)\n"}
+,{"stream_name":"stdout","time":37.070375037,"data":"Collecting torch-c-dlpack-ext (from tilelang==0.1.8-\u003emamba-ssm)\n"}
+,{"stream_name":"stdout","time":37.101879654,"data":"  Downloading torch_c_dlpack_ext-0.1.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (14 kB)\n"}
+,{"stream_name":"stdout","time":37.119403539,"data":"Requirement already satisfied: cloudpickle in /usr/local/lib/python3.12/dist-packages (from tilelang==0.1.8-\u003emamba-ssm) (3.1.2)\n"}
+,{"stream_name":"stdout","time":37.120658026,"data":"Requirement already satisfied: ml-dtypes in /usr/local/lib/python3.12/dist-packages (from tilelang==0.1.8-\u003emamba-ssm) (0.5.4)\n"}
+,{"stream_name":"stdout","time":37.127322175,"data":"Requirement already satisfied: numpy\u003e=1.23.5 in /usr/local/lib/python3.12/dist-packages (from tilelang==0.1.8-\u003emamba-ssm) (2.0.2)\n"}
+,{"stream_name":"stdout","time":37.128966931,"data":"Requirement already satisfied: psutil in /usr/local/lib/python3.12/dist-packages (from tilelang==0.1.8-\u003emamba-ssm) (5.9.5)\n"}
+,{"stream_name":"stdout","time":37.132757564,"data":"Requirement already satisfied: tqdm\u003e=4.62.3 in /usr/local/lib/python3.12/dist-packages (from tilelang==0.1.8-\u003emamba-ssm) (4.67.3)\n"}
+,{"stream_name":"stdout","time":37.133856458,"data":"Requirement already satisfied: typing-extensions\u003e=4.10.0 in /usr/local/lib/python3.12/dist-packages (from tilelang==0.1.8-\u003emamba-ssm) (4.15.0)\n"}
+,{"stream_name":"stdout","time":37.220213362,"data":"Collecting z3-solver\u003c4.15.5,\u003e=4.13.0 (from tilelang==0.1.8-\u003emamba-ssm)\n"}
+,{"stream_name":"stdout","time":37.251937001,"data":"  Downloading z3_solver-4.15.4.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (602 bytes)\n"}
+,{"stream_name":"stdout","time":37.329757431,"data":"Collecting nvidia-cutlass-dsl\u003e=4.7 (from quack-kernels\u003e=0.3.4-\u003emamba-ssm)\n"}
+,{"stream_name":"stdout","time":37.36309405,"data":"  Downloading nvidia_cutlass_dsl-4.8.1-py3-none-any.whl.metadata (3.1 kB)\n"}
+,{"stream_name":"stdout","time":37.406369355,"data":"Requirement already satisfied: filelock in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (3.29.0)\n"}
+,{"stream_name":"stdout","time":37.408796604,"data":"Requirement already satisfied: sympy\u003e=1.13.3 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (1.14.0)\n"}
+,{"stream_name":"stdout","time":37.410122812,"data":"Requirement already satisfied: networkx\u003e=2.5.1 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (3.6.1)\n"}
+,{"stream_name":"stdout","time":37.411222442,"data":"Requirement already satisfied: jinja2 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (3.1.6)\n"}
+,{"stream_name":"stdout","time":37.413171666,"data":"Requirement already satisfied: fsspec\u003e=0.8.5 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (2025.3.0)\n"}
+,{"stream_name":"stdout","time":37.414423235,"data":"Requirement already satisfied: cuda-bindings==12.9.4 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (12.9.4)\n"}
+,{"stream_name":"stdout","time":37.415704608,"data":"Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.93 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (12.8.93)\n"}
+,{"stream_name":"stdout","time":37.417103426,"data":"Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.90 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (12.8.90)\n"}
+,{"stream_name":"stdout","time":37.418430145,"data":"Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.90 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (12.8.90)\n"}
+,{"stream_name":"stdout","time":37.419740015,"data":"Requirement already satisfied: nvidia-cudnn-cu12==9.10.2.21 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (9.10.2.21)\n"}
+,{"stream_name":"stdout","time":37.420972964,"data":"Requirement already satisfied: nvidia-cublas-cu12==12.8.4.1 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (12.8.4.1)\n"}
+,{"stream_name":"stdout","time":37.422476632,"data":"Requirement already satisfied: nvidia-cufft-cu12==11.3.3.83 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (11.3.3.83)\n"}
+,{"stream_name":"stdout","time":37.423959407,"data":"Requirement already satisfied: nvidia-curand-cu12==10.3.9.90 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (10.3.9.90)\n"}
+,{"stream_name":"stdout","time":37.425445633,"data":"Requirement already satisfied: nvidia-cusolver-cu12==11.7.3.90 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (11.7.3.90)\n"}
+,{"stream_name":"stdout","time":37.426854977,"data":"Requirement already satisfied: nvidia-cusparse-cu12==12.5.8.93 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (12.5.8.93)\n"}
+,{"stream_name":"stdout","time":37.428262893,"data":"Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (0.7.1)\n"}
+,{"stream_name":"stdout","time":37.42980061,"data":"Requirement already satisfied: nvidia-nccl-cu12==2.27.5 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (2.27.5)\n"}
+,{"stream_name":"stdout","time":37.431262045,"data":"Requirement already satisfied: nvidia-nvshmem-cu12==3.4.5 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (3.4.5)\n"}
+,{"stream_name":"stdout","time":37.43257162,"data":"Requirement already satisfied: nvidia-nvtx-cu12==12.8.90 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (12.8.90)\n"}
+,{"stream_name":"stdout","time":37.433868494,"data":"Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.93 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (12.8.93)\n"}
+,{"stream_name":"stdout","time":37.435330723,"data":"Requirement already satisfied: nvidia-cufile-cu12==1.13.1.3 in /usr/local/lib/python3.12/dist-packages (from torch-\u003emamba-ssm) (1.13.1.3)\n"}
+,{"stream_name":"stdout","time":37.439501681,"data":"Requirement already satisfied: cuda-pathfinder~=1.1 in /usr/local/lib/python3.12/dist-packages (from cuda-bindings==12.9.4-\u003etorch-\u003emamba-ssm) (1.5.3)\n"}
+,{"stream_name":"stdout","time":37.491188192,"data":"Requirement already satisfied: huggingface-hub\u003c2.0,\u003e=1.3.0 in /usr/local/lib/python3.12/dist-packages (from transformers-\u003emamba-ssm) (1.11.0)\n"}
+,{"stream_name":"stdout","time":37.495639876,"data":"Requirement already satisfied: pyyaml\u003e=5.1 in /usr/local/lib/python3.12/dist-packages (from transformers-\u003emamba-ssm) (6.0.3)\n"}
+,{"stream_name":"stdout","time":37.49770019,"data":"Requirement already satisfied: regex!=2019.12.17 in /usr/local/lib/python3.12/dist-packages (from transformers-\u003emamba-ssm) (2025.11.3)\n"}
+,{"stream_name":"stdout","time":37.498969049,"data":"Requirement already satisfied: tokenizers\u003c=0.23.0,\u003e=0.22.0 in /usr/local/lib/python3.12/dist-packages (from transformers-\u003emamba-ssm) (0.22.2)\n"}
+,{"stream_name":"stdout","time":37.500041177,"data":"Requirement already satisfied: typer-slim in /usr/local/lib/python3.12/dist-packages (from transformers-\u003emamba-ssm) (0.24.0)\n"}
+,{"stream_name":"stdout","time":37.501377445,"data":"Requirement already satisfied: safetensors\u003e=0.4.3 in /usr/local/lib/python3.12/dist-packages (from transformers-\u003emamba-ssm) (0.7.0)\n"}
+,{"stream_name":"stdout","time":37.526193539,"data":"Requirement already satisfied: hf-xet\u003c2.0.0,\u003e=1.4.3 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (1.4.3)\n"}
+,{"stream_name":"stdout","time":37.52762733,"data":"Requirement already satisfied: httpx\u003c1,\u003e=0.23.0 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (0.28.1)\n"}
+,{"stream_name":"stdout","time":37.531522407,"data":"Requirement already satisfied: typer in /usr/local/lib/python3.12/dist-packages (from huggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (0.24.2)\n"}
+,{"stream_name":"stdout","time":37.619927858,"data":"Collecting nvidia-cutlass-dsl-libs-base==4.8.1 (from nvidia-cutlass-dsl\u003e=4.7-\u003equack-kernels\u003e=0.3.4-\u003emamba-ssm)\n"}
+,{"stream_name":"stdout","time":37.655735493,"data":"  Downloading nvidia_cutlass_dsl_libs_base-4.8.1-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (2.9 kB)\n"}
+,{"stream_name":"stdout","time":37.732314114,"data":"Collecting nvidia-cutlass-dsl-libs-cu12==4.8.1 (from nvidia-cutlass-dsl\u003e=4.7-\u003equack-kernels\u003e=0.3.4-\u003emamba-ssm)\n"}
+,{"stream_name":"stdout","time":37.767434395,"data":"  Downloading nvidia_cutlass_dsl_libs_cu12-4.8.1-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (2.9 kB)\n"}
+,{"stream_name":"stdout","time":37.783857636,"data":"Requirement already satisfied: protobuf\u003e=4.21.12 in /usr/local/lib/python3.12/dist-packages (from nvidia-cutlass-dsl-libs-base==4.8.1-\u003envidia-cutlass-dsl\u003e=4.7-\u003equack-kernels\u003e=0.3.4-\u003emamba-ssm) (5.29.5)\n"}
+,{"stream_name":"stdout","time":37.826080823,"data":"Collecting nvidia-cutlass-dsl-libs-core==4.8.1 (from nvidia-cutlass-dsl-libs-base==4.8.1-\u003envidia-cutlass-dsl\u003e=4.7-\u003equack-kernels\u003e=0.3.4-\u003emamba-ssm)\n"}
+,{"stream_name":"stdout","time":37.858775897,"data":"  Downloading nvidia_cutlass_dsl_libs_core-4.8.1-py3-none-any.whl.metadata (2.9 kB)\n"}
+,{"stream_name":"stdout","time":37.897081195,"data":"Requirement already satisfied: mpmath\u003c1.4,\u003e=1.1.0 in /usr/local/lib/python3.12/dist-packages (from sympy\u003e=1.13.3-\u003etorch-\u003emamba-ssm) (1.3.0)\n"}
+,{"stream_name":"stdout","time":37.911389077,"data":"Requirement already satisfied: MarkupSafe\u003e=2.0 in /usr/local/lib/python3.12/dist-packages (from jinja2-\u003etorch-\u003emamba-ssm) (3.0.3)\n"}
+,{"stream_name":"stdout","time":37.938985835,"data":"Requirement already satisfied: anyio in /usr/local/lib/python3.12/dist-packages (from httpx\u003c1,\u003e=0.23.0-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (4.13.0)\n"}
+,{"stream_name":"stdout","time":37.940187795,"data":"Requirement already satisfied: certifi in /usr/local/lib/python3.12/dist-packages (from httpx\u003c1,\u003e=0.23.0-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (2026.4.22)\n"}
+,{"stream_name":"stdout","time":37.942011906,"data":"Requirement already satisfied: httpcore==1.* in /usr/local/lib/python3.12/dist-packages (from httpx\u003c1,\u003e=0.23.0-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (1.0.9)\n"}
+,{"stream_name":"stdout","time":37.943208476,"data":"Requirement already satisfied: idna in /usr/local/lib/python3.12/dist-packages (from httpx\u003c1,\u003e=0.23.0-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (3.13)\n"}
+,{"stream_name":"stdout","time":37.947438439,"data":"Requirement already satisfied: h11\u003e=0.16 in /usr/local/lib/python3.12/dist-packages (from httpcore==1.*-\u003ehttpx\u003c1,\u003e=0.23.0-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (0.16.0)\n"}
+,{"stream_name":"stdout","time":37.954956005,"data":"Requirement already satisfied: click\u003e=8.2.1 in /usr/local/lib/python3.12/dist-packages (from typer-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (8.3.3)\n"}
+,{"stream_name":"stdout","time":37.955934531,"data":"Requirement already satisfied: shellingham\u003e=1.3.0 in /usr/local/lib/python3.12/dist-packages (from typer-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (1.5.4)\n"}
+,{"stream_name":"stdout","time":37.957581323,"data":"Requirement already satisfied: rich\u003e=12.3.0 in /usr/local/lib/python3.12/dist-packages (from typer-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (13.9.4)\n"}
+,{"stream_name":"stdout","time":37.958884361,"data":"Requirement already satisfied: annotated-doc\u003e=0.0.2 in /usr/local/lib/python3.12/dist-packages (from typer-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (0.0.4)\n"}
+,{"stream_name":"stdout","time":37.968490775,"data":"Requirement already satisfied: markdown-it-py\u003e=2.2.0 in /usr/local/lib/python3.12/dist-packages (from rich\u003e=12.3.0-\u003etyper-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (4.0.0)\n"}
+,{"stream_name":"stdout","time":37.96957612,"data":"Requirement already satisfied: pygments\u003c3.0.0,\u003e=2.13.0 in /usr/local/lib/python3.12/dist-packages (from rich\u003e=12.3.0-\u003etyper-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (2.20.0)\n"}
+,{"stream_name":"stdout","time":37.985454643,"data":"Requirement already satisfied: mdurl~=0.1 in /usr/local/lib/python3.12/dist-packages (from markdown-it-py\u003e=2.2.0-\u003erich\u003e=12.3.0-\u003etyper-\u003ehuggingface-hub\u003c2.0,\u003e=1.3.0-\u003etransformers-\u003emamba-ssm) (0.1.2)\n"}
+,{"stream_name":"stdout","time":38.025491024,"data":"Downloading tilelang-0.1.8-cp38-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (43.5 MB)\n"}
+,{"stream_name":"stdout","time":38.545543902,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 MB 50.1 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.57961185,"data":"Downloading apache_tvm_ffi-0.1.9-cp312-abi3-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (2.3 MB)\n"}
+,{"stream_name":"stdout","time":38.61557166,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 67.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.650017984,"data":"Downloading quack_kernels-0.6.5-py3-none-any.whl (729 kB)\n"}
+,{"stream_name":"stdout","time":38.673841391,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 729.6/729.6 kB 33.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.70490874,"data":"Downloading nvidia_cutlass_dsl-4.8.1-py3-none-any.whl (10 kB)\n"}
+,{"stream_name":"stdout","time":38.761849167,"data":"Downloading nvidia_cutlass_dsl_libs_base-4.8.1-cp312-cp312-manylinux_2_28_x86_64.whl (3.1 MB)\n"}
+,{"stream_name":"stdout","time":38.803312023,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 78.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.838173486,"data":"Downloading nvidia_cutlass_dsl_libs_cu12-4.8.1-cp312-cp312-manylinux_2_28_x86_64.whl (91.7 MB)\n"}
+,{"stream_name":"stdout","time":39.813516475,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 MB 20.8 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.84781545,"data":"Downloading nvidia_cutlass_dsl_libs_core-4.8.1-py3-none-any.whl (1.6 MB)\n"}
+,{"stream_name":"stdout","time":39.881145927,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 53.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.912958497,"data":"Downloading z3_solver-4.15.4.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (29.3 MB)\n"}
+,{"stream_name":"stdout","time":40.209130068,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 29.3/29.3 MB 60.0 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":40.240793407,"data":"Downloading torch_c_dlpack_ext-0.1.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (897 kB)\n"}
+,{"stream_name":"stdout","time":40.266079815,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 897.8/897.8 kB 38.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":40.832510892,"data":"Building wheels for collected packages: mamba-ssm\n"}
+,{"stream_name":"stdout","time":40.83370028,"data":"  Building wheel for mamba-ssm (pyproject.toml): started\n"}
+,{"stream_name":"stdout","time":45.707803214,"data":"  Building wheel for mamba-ssm (pyproject.toml): finished with status 'done'\n"}
+,{"stream_name":"stdout","time":46.575086199,"data":"  Created wheel for mamba-ssm: filename=mamba_ssm-2.3.2.post1-cp312-cp312-linux_x86_64.whl size=322288410 sha256=7a67070c1e7e99c95abd1319623f044e8a1b3fb46f774bfdea949f0a4fc79638\n"}
+,{"stream_name":"stdout","time":46.575446896,"data":"  Stored in directory: /root/.cache/pip/wheels/da/67/03/99148d6eeaa4ec2855d71295ac83bcbc8ba7b41a2982992c63\n"}
+,{"stream_name":"stdout","time":46.58057422,"data":"Successfully built mamba-ssm\n"}
+,{"stream_name":"stdout","time":48.61315851,"data":"Installing collected packages: z3-solver, apache-tvm-ffi, nvidia-cutlass-dsl-libs-core, nvidia-cutlass-dsl-libs-base, torch-c-dlpack-ext, nvidia-cutlass-dsl-libs-cu12, tilelang, nvidia-cutlass-dsl, quack-kernels, mamba-ssm\n"}
+,{"stream_name":"stdout","time":61.065363661,"data":"Successfully installed apache-tvm-ffi-0.1.9 mamba-ssm-2.3.2.post1 nvidia-cutlass-dsl-4.8.1 nvidia-cutlass-dsl-libs-base-4.8.1 nvidia-cutlass-dsl-libs-core-4.8.1 nvidia-cutlass-dsl-libs-cu12-4.8.1 quack-kernels-0.6.5 tilelang-0.1.8 torch-c-dlpack-ext-0.1.5 z3-solver-4.15.4.0\n"}
+,{"stream_name":"stdout","time":61.199251578,"data":"\n"}
+,{"stream_name":"stdout","time":61.19927369,"data":"$ python -c \"import mamba_ssm, torch; print('mamba_ssm', mamba_ssm.__version__, 'torch', torch.__version__)\"\n"}
+,{"stream_name":"stdout","time":91.875293121,"data":"mamba_ssm 2.3.2.post1 torch 2.10.0+cu128\n"}
+,{"stream_name":"stdout","time":93.172541,"data":"\n"}
+,{"stream_name":"stdout","time":93.172667288,"data":"$ python -m pytest tests/ -q -rs 2\u003e\u00261 | tail -15\n"}
+,{"stream_name":"stdout","time":111.959593557,"data":"  /usr/local/lib/python3.12/dist-packages/quack/copy_utils.py:15: DeprecationWarning: cutlass.utils.LayoutEnum is deprecated; use cutlass.tensor_utils.LayoutEnum instead. It will be removed in a future release.\n"}
+,{"stream_name":"stdout","time":111.959653193,"data":"    from cutlass.utils import LayoutEnum, block_copy\n"}
+,{"stream_name":"stdout","time":111.959746765,"data":"\n"}
+,{"stream_name":"stdout","time":111.95975333,"data":"../../../usr/local/lib/python3.12/dist-packages/quack/copy_utils.py:562\n"}
+,{"stream_name":"stdout","time":111.959757303,"data":"  /usr/local/lib/python3.12/dist-packages/quack/copy_utils.py:562: DeprecationWarning: cutlass.utils.LayoutEnum is deprecated; use cutlass.tensor_utils.LayoutEnum instead. It will be removed in a future release.\n"}
+,{"stream_name":"stdout","time":111.959761287,"data":"    layout_c: cutlass.utils.LayoutEnum,\n"}
+,{"stream_name":"stdout","time":111.959765081,"data":"\n"}
+,{"stream_name":"stdout","time":111.959768616,"data":"tests/test_mamba_official.py::test_decay_1d_keeps_tcn_weight_g_exempt\n"}
+,{"stream_name":"stdout","time":111.959772717,"data":"tests/test_optim_lr_scale.py::test_every_param_in_exactly_one_group\n"}
+,{"stream_name":"stdout","time":111.959776258,"data":"tests/test_optim_lr_scale.py::test_non_mamba_architectures_have_no_boosted_group\n"}
+,{"stream_name":"stdout","time":111.959780106,"data":"  /usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.\n"}
+,{"stream_name":"stdout","time":111.959783893,"data":"    WeightNorm.apply(module, name, dim)\n"}
+,{"stream_name":"stdout","time":111.959787344,"data":"\n"}
+,{"stream_name":"stdout","time":111.959790679,"data":"-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"}
+,{"stream_name":"stdout","time":111.959794454,"data":"89 passed, 6 warnings in 15.01s\n"}
+,{"stream_name":"stdout","time":112.098416236,"data":"\n"}
+,{"stream_name":"stdout","time":112.098439885,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":127.139984239,"data":"........................................................................ [ 80%]\n"}
+,{"stream_name":"stdout","time":128.509709139,"data":".................                                                        [100%]\n"}
+,{"stream_name":"stdout","time":128.509761311,"data":"89 passed in 14.36s\n"}
+,{"stream_name":"stdout","time":129.950185058,"data":"\n"}
+,{"stream_name":"stdout","time":129.95025165,"data":"$ python src/train_task.py --config configs/recall/transformer_small.yaml --task selective_copy --task_args n_data=4,seq_len=64 --steps 50 --device cuda --out /kaggle/working/phase0_smoke/transformer.json\n"}
+,{"stream_name":"stdout","time":134.506239815,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":134.506275444,"data":"task   : selective_copy  {'n_data': 4, 'seq_len': 64, 'vocab_size': 64}\n"}
+,{"stream_name":"stdout","time":134.506281614,"data":"arch   : transformer  (667,264 params)\n"}
+,{"stream_name":"stdout","time":134.506286286,"data":"device : cuda   lr=0.0003  steps=50  batch=32  seed=0\n"}
+,{"stream_name":"stdout","time":134.506290524,"data":"  param groups (decay_1d=False):\n"}
+,{"stream_name":"stdout","time":134.506294556,"data":"    decay, base-lr        :  14 tensors / 663,552 params\n"}
+,{"stream_name":"stdout","time":134.506298949,"data":"    no-decay, base-lr     :  20 tensors / 3,712 params\n"}
+,{"stream_name":"stdout","time":134.506303024,"data":"  step     50  train_loss 4.1358  val_loss 4.1538  val_acc 0.0156  (1s)\n"}
+,{"stream_name":"stdout","time":134.527164675,"data":"\n"}
+,{"stream_name":"stdout","time":134.527184268,"data":"final val_acc 0.0156  (chance ~0.0323)  in 1.3s\n"}
+,{"stream_name":"stdout","time":134.527189761,"data":"saved -\u003e /kaggle/working/phase0_smoke/transformer.json\n"}
+,{"stream_name":"stdout","time":135.223599626,"data":"\n"}
+,{"stream_name":"stdout","time":135.223636859,"data":"$ python src/train_task.py --config configs/recall/tcn_small.yaml --task selective_copy --task_args n_data=4,seq_len=64 --steps 50 --device cuda --out /kaggle/working/phase0_smoke/tcn.json\n"}
+,{"stream_name":"stderr","time":136.936784443,"data":"/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.\n"}
+,{"stream_name":"stderr","time":136.936821155,"data":"  WeightNorm.apply(module, name, dim)\n"}
+,{"stream_name":"stdout","time":145.107514838,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":145.107552202,"data":"[tcn.py] n_layers=9 kernel_size=4 dilation_cycle=8 max_dilation=128 max_left_pad=384 receptive_field=769\n"}
+,{"stream_name":"stdout","time":145.107556884,"data":"task   : selective_copy  {'n_data': 4, 'seq_len': 64, 'vocab_size': 64}\n"}
+,{"stream_name":"stdout","time":145.107560256,"data":"arch   : tcn  (670,080 params)\n"}
+,{"stream_name":"stdout","time":145.10756353,"data":"device : cuda   lr=0.0003  steps=50  batch=32  seed=0\n"}
+,{"stream_name":"stdout","time":145.107566765,"data":"  param groups (decay_1d=False):\n"}
+,{"stream_name":"stdout","time":145.107569887,"data":"    decay, base-lr        :  20 tensors / 663,360 params\n"}
+,{"stream_name":"stdout","time":145.107573043,"data":"    no-decay, base-lr     :  56 tensors / 6,720 params\n"}
+,{"stream_name":"stdout","time":145.107576145,"data":"  step     50  train_loss 4.1528  val_loss 4.1497  val_acc 0.0137  (7s)\n"}
+,{"stream_name":"stdout","time":145.140180922,"data":"\n"}
+,{"stream_name":"stdout","time":145.140201004,"data":"final val_acc 0.0137  (chance ~0.0323)  in 6.8s\n"}
+,{"stream_name":"stdout","time":145.140205568,"data":"saved -\u003e /kaggle/working/phase0_smoke/tcn.json\n"}
+,{"stream_name":"stdout","time":146.312570806,"data":"\n"}
+,{"stream_name":"stdout","time":146.312605332,"data":"$ python src/train_task.py --config configs/recall/mamba_small.yaml --task selective_copy --task_args n_data=4,seq_len=64 --steps 50 --device cuda --out /kaggle/working/phase0_smoke/mamba.json\n"}
+,{"stream_name":"stdout","time":165.23429356,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":165.234344033,"data":"task   : selective_copy  {'n_data': 4, 'seq_len': 64, 'vocab_size': 64}\n"}
+,{"stream_name":"stdout","time":165.234349071,"data":"arch   : mamba  (449,752 params, 1,120 of them ablation-only)\n"}
+,{"stream_name":"stdout","time":165.234352191,"data":"device : cuda   lr=0.0003  steps=50  batch=32  seed=0\n"}
+,{"stream_name":"stdout","time":165.234355142,"data":"init   : emb_init_std=0.02  out_proj_depth_scale=True\n"}
+,{"stream_name":"stdout","time":165.234358252,"data":"  param groups (decay_1d=False):\n"}
+,{"stream_name":"stdout","time":165.234361293,"data":"    decay, base-lr        :  13 tensors / 380,928 params\n"}
+,{"stream_name":"stdout","time":165.234364059,"data":"    decay, 1.0x-lr        :   8 tensors / 47,616 params\n"}
+,{"stream_name":"stdout","time":165.234366785,"data":"    no-decay, base-lr     :  30 tensors / 4,344 params\n"}
+,{"stream_name":"stdout","time":165.234369503,"data":"    no-decay, 1.0x-lr     :   8 tensors / 16,864 params\n"}
+,{"stream_name":"stdout","time":165.23437237,"data":"  step     50  train_loss 4.1928  val_loss 4.1895  val_acc 0.0166  (16s)\n"}
+,{"stream_name":"stdout","time":165.512685213,"data":"\n"}
+,{"stream_name":"stdout","time":165.512705368,"data":"final val_acc 0.0166  (chance ~0.0323)  in 16.0s\n"}
+,{"stream_name":"stdout","time":165.512717075,"data":"saved -\u003e /kaggle/working/phase0_smoke/mamba.json\n"}
+,{"stream_name":"stdout","time":166.244483217,"data":"\n"}
+,{"stream_name":"stdout","time":166.244542147,"data":"$ python src/train_task.py --config configs/recall/mamba_small.yaml --arch mamba_ssm --task selective_copy --task_args n_data=4,seq_len=64 --steps 50 --device cuda --out /kaggle/working/phase0_smoke/mamba_ssm.json\n"}
+,{"stream_name":"stdout","time":179.028459326,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":179.028496124,"data":"task   : selective_copy  {'n_data': 4, 'seq_len': 64, 'vocab_size': 64}\n"}
+,{"stream_name":"stdout","time":179.028502414,"data":"arch   : mamba_ssm  (448,632 params)\n"}
+,{"stream_name":"stdout","time":179.028509694,"data":"device : cuda   lr=0.0003  steps=50  batch=32  seed=0\n"}
+,{"stream_name":"stdout","time":179.02851227,"data":"init   : emb_init_std=0.02  out_proj_depth_scale=True\n"}
+,{"stream_name":"stdout","time":179.028514762,"data":"  param groups (decay_1d=False):\n"}
+,{"stream_name":"stdout","time":179.028517163,"data":"    decay, base-lr        :  13 tensors / 380,928 params\n"}
+,{"stream_name":"stdout","time":179.02851958,"data":"    decay, 1.0x-lr        :   8 tensors / 47,616 params\n"}
+,{"stream_name":"stdout","time":179.028521875,"data":"    no-decay, base-lr     :  18 tensors / 3,224 params\n"}
+,{"stream_name":"stdout","time":179.028524089,"data":"    no-decay, 1.0x-lr     :   8 tensors / 16,864 params\n"}
+,{"stream_name":"stdout","time":179.028526407,"data":"  step     50  train_loss 4.1997  val_loss 4.1898  val_acc 0.0166  (1s)\n"}
+,{"stream_name":"stdout","time":179.058475973,"data":"\n"}
+,{"stream_name":"stdout","time":179.058501054,"data":"final val_acc 0.0166  (chance ~0.0323)  in 1.5s\n"}
+,{"stream_name":"stdout","time":179.058505633,"data":"saved -\u003e /kaggle/working/phase0_smoke/mamba_ssm.json\n"}
+,{"stream_name":"stdout","time":180.434352439,"data":"\n"}
+,{"stream_name":"stdout","time":180.434383683,"data":"PHASE0 SMOKE OK\n"}
+,{"stream_name":"stderr","time":182.536760846,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":182.536784319,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":182.78839962,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":182.788423923,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":183.417296114,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":184.688867574,"data":"[NbConvertApp] Writing 280783 bytes to __results__.html\n"}
+]

@@ -27,7 +27,7 @@ run("git log --oneline -1")
 run("nvidia-smi --query-gpu=name --format=csv,noheader")
 
 run("pip install -q packaging ninja wheel psutil pyyaml pytest einops")
-run("pip install causal-conv1d>=1.4.0 --no-build-isolation", check=False)
+run("pip install 'causal-conv1d>=1.4.0' --no-build-isolation", check=False)
 run("pip install mamba-ssm --no-build-isolation")
 run("python -c \"import mamba_ssm, torch; print('mamba_ssm', mamba_ssm.__version__, "
     "'torch', torch.__version__)\"")
