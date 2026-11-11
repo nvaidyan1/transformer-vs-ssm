@@ -27,7 +27,7 @@ COLORS = {"mamba_ssm": "#2a78d6", "mamba": "#eb6834"}   # categorical slots 1, 2
 def load_records(results_dir: Path) -> list:
     recs = []
     for p in sorted(results_dir.glob("*.json")):
-        if p.name in ("summary.json", "manifest.json"):
+        if p.name == "summary.json" or p.name.startswith("manifest"):
             continue
         r = json.load(open(p))
         if "history" in r and "arch" in r:
@@ -64,10 +64,19 @@ def cell_gate(custom: dict, official: dict) -> dict:
     return {"verdict": "PASS" if ok else "FAIL", "overlap": overlap, "mean_diff": diff}
 
 
+def is_complete(record: dict) -> bool:
+    """Records written before the per-eval checkpoints existed have no flag and
+    were only ever written on completion."""
+    return record.get("complete", True)
+
+
 def summarize(records: list) -> dict:
     cells = {}
+    partial = sorted(f"{r['arch']} emb={r['emb_init_std']} d1d={r['decay_1d']} "
+                     f"seed={r['seed']} (stopped at step {r['steps_run']})"
+                     for r in records if not is_complete(r))
     for r in records:
-        if r["arch"] not in ARCHS:
+        if r["arch"] not in ARCHS or not is_complete(r):
             continue
         cells.setdefault(cell_key(r), {a: [] for a in ARCHS})[r["arch"]].append(r)
 
@@ -88,7 +97,7 @@ def summarize(records: list) -> dict:
     else:
         overall = "PASS" if all(v == "PASS" for v in verdicts) else "FAIL"
     return {"cells": out, "gate": overall, "gate_step": GATE_STEP,
-            "gate_mean_tol": GATE_MEAN_TOL}
+            "gate_mean_tol": GATE_MEAN_TOL, "partial_runs_excluded": partial}
 
 
 def fmt(s: dict) -> str:
@@ -112,6 +121,9 @@ def to_markdown(summary: dict) -> str:
                          f"| {s['step2000']['n']} | {fmt(s['step1000'])} "
                          f"| {fmt(s['step2000'])} | {gate if i == 0 else ''} |")
     lines.append(f"\nOverall gate: **{summary['gate']}**")
+    if summary.get("partial_runs_excluded"):
+        lines.append("\nPartial runs, excluded from the table and gate (dashed in "
+                     "curves.png): " + "; ".join(summary["partial_runs_excluded"]))
     return "\n".join(lines)
 
 
@@ -129,7 +141,13 @@ def plot(records: list, summary: dict, path: Path):
     chance = records[0]["chance_acc"] if records else None
     for ax, key, cell in zip(axes.flat, keys, summary["cells"]):
         for arch in ARCHS:
-            runs = [r for r in records if r["arch"] == arch and cell_key(r) == key]
+            runs = [r for r in records if r["arch"] == arch and cell_key(r) == key
+                    and is_complete(r)]
+            for r in records:
+                if r["arch"] == arch and cell_key(r) == key and not is_complete(r):
+                    ax.plot([h["step"] for h in r["history"]],
+                            [h["val_acc"] for h in r["history"]],
+                            color=COLORS[arch], lw=1.2, ls="--", alpha=0.7)
             for i, r in enumerate(sorted(runs, key=lambda r: r["seed"])):
                 steps = [h["step"] for h in r["history"]]
                 accs = [h["val_acc"] for h in r["history"]]

@@ -67,3 +67,19 @@ def test_summarize_missing_cell_is_incomplete():
     recs = [rec(a, 0.02, False, sd, 0.3, 0.5) for a in ("mamba", "mamba_ssm")
             for sd in range(3)]
     assert summarize(recs)["gate"] == "INCOMPLETE"
+
+
+def test_partial_runs_excluded_from_gate():
+    recs = []
+    for emb in (0.02, 1.0):
+        for d1d in (False, True):
+            for seed in range(3):
+                recs.append(rec("mamba_ssm", emb, d1d, seed, 0.3, 0.5))
+                recs.append(rec("mamba", emb, d1d, seed, 0.3, 0.5))
+    killed = rec("mamba", 0.02, False, 3, 0.01, 0.01)
+    killed.update(complete=False, steps_run=1000)
+    out = summarize(recs + [killed])
+    assert out["gate"] == "PASS"
+    cell = next(c for c in out["cells"] if c["emb_init_std"] == 0.02 and not c["decay_1d"])
+    assert cell["mamba"]["seeds"] == [0, 1, 2]
+    assert len(out["partial_runs_excluded"]) == 1

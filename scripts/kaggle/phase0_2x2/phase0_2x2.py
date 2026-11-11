@@ -5,20 +5,28 @@
 # Budget guard: all training must finish within TRAIN_DEADLINE_MIN of the first job
 # starting. Jobs still running at the deadline are killed and recorded as
 # "timeout"; jobs not started are recorded as "not_run". No retries, no extension.
+#
+# Run 1 (commit 207ed3c): ARCHS=("mamba_ssm", "mamba"), SEEDS=(0, 1, 2), deadline
+#   50 min, --quiet. 16/24 done; custom seeds 1-2 cut by the deadline.
+# Run 2 (this setting, second 60 GPU-min budget approved by the author): only the
+#   8 custom runs run 1 did not finish. Same code path and arguments; --quiet
+#   dropped, and the trainer now checkpoints its JSON every eval, so a run cut by
+#   the deadline keeps its curve. See results/phase0_2x2/RUNLOG.md.
 import json, os, subprocess, time
 from concurrent.futures import ThreadPoolExecutor
 
 COMMIT = "main"
 REPO = "https://github.com/nvaidyan1/transformer-vs-ssm.git"
 OUT = "/kaggle/working/phase0_2x2"
-TRAIN_DEADLINE_MIN = 50
+TRAIN_DEADLINE_MIN = 54
 WORKERS = 4
-SEEDS = (0, 1, 2)
+ARCHS = ("mamba",)
+SEEDS = (1, 2)
 EMB = (0.02, 1.0)
 DECAY_1D = (False, True)
 COMMON = ("--config configs/recall/mamba_small.yaml --task selective_copy "
           "--task_args n_data=4,seq_len=64,vocab_size=64 --steps 2000 --batch_size 32 "
-          "--lr 3e-4 --device cuda --quiet")
+          "--lr 3e-4 --device cuda")
 
 
 def run(cmd, check=True):
@@ -46,7 +54,7 @@ os.makedirs(f"{OUT}/logs", exist_ok=True)
 # Official first (fast), then custom; seed-major within each so a deadline cut
 # leaves every cell with the same number of seeds.
 jobs = []
-for arch in ("mamba_ssm", "mamba"):
+for arch in ARCHS:
     for seed in SEEDS:
         for emb in EMB:
             for d1d in DECAY_1D:
@@ -86,7 +94,7 @@ manifest = {"commit": commit, "workers": WORKERS,
             "train_deadline_min": TRAIN_DEADLINE_MIN,
             "train_wall_min": round((time.time() - t_start) / 60, 2),
             "jobs": results}
-json.dump(manifest, open(f"{OUT}/manifest.json", "w"), indent=2)
+json.dump(manifest, open(f"{OUT}/manifest_run2.json", "w"), indent=2)
 n_done = sum(r["status"] == "done" for r in results)
 print(f"\n{n_done}/{len(results)} jobs done in {manifest['train_wall_min']} min "
       f"(commit {commit})")

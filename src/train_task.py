@@ -84,6 +84,16 @@ def count_ablation_only(model) -> int:
                if p.requires_grad and ".fixed_" in n)
 
 
+def write_record(record: dict, path: str):
+    """Write atomically, so a run killed mid-write never leaves a truncated file."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with open(tmp, "w") as f:
+        json.dump(record, f, indent=2)
+    tmp.replace(path)
+
+
 def set_seed(seed: int):
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -224,6 +234,29 @@ def main():
         lr=cfg["lr"], betas=(0.9, 0.95))
 
     history, t0, stopped_early = [], time.time(), False
+
+    def make_record(final, complete):
+        return {
+            "task": args.task, "task_args": task_kwargs, "arch": arch,
+            "ablate": bool(args.ablate), "n_params": n_params,
+            "n_params_ablation_only": n_ablation_only,
+            "lr": cfg["lr"], "ssm_lr_scale": cfg["ssm_lr_scale"],
+            "decay_1d": cfg["decay_1d"],
+            "emb_init_std": getattr(model, "emb_init_std", None),
+            "out_proj_depth_scale": getattr(model, "out_proj_depth_scale", None),
+            "model_cfg": cfg["model"],
+            "seed": cfg["seed"], "batch_size": cfg["batch_size"],
+            "steps_run": history[-1]["step"] if history else 0,
+            "max_steps": cfg["max_steps"], "stopped_early": stopped_early,
+            # False in the checkpoints written at every eval; a run killed
+            # mid-way (e.g. by a budget deadline) leaves its curve so far.
+            "complete": complete,
+            "final_val_acc": final["acc"] if final else None,
+            "final_val_loss": final["loss"] if final else None,
+            "chance_acc": 1.0 / max(1, (cfg["vocab_size"] - 1) // 2),
+            "wall_clock_s": round(time.time() - t0, 1),
+            "device": str(device), "history": history,
+        }
     model.train()
     for step in range(cfg["max_steps"]):
         base_lr = get_lr(step, cfg["warmup_steps"], cfg["max_steps"], cfg["lr"])
@@ -255,6 +288,8 @@ def main():
                 print(f"  step {step+1:>6d}  train_loss {loss.item():.4f}  "
                       f"val_loss {ev['loss']:.4f}  val_acc {ev['acc']:.4f}  "
                       f"({time.time()-t0:.0f}s)", flush=True)
+            if args.out:
+                write_record(make_record(None, complete=False), args.out)
             if args.early_stop_acc is not None and ev["acc"] >= args.early_stop_acc:
                 stopped_early = True
                 if not args.quiet:
@@ -262,29 +297,12 @@ def main():
                 break
 
     final = evaluate(model, val_batches, device, model_kwargs)
-    record = {
-        "task": args.task, "task_args": task_kwargs, "arch": arch,
-        "ablate": bool(args.ablate), "n_params": n_params,
-        "n_params_ablation_only": n_ablation_only,
-        "lr": cfg["lr"], "ssm_lr_scale": cfg["ssm_lr_scale"],
-        "decay_1d": cfg["decay_1d"],
-        "emb_init_std": getattr(model, "emb_init_std", None),
-        "out_proj_depth_scale": getattr(model, "out_proj_depth_scale", None),
-        "model_cfg": cfg["model"],
-        "seed": cfg["seed"], "batch_size": cfg["batch_size"],
-        "steps_run": history[-1]["step"] if history else 0,
-        "max_steps": cfg["max_steps"], "stopped_early": stopped_early,
-        "final_val_acc": final["acc"], "final_val_loss": final["loss"],
-        "chance_acc": 1.0 / max(1, (cfg["vocab_size"] - 1) // 2),
-        "wall_clock_s": round(time.time() - t0, 1),
-        "device": str(device), "history": history,
-    }
+    record = make_record(final, complete=True)
     if not args.quiet:
         print(f"\nfinal val_acc {final['acc']:.4f}  "
               f"(chance ~{record['chance_acc']:.4f})  in {record['wall_clock_s']}s")
     if args.out:
-        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-        json.dump(record, open(args.out, "w"), indent=2)
+        write_record(record, args.out)
         if not args.quiet:
             print(f"saved -> {args.out}")
     return record

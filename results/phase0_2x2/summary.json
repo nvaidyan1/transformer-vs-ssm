@@ -183,5 +183,6 @@
   ],
   "gate": "INCOMPLETE",
   "gate_step": 2000,
-  "gate_mean_tol": 0.1
+  "gate_mean_tol": 0.1,
+  "partial_runs_excluded": []
 }
