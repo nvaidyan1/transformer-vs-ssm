@@ -83,3 +83,29 @@ class OracleMamba(nn.Module):
         for block in self.blocks:
             h = block(h)
         return self.head(self.ln_f(h))
+
+
+def copy_official_to_custom(official: nn.Module, custom: nn.Module) -> list:
+    """Copy every parameter of an OracleMamba into a custom Mamba of the same config.
+
+    Names map by `.mixer.` -> `.ssm.`; the custom model's ablation-only fixed_*
+    params have no official counterpart and are left untouched (they are unused
+    unless --ablate). Raises if any official parameter has no match or a different
+    shape. Returns the list of custom parameter names that were written.
+    """
+    custom_params = dict(custom.named_parameters())
+    written = []
+    with torch.no_grad():
+        for name, p in official.named_parameters():
+            target = name.replace(".mixer.", ".ssm.")
+            if target not in custom_params:
+                raise KeyError(f"no custom parameter for official {name!r}")
+            if custom_params[target].shape != p.shape:
+                raise ValueError(f"shape mismatch for {name!r}: "
+                                 f"{tuple(p.shape)} vs {tuple(custom_params[target].shape)}")
+            custom_params[target].copy_(p)
+            written.append(target)
+    missing = [n for n in custom_params if n not in written and ".fixed_" not in n]
+    if missing:
+        raise KeyError(f"custom parameters not covered by the official model: {missing}")
+    return written

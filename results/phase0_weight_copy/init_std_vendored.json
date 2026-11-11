@@ -1,0 +1,668 @@
+{
+  "official_mixer": "vendored",
+  "out_proj_depth_scale": true,
+  "by_emb": {
+    "0.02": [
+      {
+        "param": "tok_emb.weight",
+        "custom_std": 0.020245278254151344,
+        "official_std": 0.02020716853439808,
+        "ratio": 1.0018859505075337,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.norm.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.norm.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.A_log",
+        "custom_std": 0.7641967535018921,
+        "official_std": 0.7641967535018921,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.D",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.in_proj.weight",
+        "custom_std": 0.051732830703258514,
+        "official_std": 0.051732830703258514,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.conv1d.weight",
+        "custom_std": 0.2850051522254944,
+        "official_std": 0.2850051522254944,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.conv1d.bias",
+        "custom_std": 0.28987187147140503,
+        "official_std": 0.28987187147140503,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.x_proj.weight",
+        "custom_std": 0.03665124252438545,
+        "official_std": 0.03665124252438545,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.dt_proj.weight",
+        "custom_std": 0.20608465373516083,
+        "official_std": 0.20608465373516083,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.dt_proj.bias",
+        "custom_std": 1.3609427213668823,
+        "official_std": 1.3609427213668823,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.out_proj.weight",
+        "custom_std": 0.018308376893401146,
+        "official_std": 0.018316078931093216,
+        "ratio": 0.9995794930934155,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.norm.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.norm.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.A_log",
+        "custom_std": 0.7641967535018921,
+        "official_std": 0.7641967535018921,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.D",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.in_proj.weight",
+        "custom_std": 0.05196182057261467,
+        "official_std": 0.05195794999599457,
+        "ratio": 1.0000744944059647,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.conv1d.weight",
+        "custom_std": 0.28688937425613403,
+        "official_std": 0.28539517521858215,
+        "ratio": 1.0052355441412333,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.conv1d.bias",
+        "custom_std": 0.285470575094223,
+        "official_std": 0.3027057647705078,
+        "ratio": 0.9430628957814814,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.x_proj.weight",
+        "custom_std": 0.03649469092488289,
+        "official_std": 0.036490850150585175,
+        "ratio": 1.0001052530780146,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.dt_proj.weight",
+        "custom_std": 0.20523929595947266,
+        "official_std": 0.20673015713691711,
+        "ratio": 0.9927883710916107,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.dt_proj.bias",
+        "custom_std": 1.3410483598709106,
+        "official_std": 1.3013920783996582,
+        "ratio": 1.030472201367645,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.out_proj.weight",
+        "custom_std": 0.018360741436481476,
+        "official_std": 0.01836189068853855,
+        "ratio": 0.9999374110173854,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.norm.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.norm.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.A_log",
+        "custom_std": 0.7641967535018921,
+        "official_std": 0.7641967535018921,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.D",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.in_proj.weight",
+        "custom_std": 0.051868267357349396,
+        "official_std": 0.05187254399061203,
+        "ratio": 0.999917554973525,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.conv1d.weight",
+        "custom_std": 0.2918241322040558,
+        "official_std": 0.288679838180542,
+        "ratio": 1.0108919765347357,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.conv1d.bias",
+        "custom_std": 0.293046772480011,
+        "official_std": 0.2863721251487732,
+        "ratio": 1.0233076013518083,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.x_proj.weight",
+        "custom_std": 0.03662841022014618,
+        "official_std": 0.03663907200098038,
+        "ratio": 0.9997090051616506,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.dt_proj.weight",
+        "custom_std": 0.20489731431007385,
+        "official_std": 0.2061164677143097,
+        "ratio": 0.9940851237275924,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.dt_proj.bias",
+        "custom_std": 1.3190573453903198,
+        "official_std": 1.3228604793548584,
+        "ratio": 0.9971250679690776,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.out_proj.weight",
+        "custom_std": 0.01826358772814274,
+        "official_std": 0.018265970051288605,
+        "ratio": 0.9998695758758404,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.norm.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.norm.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.A_log",
+        "custom_std": 0.7641967535018921,
+        "official_std": 0.7641967535018921,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.D",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.in_proj.weight",
+        "custom_std": 0.0517718680202961,
+        "official_std": 0.051791466772556305,
+        "ratio": 0.9996215833711318,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.conv1d.weight",
+        "custom_std": 0.28270336985588074,
+        "official_std": 0.2894055247306824,
+        "ratio": 0.9768416484756517,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.conv1d.bias",
+        "custom_std": 0.2876075208187103,
+        "official_std": 0.28776007890701294,
+        "ratio": 0.9994698427631725,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.x_proj.weight",
+        "custom_std": 0.03673451766371727,
+        "official_std": 0.03670422360301018,
+        "ratio": 1.0008253562596705,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.dt_proj.weight",
+        "custom_std": 0.2050648033618927,
+        "official_std": 0.2060125321149826,
+        "ratio": 0.9953996548493421,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.dt_proj.bias",
+        "custom_std": 1.3944690227508545,
+        "official_std": 1.3226572275161743,
+        "ratio": 1.0542935794253632,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.out_proj.weight",
+        "custom_std": 0.0182560533285141,
+        "official_std": 0.018256094306707382,
+        "ratio": 0.9999977553691061,
+        "flag": false
+      },
+      {
+        "param": "ln_f.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "ln_f.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      }
+    ],
+    "1.0": [
+      {
+        "param": "tok_emb.weight",
+        "custom_std": 1.0122638940811157,
+        "official_std": 1.010358452796936,
+        "ratio": 1.0018859062136858,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.norm.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.norm.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.A_log",
+        "custom_std": 0.7641967535018921,
+        "official_std": 0.7641967535018921,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.D",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.in_proj.weight",
+        "custom_std": 0.051732830703258514,
+        "official_std": 0.051732830703258514,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.conv1d.weight",
+        "custom_std": 0.2850051522254944,
+        "official_std": 0.2850051522254944,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.conv1d.bias",
+        "custom_std": 0.28987187147140503,
+        "official_std": 0.28987187147140503,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.x_proj.weight",
+        "custom_std": 0.03665124252438545,
+        "official_std": 0.03665124252438545,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.dt_proj.weight",
+        "custom_std": 0.20608465373516083,
+        "official_std": 0.20608465373516083,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.dt_proj.bias",
+        "custom_std": 1.3609427213668823,
+        "official_std": 1.3609427213668823,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.0.ssm.out_proj.weight",
+        "custom_std": 0.018308376893401146,
+        "official_std": 0.018316078931093216,
+        "ratio": 0.9995794930934155,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.norm.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.norm.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.A_log",
+        "custom_std": 0.7641967535018921,
+        "official_std": 0.7641967535018921,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.D",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.in_proj.weight",
+        "custom_std": 0.05196182057261467,
+        "official_std": 0.05195794999599457,
+        "ratio": 1.0000744944059647,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.conv1d.weight",
+        "custom_std": 0.28688937425613403,
+        "official_std": 0.28539517521858215,
+        "ratio": 1.0052355441412333,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.conv1d.bias",
+        "custom_std": 0.285470575094223,
+        "official_std": 0.3027057647705078,
+        "ratio": 0.9430628957814814,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.x_proj.weight",
+        "custom_std": 0.03649469092488289,
+        "official_std": 0.036490850150585175,
+        "ratio": 1.0001052530780146,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.dt_proj.weight",
+        "custom_std": 0.20523929595947266,
+        "official_std": 0.20673015713691711,
+        "ratio": 0.9927883710916107,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.dt_proj.bias",
+        "custom_std": 1.3410483598709106,
+        "official_std": 1.3013920783996582,
+        "ratio": 1.030472201367645,
+        "flag": false
+      },
+      {
+        "param": "blocks.1.ssm.out_proj.weight",
+        "custom_std": 0.018360741436481476,
+        "official_std": 0.01836189068853855,
+        "ratio": 0.9999374110173854,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.norm.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.norm.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.A_log",
+        "custom_std": 0.7641967535018921,
+        "official_std": 0.7641967535018921,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.D",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.in_proj.weight",
+        "custom_std": 0.051868267357349396,
+        "official_std": 0.05187254399061203,
+        "ratio": 0.999917554973525,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.conv1d.weight",
+        "custom_std": 0.2918241322040558,
+        "official_std": 0.288679838180542,
+        "ratio": 1.0108919765347357,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.conv1d.bias",
+        "custom_std": 0.293046772480011,
+        "official_std": 0.2863721251487732,
+        "ratio": 1.0233076013518083,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.x_proj.weight",
+        "custom_std": 0.03662841022014618,
+        "official_std": 0.03663907200098038,
+        "ratio": 0.9997090051616506,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.dt_proj.weight",
+        "custom_std": 0.20489731431007385,
+        "official_std": 0.2061164677143097,
+        "ratio": 0.9940851237275924,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.dt_proj.bias",
+        "custom_std": 1.3190573453903198,
+        "official_std": 1.3228604793548584,
+        "ratio": 0.9971250679690776,
+        "flag": false
+      },
+      {
+        "param": "blocks.2.ssm.out_proj.weight",
+        "custom_std": 0.01826358772814274,
+        "official_std": 0.018265970051288605,
+        "ratio": 0.9998695758758404,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.norm.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.norm.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.A_log",
+        "custom_std": 0.7641967535018921,
+        "official_std": 0.7641967535018921,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.D",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.in_proj.weight",
+        "custom_std": 0.0517718680202961,
+        "official_std": 0.051791466772556305,
+        "ratio": 0.9996215833711318,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.conv1d.weight",
+        "custom_std": 0.28270336985588074,
+        "official_std": 0.2894055247306824,
+        "ratio": 0.9768416484756517,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.conv1d.bias",
+        "custom_std": 0.2876075208187103,
+        "official_std": 0.28776007890701294,
+        "ratio": 0.9994698427631725,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.x_proj.weight",
+        "custom_std": 0.03673451766371727,
+        "official_std": 0.03670422360301018,
+        "ratio": 1.0008253562596705,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.dt_proj.weight",
+        "custom_std": 0.2050648033618927,
+        "official_std": 0.2060125321149826,
+        "ratio": 0.9953996548493421,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.dt_proj.bias",
+        "custom_std": 1.3944690227508545,
+        "official_std": 1.3226572275161743,
+        "ratio": 1.0542935794253632,
+        "flag": false
+      },
+      {
+        "param": "blocks.3.ssm.out_proj.weight",
+        "custom_std": 0.0182560533285141,
+        "official_std": 0.018256094306707382,
+        "ratio": 0.9999977553691061,
+        "flag": false
+      },
+      {
+        "param": "ln_f.weight",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      },
+      {
+        "param": "ln_f.bias",
+        "custom_std": 0.0,
+        "official_std": 0.0,
+        "ratio": 1.0,
+        "flag": false
+      }
+    ]
+  }
+}

@@ -170,3 +170,34 @@ def test_official_forward_shape():
     m = build_model("mamba_ssm", vocab_size=VOCAB, **SMALL).cuda()
     x = torch.randint(0, VOCAB, (2, 64), device="cuda")
     assert m(x).shape == (2, 64, VOCAB)
+
+
+@pytest.mark.parametrize("mixer_cls", MIXERS)
+def test_copy_official_to_custom_makes_parameters_identical(mixer_cls):
+    from src.models.mamba_official import copy_official_to_custom
+    torch.manual_seed(0)
+    official = OracleMamba(vocab_size=VOCAB, **SMALL, mixer_cls=mixer_cls,
+                           emb_init_std=1.0)
+    torch.manual_seed(1)
+    custom = build_model("mamba", vocab_size=VOCAB, **SMALL)
+    written = copy_official_to_custom(official, custom)
+    c, o = _shared_params(custom), _shared_params(official)
+    assert sorted(written) == sorted(c)
+    for n in c:
+        assert torch.equal(c[n], o[n]), n
+    # tied head follows the copied embedding
+    assert torch.equal(custom.head.weight, official.tok_emb.weight)
+
+
+@pytest.mark.skipif(_real_mixer() is None or not torch.cuda.is_available(),
+                    reason="needs mamba-ssm and CUDA")
+def test_copied_models_agree_on_forward():
+    from src.models.mamba_official import copy_official_to_custom
+    torch.manual_seed(0)
+    official = build_model("mamba_ssm", vocab_size=VOCAB, **SMALL).cuda()
+    custom = build_model("mamba", vocab_size=VOCAB, **SMALL).cuda()
+    copy_official_to_custom(official, custom)
+    official.eval(); custom.eval()
+    x = torch.randint(0, VOCAB, (2, 64), device="cuda")
+    with torch.no_grad():
+        assert (official(x) - custom(x)).abs().max().item() < 1e-3
