@@ -17,6 +17,12 @@ Usage:
     # the selectivity ablation (Mamba only) — the Selective Copying gate control
     python src/train_task.py --config configs/recall/mamba_small.yaml \
         --task selective_copy --task_args n_data=4,seq_len=128 --ablate
+
+    # the same model on the official mamba-ssm kernels (CUDA only), with the
+    # original oracle notebook's harness settings
+    python src/train_task.py --config configs/recall/mamba_small.yaml \
+        --arch mamba_ssm --emb_init_std 1.0 --out_proj_depth_scale false \
+        --decay_1d true --task selective_copy --task_args n_data=4,seq_len=64
 """
 
 import argparse
@@ -58,6 +64,24 @@ def get_lr(step: int, warmup_steps: int, max_steps: int, lr: float) -> float:
         return lr * (step + 1) / warmup_steps
     prog = (step - warmup_steps) / max(1, max_steps - warmup_steps)
     return lr * (0.1 + 0.9 * 0.5 * (1.0 + math.cos(math.pi * min(1.0, prog))))
+
+
+MAMBA_ARCHS = ("mamba", "mamba_ssm")
+
+
+def str2bool(s: str) -> bool:
+    v = s.strip().lower()
+    if v in ("1", "true", "yes", "on"):
+        return True
+    if v in ("0", "false", "no", "off"):
+        return False
+    raise argparse.ArgumentTypeError(f"expected true/false, got {s!r}")
+
+
+def count_ablation_only(model) -> int:
+    """Parameters that exist only for the custom model's --ablate path."""
+    return sum(p.numel() for n, p in model.named_parameters()
+               if p.requires_grad and ".fixed_" in n)
 
 
 def set_seed(seed: int):
@@ -116,6 +140,15 @@ def main():
                     help="LR multiplier for dt_proj/x_proj/A_log (see src/optim.py). "
                          "Overrides config; default 1.0 if set nowhere.")
     ap.add_argument("--seed", type=int, default=None, help="override config seed")
+    ap.add_argument("--arch", default=None,
+                    help="override config arch, e.g. mamba_ssm with mamba_small.yaml")
+    ap.add_argument("--emb_init_std", type=float, default=None,
+                    help="Mamba archs: embedding init std (see apply_model_init).")
+    ap.add_argument("--out_proj_depth_scale", type=str2bool, default=None,
+                    help="Mamba archs: divide out_proj init by sqrt(n_layers).")
+    ap.add_argument("--decay_1d", type=str2bool, default=None,
+                    help="Weight-decay biases and norm gains too (see src/optim.py). "
+                         "Overrides config; default false if set nowhere.")
     ap.add_argument("--batch_size", type=int, default=None)
     ap.add_argument("--device", default=None)
     ap.add_argument("--ablate", action="store_true",
@@ -128,6 +161,17 @@ def main():
 
     cfg = yaml.safe_load(open(args.config))
     cfg.setdefault("ssm_lr_scale", 1.0)
+    cfg.setdefault("decay_1d", False)
+    if args.arch is not None:
+        cfg["arch"] = args.arch
+    if args.decay_1d is not None:
+        cfg["decay_1d"] = args.decay_1d
+    for key in ("emb_init_std", "out_proj_depth_scale"):
+        val = getattr(args, key)
+        if val is not None:
+            if cfg["arch"] not in MAMBA_ARCHS:
+                raise SystemExit(f"--{key} only applies to {MAMBA_ARCHS}")
+            cfg["model"][key] = val
     if args.steps is not None:
         cfg["max_steps"] = args.steps
     if args.lr is not None:
@@ -152,14 +196,21 @@ def main():
 
     model = build_model(arch, vocab_size=cfg["vocab_size"], **cfg["model"]).to(device)
     n_params = count_parameters(model)
+    n_ablation_only = count_ablation_only(model)
 
     if not args.quiet:
         print(f"task   : {args.task}  {task_kwargs}")
-        print(f"arch   : {arch}  ({n_params:,} params)"
+        print(f"arch   : {arch}  ({n_params:,} params"
+              + (f", {n_ablation_only:,} of them ablation-only" if n_ablation_only else "")
+              + ")"
               + ("  [ABLATED: no position-wise selectivity]" if args.ablate else ""))
         print(f"device : {device}   lr={cfg['lr']}  steps={cfg['max_steps']}  "
               f"batch={cfg['batch_size']}  seed={cfg['seed']}")
-        print(describe_param_groups(model, ssm_lr_scale=cfg["ssm_lr_scale"]))
+        if arch in MAMBA_ARCHS:
+            print(f"init   : emb_init_std={model.emb_init_std}  "
+                  f"out_proj_depth_scale={model.out_proj_depth_scale}")
+        print(describe_param_groups(model, ssm_lr_scale=cfg["ssm_lr_scale"],
+                                    decay_1d=cfg["decay_1d"]))
 
     batcher = make_batcher(args.task, **task_kwargs)
 
@@ -168,7 +219,8 @@ def main():
                    for i in range(cfg["eval_batches"])]
 
     optimizer = torch.optim.AdamW(
-        build_param_groups(model, cfg["weight_decay"], ssm_lr_scale=cfg["ssm_lr_scale"]),
+        build_param_groups(model, cfg["weight_decay"], ssm_lr_scale=cfg["ssm_lr_scale"],
+                           decay_1d=cfg["decay_1d"]),
         lr=cfg["lr"], betas=(0.9, 0.95))
 
     history, t0, stopped_early = [], time.time(), False
@@ -213,7 +265,12 @@ def main():
     record = {
         "task": args.task, "task_args": task_kwargs, "arch": arch,
         "ablate": bool(args.ablate), "n_params": n_params,
+        "n_params_ablation_only": n_ablation_only,
         "lr": cfg["lr"], "ssm_lr_scale": cfg["ssm_lr_scale"],
+        "decay_1d": cfg["decay_1d"],
+        "emb_init_std": getattr(model, "emb_init_std", None),
+        "out_proj_depth_scale": getattr(model, "out_proj_depth_scale", None),
+        "model_cfg": cfg["model"],
         "seed": cfg["seed"], "batch_size": cfg["batch_size"],
         "steps_run": history[-1]["step"] if history else 0,
         "max_steps": cfg["max_steps"], "stopped_early": stopped_early,

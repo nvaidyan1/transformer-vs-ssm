@@ -21,7 +21,19 @@ exactly the two models that lost the enwik8 comparison:
     bad interaction.
 
 No weight decay for: SSM dynamics (`*.A_log`, `*.D`), weight-norm gains (`*weight_g`),
-and anything with ndim < 2 (LayerNorm gains, biases). Weight decay for everything else.
+anything tagged `_no_weight_decay` (the official mamba-ssm mixer tags A_log and D), and,
+by default, anything with ndim < 2 (LayerNorm gains, biases). Weight decay for
+everything else.
+
+`decay_1d=True` drops the ndim < 2 exemption, so biases and norm gains are decayed and
+only the explicit exemptions above remain. That is what the original oracle notebook's
+optimizer did (it exempted only `_no_weight_decay` params), and it is one of the two
+harness differences Phase 0 tests (plan2.md 0.2). Note it also decays the custom
+model's ablation-only fixed_delta_pre/fixed_B/fixed_C when --ablate is used.
+
+Matching is by name suffix and by tag, never by module path, so the custom model
+(`blocks.i.ssm.*`) and the official-kernel model (`blocks.i.mixer.*`) get identical
+group membership -- tests/test_mamba_official.py checks this name by name.
 
 Axis 2 -- why learning rate is grouped
 -----------------------------------------
@@ -63,13 +75,15 @@ NO_DECAY_SUBSTRINGS = ("weight_g",)
 SSM_SELECTIVITY_SUFFIXES = ("dt_proj.weight", "dt_proj.bias", "A_log", "x_proj.weight")
 
 
-def is_no_decay(name: str, param: torch.nn.Parameter) -> bool:
+def is_no_decay(name: str, param: torch.nn.Parameter, decay_1d: bool = False) -> bool:
     """True if this parameter should be exempt from weight decay."""
     if any(name.endswith(s) for s in NO_DECAY_SUFFIXES):
         return True
     if any(s in name for s in NO_DECAY_SUBSTRINGS):
         return True
-    return param.ndim < 2
+    if getattr(param, "_no_weight_decay", False):
+        return True
+    return param.ndim < 2 and not decay_1d
 
 
 def is_ssm_selectivity(name: str) -> bool:
@@ -78,7 +92,7 @@ def is_ssm_selectivity(name: str) -> bool:
 
 
 def build_param_groups(model: torch.nn.Module, weight_decay: float,
-                       ssm_lr_scale: float = 1.0) -> list:
+                       ssm_lr_scale: float = 1.0, decay_1d: bool = False) -> list:
     """Split model parameters into up to four groups (decay x lr-scale).
 
     Each returned dict carries a `lr_scale` key (not a native AdamW field) that the
@@ -94,7 +108,7 @@ def build_param_groups(model: torch.nn.Module, weight_decay: float,
     for name, p in model.named_parameters():
         if not p.requires_grad:
             continue
-        key = (is_no_decay(name, p), is_ssm_selectivity(name))
+        key = (is_no_decay(name, p, decay_1d), is_ssm_selectivity(name))
         buckets.setdefault(key, []).append(p)
 
     groups = []
@@ -107,18 +121,19 @@ def build_param_groups(model: torch.nn.Module, weight_decay: float,
     return groups
 
 
-def describe_param_groups(model: torch.nn.Module, ssm_lr_scale: float = 1.0) -> str:
+def describe_param_groups(model: torch.nn.Module, ssm_lr_scale: float = 1.0,
+                          decay_1d: bool = False) -> str:
     """Human-readable summary — printed at train start so runs are auditable."""
     counts = {}  # (no_decay, boosted) -> [n_tensors, n_params]
     for name, p in model.named_parameters():
         if not p.requires_grad:
             continue
-        key = (is_no_decay(name, p), is_ssm_selectivity(name))
+        key = (is_no_decay(name, p, decay_1d), is_ssm_selectivity(name))
         c = counts.setdefault(key, [0, 0])
         c[0] += 1
         c[1] += p.numel()
 
-    lines = ["  param groups:"]
+    lines = [f"  param groups (decay_1d={decay_1d}):"]
     labels = {(False, False): "decay, base-lr",
               (True, False): "no-decay, base-lr",
               (False, True): f"decay, {ssm_lr_scale}x-lr",

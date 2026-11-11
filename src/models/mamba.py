@@ -345,6 +345,54 @@ class MambaSSM(nn.Module):
         return out, delta if return_delta else None
 
 
+# Model-level init defaults: the reference language-model recipe
+# (MambaLMHeadModel._init_weights in mamba-ssm). Both Mamba archs use these unless a
+# config overrides them, so they can only differ in the block implementation.
+DEFAULT_EMB_INIT_STD = 0.02
+DEFAULT_OUT_PROJ_DEPTH_SCALE = True
+
+
+def apply_model_init(model: nn.Module, n_layers: int,
+                     emb_init_std: float = DEFAULT_EMB_INIT_STD,
+                     out_proj_depth_scale: bool = DEFAULT_OUT_PROJ_DEPTH_SCALE):
+    """Model-level init, shared by the custom and official-kernel Mamba models.
+
+    With the defaults this matches the reference model-level init exactly (see
+    DT_RANK_DIVISOR docstring in this file for how this was found to differ from
+    what we had):
+      - nn.Linear biases are zeroed, UNLESS marked `_no_reinit` (dt_proj.bias).
+        Conv1d bias is untouched -- the reference's check is `isinstance(m,
+        nn.Linear)`, which a name-suffix rule like `name.endswith(".bias")`
+        would get wrong for conv1d.bias.
+      - nn.Embedding weight: normal(0, emb_init_std). The reference uses 0.02.
+        1.0 reproduces PyTorch's nn.Embedding default, which is what the original
+        oracle wrapper had (it applied no model-level init at all). The head is
+        tied to the embedding, so this also sets the head's scale.
+      - Every other Linear.weight (in_proj, x_proj, dt_proj, ...) is left at
+        whatever it was after construction -- PyTorch's own default init, or a
+        module's own deliberate init (dt_proj.weight is set in the mixer).
+      - EXCEPT `out_proj.weight` when out_proj_depth_scale: the GPT-2 / Megatron
+        residual-depth scheme (kaiming_uniform_, then divided by sqrt(n_layers)) --
+        each block's out_proj is one residual write, matching
+        n_residuals_per_layer=1 in the reference (no per-block MLP, same as theirs).
+        When False, out_proj keeps PyTorch's default kaiming_uniform_ init
+        unscaled, as in the original oracle wrapper.
+    """
+    for m in model.modules():
+        if isinstance(m, nn.Linear):
+            if m.bias is not None and not getattr(m.bias, "_no_reinit", False):
+                nn.init.zeros_(m.bias)
+        elif isinstance(m, nn.Embedding):
+            nn.init.normal_(m.weight, mean=0.0, std=emb_init_std)
+
+    if out_proj_depth_scale:
+        for name, p in model.named_parameters():
+            if name.endswith("out_proj.weight"):
+                nn.init.kaiming_uniform_(p, a=math.sqrt(5))
+                with torch.no_grad():
+                    p /= math.sqrt(n_layers)
+
+
 class MambaBlock(nn.Module):
     """Pre-LN residual block wrapping one MambaSSM mixer."""
 
@@ -375,6 +423,8 @@ class Mamba(nn.Module):
         dropout:    dropout probability
         scan:       "sequential" (default) or "parallel" — see MAMBA_SCAN above.
                     Numerically equivalent; pick by sequence length.
+        emb_init_std, out_proj_depth_scale: model-level init, see apply_model_init.
+                    Shared with the official-kernel model (src/models/mamba_official.py).
     """
 
     def __init__(
@@ -387,8 +437,12 @@ class Mamba(nn.Module):
         expand: int,
         dropout: float,
         scan: str = None,
+        emb_init_std: float = DEFAULT_EMB_INIT_STD,
+        out_proj_depth_scale: bool = DEFAULT_OUT_PROJ_DEPTH_SCALE,
     ):
         super().__init__()
+        self.emb_init_std = emb_init_std
+        self.out_proj_depth_scale = out_proj_depth_scale
         self.tok_emb = nn.Embedding(vocab_size, d_model)
 
         self.blocks = nn.ModuleList([
@@ -405,37 +459,8 @@ class Mamba(nn.Module):
         self._init_weights()
 
     def _init_weights(self):
-        """Matches the reference model-level init exactly (see DT_RANK_DIVISOR
-        docstring in this file for how this was found to differ from what we had).
-
-        Reference behaviour, reproduced here:
-          - nn.Linear biases are zeroed, UNLESS marked `_no_reinit` (dt_proj.bias).
-            Conv1d bias is untouched -- the reference's check is `isinstance(m,
-            nn.Linear)`, which a name-suffix rule like `name.endswith(".bias")`
-            would get wrong for conv1d.bias.
-          - nn.Embedding weight: normal(0, 0.02).
-          - Every other Linear.weight (in_proj, x_proj, dt_proj, ...) is left at
-            whatever it was after construction -- PyTorch's own default init, or a
-            module's own deliberate init (dt_proj.weight is already set in
-            MambaSSM.__init__ and is no longer at risk of being overwritten, since
-            this function no longer touches Linear.weight in general).
-          - EXCEPT `out_proj.weight`: the GPT-2 / Megatron residual-depth scheme
-            (kaiming_uniform_, then divided by sqrt(n_layers)) -- each block's
-            ssm.out_proj is one residual write, matching n_residuals_per_layer=1
-            in the reference (we have no per-block MLP, same as their case).
-        """
-        for m in self.modules():
-            if isinstance(m, nn.Linear):
-                if m.bias is not None and not getattr(m.bias, "_no_reinit", False):
-                    nn.init.zeros_(m.bias)
-            elif isinstance(m, nn.Embedding):
-                nn.init.normal_(m.weight, mean=0.0, std=0.02)
-
-        for name, p in self.named_parameters():
-            if name.endswith("out_proj.weight"):
-                nn.init.kaiming_uniform_(p, a=math.sqrt(5))
-                with torch.no_grad():
-                    p /= math.sqrt(self.n_layers)
+        apply_model_init(self, self.n_layers, self.emb_init_std,
+                         self.out_proj_depth_scale)
 
     def forward(self, x: torch.Tensor, return_delta: bool = False,
                 input_independent: bool = False):

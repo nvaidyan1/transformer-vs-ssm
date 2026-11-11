@@ -1,5 +1,10 @@
 # Small Mamba for synthetic-task experiments.
-# Parameter count matched to transformer_small / tcn_small within 1.6%.
+# Parameters: 449,752 at vocab_size 64, of which 1,120 are the ablation-only
+# fixed_* params; 448,632 trainable otherwise, identical to arch mamba_ssm (pass
+# --arch mamba_ssm to train the same model on the official kernels).
+# NOT matched to transformer_small (667,264) / tcn_small (670,080): ~33% smaller.
+# The older 677,784 figure predates the low-rank dt_proj refactor. Re-matching is
+# plan2.md 0.3.
 arch: mamba
 seed: 0
 vocab_size: 64
@@ -14,7 +19,7 @@ eval_every: 250
 eval_batches: 8
 
 model:
-  n_layers: 4       # -> 677,784 params at vocab_size 64
+  n_layers: 4       # -> 449,752 params at vocab_size 64 (see header)
   d_model: 124
   d_state: 16
   d_conv: 4

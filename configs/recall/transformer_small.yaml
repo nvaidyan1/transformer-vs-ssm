@@ -1,5 +1,6 @@
 # Small transformer for synthetic-task experiments.
-# Parameter count matched to tcn_small / mamba_small within 1.6% (see PLAN.md §4).
+# 667,264 params; matched to tcn_small (670,080) within 0.5%. mamba_small is
+# 448,632 (+1,120 ablation-only), NOT matched; re-matching is plan2.md 0.3.
 arch: transformer
 seed: 0
 vocab_size: 64

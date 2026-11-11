@@ -35,19 +35,30 @@ _CONFIGS = {
         dropout=0.1,
     ),
 }
+# Official-kernel Mamba: same block dimensions as the custom one.
+_CONFIGS["mamba_ssm"] = dict(_CONFIGS["mamba"])
 
 _CLASSES = {
     "transformer": Transformer,
     "tcn": TCN,
     "mamba": Mamba,
+    "mamba_ssm": None,   # resolved lazily: needs CUDA + mamba-ssm, see mamba_official.py
 }
+
+
+def _get_class(arch: str):
+    if arch == "mamba_ssm":
+        from src.models.mamba_official import OracleMamba
+        return OracleMamba
+    return _CLASSES[arch]
 
 
 def build_model(arch: str, vocab_size: int = 256, **overrides):
     """Instantiate a model by name with optional config overrides.
 
     Args:
-        arch:        one of 'transformer', 'tcn', 'mamba'
+        arch:        one of 'transformer', 'tcn', 'mamba', 'mamba_ssm' (official
+                     kernels; requires CUDA and the mamba-ssm package)
         vocab_size:  token vocabulary (256 = raw bytes, the enwik8 setting).
                      Synthetic-task runs may use a smaller vocabulary; it must be
                      identical across architectures or the comparison is unfair.
@@ -60,7 +71,7 @@ def build_model(arch: str, vocab_size: int = 256, **overrides):
         raise ValueError(f"Unknown arch {arch!r}. Choose from {list(_CLASSES)}")
     cfg = {**_CONFIGS[arch], **overrides}
     cfg.pop("vocab_size", None)
-    return _CLASSES[arch](vocab_size=vocab_size, **cfg)
+    return _get_class(arch)(vocab_size=vocab_size, **cfg)
 
 
 def count_parameters(model) -> int:

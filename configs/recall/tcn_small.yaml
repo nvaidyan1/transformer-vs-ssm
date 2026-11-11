@@ -1,5 +1,6 @@
 # Small TCN for synthetic-task experiments.
-# Parameter count matched to transformer_small / mamba_small within 1.6%.
+# 670,080 params; matched to transformer_small (667,264) within 0.5%. mamba_small is
+# 448,632 (+1,120 ablation-only), NOT matched; re-matching is plan2.md 0.3.
 #
 # Receptive field is 769 with these settings. That is DELIBERATELY larger than any
 # sequence length used, so the TCN can see every position. Reach is therefore removed
