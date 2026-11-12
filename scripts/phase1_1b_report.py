@@ -49,7 +49,7 @@ def plot_hist(h: dict, path: Path):
     fig, ax = plt.subplots(figsize=(9, 3.2))
     ax.bar(ids, [pred.get(i, 0) for i in ids], width=0.8, color="#2a78d6")
     ax.axhline(n / 62, color="#999", lw=1, ls="--")
-    ax.text(63.6, n / 62, "uniform over\\n62 data ids", fontsize=7, color="#777", va="center")
+    ax.text(63.6, n / 62, "uniform over\n62 data ids", fontsize=7, color="#777", va="center")
     ax.set_xlabel("predicted token id at answer positions (data ids are 2-63)")
     ax.set_ylabel("count")
     ax.set_title(f"1.1 ablated model (re-run, seed 0): predictions on {n} validation answers",
