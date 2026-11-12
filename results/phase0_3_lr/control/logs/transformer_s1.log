@@ -1,0 +1,26 @@
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+task   : selective_copy  {'n_data': 4, 'seq_len': 64, 'vocab_size': 64}
+arch   : transformer  (452,296 params)
+device : cuda   lr=0.001  steps=4000  batch=32  seed=1
+  param groups (decay_1d=False):
+    decay, base-lr        :  14 tensors / 449,280 params
+    no-decay, base-lr     :  20 tensors / 3,016 params
+  step    250  train_loss 1.4438  val_loss 1.3257  val_acc 0.7832  (5s)
+  step    500  train_loss 0.4856  val_loss 0.5389  val_acc 0.8486  (9s)
+  step    750  train_loss 0.4701  val_loss 0.4374  val_acc 0.8613  (13s)
+  step   1000  train_loss 0.4157  val_loss 0.3755  val_acc 0.8838  (17s)
+  step   1250  train_loss 0.4245  val_loss 0.3053  val_acc 0.9062  (21s)
+  step   1500  train_loss 0.2653  val_loss 0.2538  val_acc 0.9189  (25s)
+  step   1750  train_loss 0.1731  val_loss 0.1220  val_acc 0.9609  (29s)
+  step   2000  train_loss 0.0276  val_loss 0.0161  val_acc 0.9961  (33s)
+  step   2250  train_loss 0.0153  val_loss 0.0147  val_acc 0.9980  (38s)
+  step   2500  train_loss 0.0048  val_loss 0.0055  val_acc 1.0000  (42s)
+  step   2750  train_loss 0.0113  val_loss 0.0075  val_acc 0.9990  (46s)
+  step   3000  train_loss 0.0068  val_loss 0.0028  val_acc 0.9990  (50s)
+  step   3250  train_loss 0.0052  val_loss 0.0030  val_acc 0.9990  (54s)
+  step   3500  train_loss 0.0028  val_loss 0.0061  val_acc 0.9980  (58s)
+  step   3750  train_loss 0.0082  val_loss 0.0002  val_acc 1.0000  (62s)
+  step   4000  train_loss 0.0004  val_loss 0.0001  val_acc 1.0000  (67s)
+
+final val_acc 1.0000  (chance ~0.0323)  in 66.7s
+saved -> /kaggle/working/phase0_3_control/transformer_s1.json

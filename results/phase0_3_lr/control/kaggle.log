@@ -1,0 +1,32 @@
+[{"stream_name":"stdout","time":1.012139437,"data":"\n"}
+,{"stream_name":"stdout","time":1.012261418,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":1.065349285,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":2.197873471,"data":"\n"}
+,{"stream_name":"stdout","time":2.197895195,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":2.209799229,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":2.209999894,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":2.210606929,"data":"\n"}
+,{"stream_name":"stdout","time":2.210615272,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":2.214549102,"data":"75e3dbd Phase 0.3 lr check results; lock picked lrs; Transformer control setup\n"}
+,{"stream_name":"stdout","time":2.21501364,"data":"\n"}
+,{"stream_name":"stdout","time":2.215024136,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":2.245280388,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.245297827,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.252026183,"data":"\n"}
+,{"stream_name":"stdout","time":2.252042677,"data":"$ pip install -q pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":7.650261836,"data":"\n"}
+,{"stream_name":"stdout","time":7.650292486,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":25.088707666,"data":".....................................s.s................................ [ 68%]\n"}
+,{"stream_name":"stdout","time":26.345718674,"data":".................................                                        [100%]\n"}
+,{"stream_name":"stdout","time":26.345747729,"data":"103 passed, 2 skipped in 16.24s\n"}
+,{"stream_name":"stdout","time":102.630083855,"data":"transformer_s1: done\n"}
+,{"stream_name":"stdout","time":103.286615112,"data":"transformer_s2: done\n"}
+,{"stream_name":"stdout","time":103.688085179,"data":"transformer_s0: done\n"}
+,{"stream_name":"stdout","time":103.688559848,"data":"CONTROL COMPLETE\n"}
+,{"stream_name":"stderr","time":105.791736918,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":105.791764109,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":106.064193331,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":106.06421884,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":106.700342325,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":107.992563029,"data":"[NbConvertApp] Writing 282569 bytes to __results__.html\n"}
+]
