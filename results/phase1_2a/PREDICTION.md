@@ -41,3 +41,6 @@ for mamba_ssm alone). The kernel enforces a 15-minute training deadline.
   `test_mamba_ssm_registered_and_lazy`, whose CUDA-only branch still expected 448,632
   parameters without the 1,120 new ablation-only ones. The kernel stopped before any
   training, as designed. Test fixed; no model or training change. Relaunched.
+- Attempt 2 (commit 632b055, ~4.5 GPU-min; ~7 of 20 in total): 139 tests passed on
+  Kaggle, the six 1.2a tests among them (both CUDA). Selective 0.999 (steps-to-0.95 1500,
+  early stop at 2750), ablated 0.014 at step 3000. Gate: **PASS**, as predicted.
