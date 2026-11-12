@@ -26,7 +26,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.models import build_model
 from src.optim import build_param_groups
-from src.tasks import IGNORE_INDEX, make_batcher
+from src.tasks import IGNORE_INDEX, chance_accuracy, make_batcher
 from src.train_task import (TRAIN_SEED_BASE, VAL_SEED_BASE, evaluate, get_lr,
                             set_seed, str2bool, to_torch, write_record)
 
@@ -111,7 +111,7 @@ def main():
             "task": "selective_copy", "task_args": task_kwargs, "model_cfg": model_cfg,
             "lr": cfg["lr"], "batch_size": cfg["batch_size"],
             "init_max_logit_diff": init_logit_diff, "device": str(device),
-            "chance_acc": 1.0 / max(1, (cfg["vocab_size"] - 1) // 2)}
+            "chance_acc": chance_accuracy("selective_copy", task_kwargs["vocab_size"])}
 
     def on_eval(history):
         h = history[-1]

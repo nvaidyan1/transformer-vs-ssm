@@ -61,3 +61,20 @@ Kaggle T4, commit 4dee336, ~12 GPU-min of 30. 143 tests passed.
 **Gate FAIL** (run 2 needs >= 0.9). Stopped per the rule; the ablation is not modified.
 Per the author's rule, the 1.1 and 1.2a ablation results are not usable in a post, and the
 1.2 ablated arms do not run.
+
+## Post-hoc amendment (2026-11-12, author's decision, after the results above)
+
+The gate as written failed and stays recorded as failed. The author amended it after
+seeing the results: its purpose was "the ablated model can learn to carry one item", and
+run 3 (random positions, n_data = 1, 1.000) satisfies that purpose. The ablation is
+cleared for use, worded as "input-dependent dynamics" (not "selection"), with the per-slot
+result and runs 2-4 reported beside it. Run 2 is re-run at CAP 20,000, report only.
+Logged in results/LOG.md.
+
+## Item 4 (2026-11-12): run 2 again at CAP 20,000, report only
+
+Written before the run. Same command as run 2 (mamba_ssm ablated, fixed positions,
+n_data 1, seed 0) with `--steps 20000`; gates nothing. Approved budget 6 GPU-min. Note
+the cosine schedule now spans 20,000 steps, so the lr at a given step is higher than in
+run 2. **Prediction:** it reaches >= 0.9 well before 20,000 steps (run 2 was still rising
+at 3000) and early-stops.

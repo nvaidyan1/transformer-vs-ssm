@@ -16,6 +16,10 @@ import json
 import math
 import sys
 from pathlib import Path
+ROOT_FOR_TASKS = __import__("pathlib").Path(__file__).parent.parent
+if str(ROOT_FOR_TASKS) not in sys.path:
+    sys.path.insert(0, str(ROOT_FOR_TASKS))
+from src.tasks import record_chance  # noqa: E402
 
 TARGET = 0.95
 CAP_FACTOR = 1.5
@@ -195,7 +199,7 @@ def main():
                              f"{'' if r.get('complete', True) else ' (partial)'} |")
         if pilots:
             plot_c(pilots, sel, abl, extra, d / "curves_stage_c.png",
-                   pilots[0].get("chance_acc", 1 / 31))
+                   record_chance(pilots[0]))
         g = gate_c([r for r in sel if r.get("complete", True)],
                    [r for r in abl if r.get("complete", True)], extra)
         summary["gate"] = g

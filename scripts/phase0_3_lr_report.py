@@ -11,6 +11,10 @@ import json
 import math
 import sys
 from pathlib import Path
+ROOT_FOR_TASKS = __import__("pathlib").Path(__file__).parent.parent
+if str(ROOT_FOR_TASKS) not in sys.path:
+    sys.path.insert(0, str(ROOT_FOR_TASKS))
+from src.tasks import record_chance  # noqa: E402
 
 FINAL_STEP = 4000
 COLLAPSE_TOL = 0.05
@@ -104,7 +108,7 @@ def plot(records: list, path: Path):
                     color=c, lw=2, ls="-" if r.get("complete", True) else "--",
                     label=f"lr {r['lr']:g}")
         if records:
-            ax.axhline(records[0]["chance_acc"], color="#999", lw=1, ls="--")
+            ax.axhline(record_chance(records[0]), color="#999", lw=1, ls="--")
         ax.set_title(arch, fontsize=9)
         ax.set_xlabel("step")
         ax.grid(color="#e6e6e6", lw=0.6)

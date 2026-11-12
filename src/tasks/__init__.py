@@ -49,3 +49,26 @@ __all__ = [
     "generate_mqar", "make_mqar_batch", "MQARSample",
     "generate_selective_copy", "make_selective_copy_batch", "SelectiveCopySample",
 ]
+
+
+def chance_accuracy(task: str, vocab_size: int, **_ignored) -> float:
+    """Accuracy of uniform guessing over the answer symbols.
+
+    mqar:           values are drawn from (vocab_size - 1) // 2 ids -> 1 / that.
+    selective_copy: data are drawn from ids [2, vocab_size) -> 1 / (vocab_size - 2).
+    Before 2026-11-12 the trainer used the MQAR formula for both tasks, recording 1/31
+    instead of 1/62 for selective_copy at vocab 64 (results/LOG.md).
+    """
+    if task == "mqar":
+        return 1.0 / max(1, (vocab_size - 1) // 2)
+    if task == "selective_copy":
+        return 1.0 / (vocab_size - 2)
+    raise ValueError(f"Unknown task {task!r}")
+
+
+def record_chance(record: dict) -> float:
+    """chance_accuracy for a saved result record (ignores its stored chance_acc, which
+    is wrong for selective_copy records written before 2026-11-12)."""
+    args = record.get("task_args", {})
+    return chance_accuracy(record.get("task", "selective_copy"),
+                           args.get("vocab_size", 64))

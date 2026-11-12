@@ -10,6 +10,10 @@ Usage:
 import json
 import sys
 from pathlib import Path
+ROOT_FOR_TASKS = __import__("pathlib").Path(__file__).parent.parent
+if str(ROOT_FOR_TASKS) not in sys.path:
+    sys.path.insert(0, str(ROOT_FOR_TASKS))
+from src.tasks import record_chance  # noqa: E402
 
 COLORS = {"official": "#2a78d6", "custom": "#eb6834"}   # categorical slots 1, 2
 
@@ -44,7 +48,7 @@ def plot(record: dict, path: Path):
     for k in ("official", "custom"):
         ys = [r[k] for r in rs]
         a1.plot(steps, ys, color=COLORS[k], lw=2, marker="o", ms=4, label=k)
-    a1.axhline(record["chance_acc"], color="#999", lw=1, ls="--")
+    a1.axhline(record_chance(record), color="#999", lw=1, ls="--")
     a1.set_title("val_acc, weight-copied start", fontsize=9)
     a1.set_ylabel("val_acc (answer positions)")
     a1.legend(fontsize=8, frameon=False, loc="upper left")

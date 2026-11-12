@@ -14,6 +14,10 @@ Usage:
 import json
 import sys
 from pathlib import Path
+ROOT_FOR_TASKS = __import__("pathlib").Path(__file__).parent.parent
+if str(ROOT_FOR_TASKS) not in sys.path:
+    sys.path.insert(0, str(ROOT_FOR_TASKS))
+from src.tasks import record_chance  # noqa: E402
 
 REPORT_STEPS = (1000, 2000)
 GATE_STEP = 2000
@@ -138,7 +142,7 @@ def plot(records: list, summary: dict, path: Path):
     rows = (n + cols - 1) // cols
     fig, axes = plt.subplots(rows, cols, figsize=(5.2 * cols, 3.6 * rows),
                              sharex=True, sharey=True, squeeze=False)
-    chance = records[0]["chance_acc"] if records else None
+    chance = record_chance(records[0]) if records else None
     for ax, key, cell in zip(axes.flat, keys, summary["cells"]):
         for arch in ARCHS:
             runs = [r for r in records if r["arch"] == arch and cell_key(r) == key

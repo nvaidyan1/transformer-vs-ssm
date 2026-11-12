@@ -72,3 +72,16 @@ def test_learning_rates_locked_by_lr_check():
     assert load("transformer_small")["lr"] == 1.0e-3
     assert load("tcn_small")["lr"] == 3.0e-4
     assert load("mamba_ssm_small")["lr"] == 1.0e-3
+
+
+def test_transformer_seq1024_counts_with_and_without_positional_table():
+    c = load("transformer_small_seq1024")
+    m = build_model("transformer", vocab_size=c["vocab_size"], **c["model"])
+    pe = m.pos_emb.weight.numel()
+    assert count_parameters(m) == 505_544 and pe == 106_496
+    assert count_parameters(m) - pe == 399_048
+    base = load("transformer_small")
+    assert {k: v for k, v in c.items() if k != "model"} == \
+           {k: v for k, v in base.items() if k != "model"}
+    assert {k: v for k, v in c["model"].items() if k != "max_seq_len"} == \
+           {k: v for k, v in base["model"].items() if k != "max_seq_len"}

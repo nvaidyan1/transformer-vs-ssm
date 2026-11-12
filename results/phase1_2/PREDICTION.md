@@ -40,3 +40,11 @@ Kaggle T4, commit 4dee336, ~31 GPU-min of the 40 cap. 143 tests passed.
 - Prediction: both reach 0.95 on every seed (held); "a similar range, no confident
   ordering" (wrong): the Transformer needed 6-8x more steps than mamba_ssm.
 - The ablated arm is blocked: the 1.1c gate failed (results/phase1_1c).
+
+### Setting 1 ablated arm (2026-11-12; cleared by the 1.1c post-hoc amendment)
+
+Written before the run. mamba_ssm `--ablate`, seeds 0-2, `--steps 4000` (CAP), early
+stop as above, one process at a time. Approved budget 10 GPU-min.
+**Prediction:** stays near chance (1/62) on every seed; **gate PASS** (selective
+0.997 / 1.000 / 0.999 from the pilots). The pilots ran with a 20,000-step schedule and
+the ablated arm runs with a 4000-step one; the gate compares final evals as specified.

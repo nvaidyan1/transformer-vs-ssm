@@ -41,7 +41,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.models import build_model, count_parameters
 from src.optim import build_param_groups, describe_param_groups
-from src.tasks import IGNORE_INDEX, make_batcher
+from src.tasks import IGNORE_INDEX, chance_accuracy, make_batcher
 
 TRAIN_SEED_BASE = 0
 VAL_SEED_BASE = 1_000_000_000   # disjoint from any training seed
@@ -310,7 +310,7 @@ def main():
             "complete": complete,
             "final_val_acc": final["acc"] if final else None,
             "final_val_loss": final["loss"] if final else None,
-            "chance_acc": 1.0 / max(1, (cfg["vocab_size"] - 1) // 2),
+            "chance_acc": chance_accuracy(args.task, task_kwargs["vocab_size"]),
             "wall_clock_s": round(time.time() - t0, 1),
             "device": str(device), "history": history,
         }
