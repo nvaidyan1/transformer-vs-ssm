@@ -1,0 +1,14 @@
+{
+  "cap": 9000,
+  "selective_steps_to_095": [
+    3250,
+    2750,
+    5750
+  ],
+  "transformer_steps_to_095": [
+    2500
+  ],
+  "gate": {
+    "verdict": "INCOMPLETE"
+  }
+}

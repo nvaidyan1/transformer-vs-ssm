@@ -69,3 +69,15 @@ seeds 0-2 to CAP, plus seed 0 to the full 20,000 steps.
 at seq_len 256, does not reach 0.95 within 20,000 steps at 1024 (low confidence). Gate
 (once the ablated arm runs): PASS, with the ablated arm near chance, including the
 20,000-step seed.
+
+### Setting 2 kernel 1: outcome (appended after the run; prediction above unchanged)
+
+Kaggle T4, commit 35b1e5f, ~60 GPU-min (at the cap). Kaggle did not return the kernel log
+on download; the per-run JSON and logs are complete.
+- mamba_ssm selective: steps-to-0.95 3250 / 2750 / 5750, early stop at 4750 / 5000 /
+  7000, final 0.993 / 0.996 / 0.996. ~10 steps/s (I had projected ~22). **CAP = 9000.**
+  Prediction (2500-6000) held.
+- Transformer (reference, seed 0): reached 0.95 at step 2500 and 0.99 by ~5000, but did not
+  satisfy the early-stop rule before the kernel deadline cut it at step 6500 (0.993,
+  partial). 3.9 steps/s. Prediction (no 0.95 within 20,000) was **wrong**: it learned far
+  faster here than at seq_len 256 (12,750-15,000 steps to 0.95), on one seed.

@@ -1,0 +1,33 @@
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+task   : selective_copy  {'n_data': 4, 'seq_len': 1024, 'vocab_size': 64}
+arch   : transformer  (505,544 params)
+device : cuda   lr=0.001  steps=20000  batch=32  seed=0
+  param groups (decay_1d=False):
+    decay, base-lr        :  14 tensors / 502,528 params
+    no-decay, base-lr     :  20 tensors / 3,016 params
+  step    250  train_loss 4.1231  val_loss 4.1404  val_acc 0.0176  (68s)
+  step    500  train_loss 3.8738  val_loss 3.8767  val_acc 0.0508  (133s)
+  step    750  train_loss 3.5349  val_loss 3.5047  val_acc 0.1133  (198s)
+  step   1000  train_loss 3.0635  val_loss 2.9496  val_acc 0.2773  (262s)
+  step   1250  train_loss 2.2741  val_loss 2.2519  val_acc 0.4551  (327s)
+  step   1500  train_loss 1.1888  val_loss 1.2983  val_acc 0.6846  (391s)
+  step   1750  train_loss 0.5208  val_loss 0.7401  val_acc 0.8213  (455s)
+  step   2000  train_loss 0.6524  val_loss 0.5199  val_acc 0.8760  (519s)
+  step   2250  train_loss 0.2758  val_loss 0.2525  val_acc 0.9482  (583s)
+  step   2500  train_loss 0.1785  val_loss 0.2069  val_acc 0.9561  (648s)
+  step   2750  train_loss 0.0689  val_loss 0.1379  val_acc 0.9678  (712s)
+  step   3000  train_loss 0.0631  val_loss 0.0850  val_acc 0.9795  (776s)
+  step   3250  train_loss 0.1277  val_loss 0.1706  val_acc 0.9707  (840s)
+  step   3500  train_loss 0.1171  val_loss 0.0810  val_acc 0.9834  (904s)
+  step   3750  train_loss 0.0294  val_loss 0.0838  val_acc 0.9795  (968s)
+  step   4000  train_loss 0.0532  val_loss 0.0809  val_acc 0.9824  (1033s)
+  step   4250  train_loss 0.0818  val_loss 0.0703  val_acc 0.9854  (1097s)
+  step   4500  train_loss 0.0051  val_loss 0.1020  val_acc 0.9756  (1161s)
+  step   4750  train_loss 0.0081  val_loss 0.0858  val_acc 0.9824  (1225s)
+  step   5000  train_loss 0.0144  val_loss 0.1206  val_acc 0.9736  (1289s)
+  step   5250  train_loss 0.0783  val_loss 0.0395  val_acc 0.9893  (1353s)
+  step   5500  train_loss 0.0091  val_loss 0.0532  val_acc 0.9844  (1417s)
+  step   5750  train_loss 0.0076  val_loss 0.0604  val_acc 0.9863  (1481s)
+  step   6000  train_loss 0.0026  val_loss 0.0701  val_acc 0.9883  (1545s)
+  step   6250  train_loss 0.0232  val_loss 0.0976  val_acc 0.9824  (1609s)
+  step   6500  train_loss 0.0015  val_loss 0.0403  val_acc 0.9932  (1673s)
