@@ -1,0 +1,21 @@
+{
+  "scan": "parallel",
+  "grad_checkpoint": false,
+  "tag": "",
+  "device": "cuda",
+  "batch_size": 32,
+  "task": {
+    "n_data": 4,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "gpu": "Tesla T4",
+  "parity": {
+    "max_abs_logit_diff": 5.960464477539062e-07,
+    "loss_ref": 4.175850868225098,
+    "loss_test": 4.175850868225098,
+    "max_abs_grad_diff": 1.0058283805847168e-07,
+    "max_rel_grad_diff": 1.2847971220253385e-06,
+    "n_grads": 47
+  }
+}

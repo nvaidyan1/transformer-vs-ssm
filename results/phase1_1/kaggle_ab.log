@@ -1,0 +1,86 @@
+[{"stream_name":"stdout","time":1.12060015,"data":"\n"}
+,{"stream_name":"stdout","time":1.120637301,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":1.170324278,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":2.134885418,"data":"\n"}
+,{"stream_name":"stdout","time":2.134906878,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":2.14655857,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":2.146725646,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":2.147349676,"data":"\n"}
+,{"stream_name":"stdout","time":2.147364645,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":2.151266822,"data":"6f11ebd Phase 1.1: prediction for stages A-C, speed bench, pilot runner (before any run)\n"}
+,{"stream_name":"stdout","time":2.151675014,"data":"\n"}
+,{"stream_name":"stdout","time":2.151685954,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":2.1814484,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.181465025,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.1883769969999998,"data":"\n"}
+,{"stream_name":"stdout","time":2.188391695,"data":"$ pip install -q pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":7.601188647,"data":"\n"}
+,{"stream_name":"stdout","time":7.601221611,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":25.143962026,"data":".....................................s.s................................ [ 64%]\n"}
+,{"stream_name":"stdout","time":26.463740193,"data":"........................................                                 [100%]\n"}
+,{"stream_name":"stdout","time":26.463767059,"data":"110 passed, 2 skipped in 16.40s\n"}
+,{"stream_name":"stdout","time":30.090128528,"data":"[  0.5 min] STAGE A start\n"}
+,{"stream_name":"stdout","time":30.090159244,"data":"\n"}
+,{"stream_name":"stdout","time":30.090164449,"data":"$ python scripts/bench_custom_mamba.py --steps 200 --warmup 20 --device cuda --scan sequential --grad_checkpoint true --out /kaggle/working/phase1_1/stage_a/config_sequential_ckpttrue.json\n"}
+,{"stream_name":"stdout","time":95.442268805,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":95.442306574,"data":"{\"scan\": \"sequential\", \"grad_checkpoint\": true, \"tag\": \"\", \"device\": \"cuda\", \"batch_size\": 32, \"gpu\": \"Tesla T4\", \"steps\": 200, \"seconds\": 55.11999320983887, \"steps_per_s\": 3.628447471657166, \"ms_per_step\": 275.59996604919434, \"t_start\": 1794446760.6116493, \"peak_mem_mib\": 154.70703125}\n"}
+,{"stream_name":"stdout","time":96.199385282,"data":"\n"}
+,{"stream_name":"stdout","time":96.199429152,"data":"$ python scripts/bench_custom_mamba.py --steps 200 --warmup 20 --device cuda --scan sequential --grad_checkpoint false --out /kaggle/working/phase1_1/stage_a/config_sequential_ckptfalse.json\n"}
+,{"stream_name":"stdout","time":136.278022244,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":136.278056584,"data":"{\"scan\": \"sequential\", \"grad_checkpoint\": false, \"tag\": \"\", \"device\": \"cuda\", \"batch_size\": 32, \"gpu\": \"Tesla T4\", \"steps\": 200, \"seconds\": 32.750792264938354, \"steps_per_s\": 6.106722499477112, \"ms_per_step\": 163.75396132469177, \"t_start\": 1794446823.8163655, \"peak_mem_mib\": 499.1416015625}\n"}
+,{"stream_name":"stdout","time":137.036240495,"data":"\n"}
+,{"stream_name":"stdout","time":137.036284982,"data":"$ python scripts/bench_custom_mamba.py --steps 200 --warmup 20 --device cuda --scan parallel --grad_checkpoint true --out /kaggle/working/phase1_1/stage_a/config_parallel_ckpttrue.json\n"}
+,{"stream_name":"stdout","time":187.111080335,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":187.111137169,"data":"{\"scan\": \"parallel\", \"grad_checkpoint\": true, \"tag\": \"\", \"device\": \"cuda\", \"batch_size\": 32, \"gpu\": \"Tesla T4\", \"steps\": 200, \"seconds\": 42.02208471298218, \"steps_per_s\": 4.759402142136289, \"ms_per_step\": 210.1104235649109, \"t_start\": 1794446865.3785565, \"peak_mem_mib\": 849.228515625}\n"}
+,{"stream_name":"stdout","time":187.846332444,"data":"\n"}
+,{"stream_name":"stdout","time":187.846368823,"data":"$ python scripts/bench_custom_mamba.py --steps 200 --warmup 20 --device cuda --scan parallel --grad_checkpoint false --out /kaggle/working/phase1_1/stage_a/config_parallel_ckptfalse.json\n"}
+,{"stream_name":"stdout","time":225.659740071,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":225.659768354,"data":"{\"scan\": \"parallel\", \"grad_checkpoint\": false, \"tag\": \"\", \"device\": \"cuda\", \"batch_size\": 32, \"gpu\": \"Tesla T4\", \"steps\": 200, \"seconds\": 30.844724416732788, \"steps_per_s\": 6.484091000388484, \"ms_per_step\": 154.22362208366394, \"t_start\": 1794446915.1040974, \"peak_mem_mib\": 2832.8916015625}\n"}
+,{"stream_name":"stdout","time":226.37728069,"data":"[  3.8 min] fastest: scan=parallel grad_checkpoint=false (6.48 steps/s)\n"}
+,{"stream_name":"stdout","time":226.377310526,"data":"\n"}
+,{"stream_name":"stdout","time":226.377316582,"data":"$ python scripts/bench_custom_mamba.py --scan parallel --grad_checkpoint false --parity --device cuda --out /kaggle/working/phase1_1/stage_a/parity_parallel_ckptfalse.json\n"}
+,{"stream_name":"stdout","time":230.257413545,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":230.257461581,"data":"{\"scan\": \"parallel\", \"grad_checkpoint\": false, \"tag\": \"\", \"device\": \"cuda\", \"batch_size\": 32, \"gpu\": \"Tesla T4\", \"parity\": {\"max_abs_logit_diff\": 5.960464477539062e-07, \"loss_ref\": 4.175850868225098, \"loss_test\": 4.175850868225098, \"max_abs_grad_diff\": 1.0058283805847168e-07, \"max_rel_grad_diff\": 1.2847971220253385e-06, \"n_grads\": 47}}\n"}
+,{"stream_name":"stdout","time":230.956456389,"data":"\n"}
+,{"stream_name":"stdout","time":230.956484224,"data":"$ python -m pytest tests/test_mamba_scan.py tests/test_selective_scan_parity.py tests/test_mamba_ablation.py -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":235.822941804,"data":".................                                                        [100%]\n"}
+,{"stream_name":"stdout","time":235.822978197,"data":"17 passed in 3.40s\n"}
+,{"stream_name":"stdout","time":312.501637959,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":312.501679421,"data":"{\"scan\": \"parallel\", \"grad_checkpoint\": false, \"tag\": \"k1p0\", \"device\": \"cuda\", \"batch_size\": 32, \"gpu\": \"Tesla T4\", \"steps\": 200, \"seconds\": 30.98555088043213, \"steps_per_s\": 6.454621406337597, \"ms_per_step\": 154.92775440216064, \"t_start\": 1794447001.8052735, \"peak_mem_mib\": 2832.8916015625}\n"}
+,{"stream_name":"stdout","time":313.208609386,"data":"[  5.2 min] concurrency k=1 done\n"}
+,{"stream_name":"stdout","time":428.430886244,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":428.430922617,"data":"{\"scan\": \"parallel\", \"grad_checkpoint\": false, \"tag\": \"k2p1\", \"device\": \"cuda\", \"batch_size\": 32, \"gpu\": \"Tesla T4\", \"steps\": 200, \"seconds\": 70.2187876701355, \"steps_per_s\": 2.8482405725876876, \"ms_per_step\": 351.0939383506775, \"t_start\": 1794447078.5016263, \"peak_mem_mib\": 2832.8916015625}\n"}
+,{"stream_name":"stdout","time":428.433642978,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":428.433664833,"data":"{\"scan\": \"parallel\", \"grad_checkpoint\": false, \"tag\": \"k2p0\", \"device\": \"cuda\", \"batch_size\": 32, \"gpu\": \"Tesla T4\", \"steps\": 200, \"seconds\": 70.22144556045532, \"steps_per_s\": 2.8481327663329745, \"ms_per_step\": 351.1072278022766, \"t_start\": 1794447078.501599, \"peak_mem_mib\": 2832.8916015625}\n"}
+,{"stream_name":"stdout","time":429.291368372,"data":"[  7.1 min] concurrency k=2 done\n"}
+,{"stream_name":"stdout","time":429.291399409,"data":"[  7.1 min] skip concurrency k=3: Stage A deadline\n"}
+,{"stream_name":"stdout","time":429.29140418,"data":"[  7.1 min] STAGE A end\n"}
+,{"stream_name":"stdout","time":429.291407934,"data":"[  7.1 min] STAGE B start (install)\n"}
+,{"stream_name":"stdout","time":429.29141158,"data":"\n"}
+,{"stream_name":"stdout","time":429.291415102,"data":"$ pip install -q packaging ninja wheel psutil\n"}
+,{"stream_name":"stdout","time":432.43048972,"data":"\n"}
+,{"stream_name":"stdout","time":432.430533095,"data":"$ pip install -q 'causal-conv1d\u003e=1.4.0' --no-build-isolation\n"}
+,{"stream_name":"stdout","time":447.819588981,"data":"\n"}
+,{"stream_name":"stdout","time":447.819640685,"data":"$ pip install -q mamba-ssm --no-build-isolation\n"}
+,{"stream_name":"stdout","time":449.268215134,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.4/216.4 kB 1.9 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":455.614084083,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 MB 23.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":455.697051838,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 60.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":455.772369057,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 729.6/729.6 kB 24.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":455.946992187,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 39.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":457.893825826,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 MB 19.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":457.976297647,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 43.0 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":458.586101969,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 29.3/29.3 MB 45.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":458.654216618,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 897.8/897.8 kB 38.0 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":484.899516243,"data":"[  8.1 min] STAGE B training start\n"}
+,{"stream_name":"stdout","time":595.304799143,"data":"[  9.9 min] mamba_ssm_s1: done\n"}
+,{"stream_name":"stdout","time":605.181161569,"data":"[ 10.1 min] mamba_ssm_s0: done\n"}
+,{"stream_name":"stdout","time":609.227879536,"data":"[ 10.1 min] mamba_ssm_s2: done\n"}
+,{"stream_name":"stdout","time":609.228404656,"data":"[ 10.1 min] STAGE B end\n"}
+,{"stream_name":"stdout","time":609.228418348,"data":"PHASE1_1_AB COMPLETE\n"}
+,{"stream_name":"stderr","time":611.287681305,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":611.287726999,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":611.534684592,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":611.534729983,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":612.177805419,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":613.478579819,"data":"[NbConvertApp] Writing 297801 bytes to __results__.html\n"}
+]

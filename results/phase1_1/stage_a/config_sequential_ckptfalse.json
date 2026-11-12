@@ -1,0 +1,19 @@
+{
+  "scan": "sequential",
+  "grad_checkpoint": false,
+  "tag": "",
+  "device": "cuda",
+  "batch_size": 32,
+  "task": {
+    "n_data": 4,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "gpu": "Tesla T4",
+  "steps": 200,
+  "seconds": 32.750792264938354,
+  "steps_per_s": 6.106722499477112,
+  "ms_per_step": 163.75396132469177,
+  "t_start": 1794446823.8163655,
+  "peak_mem_mib": 499.1416015625
+}

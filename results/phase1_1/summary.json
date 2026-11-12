@@ -1,0 +1,102 @@
+{
+  "stage_a": [
+    {
+      "scan": "parallel",
+      "grad_checkpoint": false,
+      "tag": "",
+      "device": "cuda",
+      "batch_size": 32,
+      "task": {
+        "n_data": 4,
+        "seq_len": 64,
+        "vocab_size": 64
+      },
+      "gpu": "Tesla T4",
+      "steps": 200,
+      "seconds": 30.844724416732788,
+      "steps_per_s": 6.484091000388484,
+      "ms_per_step": 154.22362208366394,
+      "t_start": 1794446915.1040974,
+      "peak_mem_mib": 2832.8916015625
+    },
+    {
+      "scan": "sequential",
+      "grad_checkpoint": false,
+      "tag": "",
+      "device": "cuda",
+      "batch_size": 32,
+      "task": {
+        "n_data": 4,
+        "seq_len": 64,
+        "vocab_size": 64
+      },
+      "gpu": "Tesla T4",
+      "steps": 200,
+      "seconds": 32.750792264938354,
+      "steps_per_s": 6.106722499477112,
+      "ms_per_step": 163.75396132469177,
+      "t_start": 1794446823.8163655,
+      "peak_mem_mib": 499.1416015625
+    },
+    {
+      "scan": "parallel",
+      "grad_checkpoint": true,
+      "tag": "",
+      "device": "cuda",
+      "batch_size": 32,
+      "task": {
+        "n_data": 4,
+        "seq_len": 64,
+        "vocab_size": 64
+      },
+      "gpu": "Tesla T4",
+      "steps": 200,
+      "seconds": 42.02208471298218,
+      "steps_per_s": 4.759402142136289,
+      "ms_per_step": 210.1104235649109,
+      "t_start": 1794446865.3785565,
+      "peak_mem_mib": 849.228515625
+    },
+    {
+      "scan": "sequential",
+      "grad_checkpoint": true,
+      "tag": "",
+      "device": "cuda",
+      "batch_size": 32,
+      "task": {
+        "n_data": 4,
+        "seq_len": 64,
+        "vocab_size": 64
+      },
+      "gpu": "Tesla T4",
+      "steps": 200,
+      "seconds": 55.11999320983887,
+      "steps_per_s": 3.628447471657166,
+      "ms_per_step": 275.59996604919434,
+      "t_start": 1794446760.6116493,
+      "peak_mem_mib": 154.70703125
+    }
+  ],
+  "concurrency": {
+    "1": {
+      "per_process_steps_per_s": 6.454621406337597,
+      "aggregate_steps_per_s": 6.454621406337597,
+      "start_spread_s": 0.0
+    },
+    "2": {
+      "per_process_steps_per_s": 2.8481327663329745,
+      "aggregate_steps_per_s": 5.696373338920662,
+      "start_spread_s": 2.7179718017578125e-05
+    }
+  },
+  "pilot_steps_to_095": [
+    1500,
+    1250,
+    1250
+  ],
+  "cap": 3000,
+  "projection_gpu_min": {
+    "1": 51.8022426366806,
+    "2": 58.299388378858566
+  }
+}

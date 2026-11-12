@@ -1,0 +1,19 @@
+{
+  "scan": "parallel",
+  "grad_checkpoint": false,
+  "tag": "k1p0",
+  "device": "cuda",
+  "batch_size": 32,
+  "task": {
+    "n_data": 4,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "gpu": "Tesla T4",
+  "steps": 200,
+  "seconds": 30.98555088043213,
+  "steps_per_s": 6.454621406337597,
+  "ms_per_step": 154.92775440216064,
+  "t_start": 1794447001.8052735,
+  "peak_mem_mib": 2832.8916015625
+}
