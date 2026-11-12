@@ -90,3 +90,12 @@ def test_dump_answer_hist_counts_every_answer(tmp_path, monkeypatch):
     n_answers = 4 * 4            # eval_batches=1, batch_size=4, n_data=4
     assert sum(h["pred"].values()) == sum(h["target"].values()) == n_answers
     assert all(2 <= int(k) < 64 for k in h["target"])
+
+
+def test_dump_slot_acc_one_entry_per_slot_and_consistent(tmp_path, monkeypatch):
+    r = _run(tmp_path, monkeypatch, "configs/recall/transformer_small.yaml", TINY_TF,
+             ["--dump_slot_acc"], steps=2)
+    assert len(r["slot_acc"]) == 4                     # n_data=4
+    assert all(0.0 <= a <= 1.0 for a in r["slot_acc"])
+    # equal slot sizes, so the mean of the slots is the overall accuracy
+    assert abs(sum(r["slot_acc"]) / 4 - r["final_val_acc"]) < 1e-9

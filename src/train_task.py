@@ -155,6 +155,23 @@ def answer_histograms(model, val_batches, model_kwargs) -> dict:
     return {"pred": dict(sorted(pred.items())), "target": dict(sorted(tgt_counts.items()))}
 
 
+@torch.no_grad()
+def slot_accuracy(model, val_batches, model_kwargs) -> list:
+    """Accuracy per answer slot (the k-th answer position of each sequence, in order)
+    over the validation set (diagnostic only; plan2.md 1.1c)."""
+    model.eval()
+    correct, total = {}, {}
+    for tok, tgt, mask, _ in val_batches:
+        pred = model(tok, **model_kwargs).argmax(-1)
+        for row in range(tok.shape[0]):
+            pos = mask[row].nonzero(as_tuple=True)[0]
+            for k, p in enumerate(pos.tolist()):
+                correct[k] = correct.get(k, 0) + int(pred[row, p] == tgt[row, p])
+                total[k] = total.get(k, 0) + 1
+    model.train()
+    return [correct[k] / total[k] for k in sorted(total)]
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -192,6 +209,8 @@ def main():
     ap.add_argument("--dump_answer_hist", action="store_true",
                     help="Add histograms of predicted/target tokens at answer positions "
                          "(validation set, final model) to the result record.")
+    ap.add_argument("--dump_slot_acc", action="store_true",
+                    help="Add accuracy per answer slot (validation set, final model).")
     ap.add_argument("--out", default=None, help="Write a JSON result record here.")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
@@ -339,6 +358,8 @@ def main():
 
     final = evaluate(model, val_batches, device, model_kwargs)
     record = make_record(final, complete=True)
+    if args.dump_slot_acc:
+        record["slot_acc"] = slot_accuracy(model, val_batches, model_kwargs)
     if args.dump_answer_hist:
         record["answer_hist"] = answer_histograms(model, val_batches, model_kwargs)
     if not args.quiet:
