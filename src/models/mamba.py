@@ -425,6 +425,8 @@ class Mamba(nn.Module):
                     Numerically equivalent; pick by sequence length.
         emb_init_std, out_proj_depth_scale: model-level init, see apply_model_init.
                     Shared with the official-kernel model (src/models/mamba_official.py).
+        grad_checkpoint: recompute block activations in backward (see
+                    MAMBA_GRAD_CHECKPOINT). None = the module default. Memory/time only.
     """
 
     def __init__(
@@ -439,8 +441,11 @@ class Mamba(nn.Module):
         scan: str = None,
         emb_init_std: float = DEFAULT_EMB_INIT_STD,
         out_proj_depth_scale: bool = DEFAULT_OUT_PROJ_DEPTH_SCALE,
+        grad_checkpoint: bool = None,
     ):
         super().__init__()
+        self.grad_checkpoint = (MAMBA_GRAD_CHECKPOINT if grad_checkpoint is None
+                                else grad_checkpoint)
         self.emb_init_std = emb_init_std
         self.out_proj_depth_scale = out_proj_depth_scale
         self.tok_emb = nn.Embedding(vocab_size, d_model)
@@ -483,7 +488,7 @@ class Mamba(nn.Module):
         # inference has no backward graph to trade against, and the delta
         # tensors are an extra output that would be recomputed for nothing.
         use_ckpt = (
-            MAMBA_GRAD_CHECKPOINT
+            self.grad_checkpoint
             and self.training
             and torch.is_grad_enabled()
             and not return_delta

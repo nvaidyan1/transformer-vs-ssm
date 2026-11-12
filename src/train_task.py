@@ -164,7 +164,14 @@ def main():
     ap.add_argument("--ablate", action="store_true",
                     help="Mamba only: disable position-wise selectivity (gate control).")
     ap.add_argument("--early_stop_acc", type=float, default=None,
-                    help="Stop once validation accuracy reaches this (e.g. 0.99).")
+                    help="Stop once validation accuracy is strictly above this (e.g. "
+                         "0.99) for --early_stop_evals consecutive evals.")
+    ap.add_argument("--early_stop_evals", type=int, default=1,
+                    help="Consecutive evals above --early_stop_acc required to stop.")
+    ap.add_argument("--scan", choices=("sequential", "parallel"), default=None,
+                    help="custom mamba only: scan implementation (numerically equivalent).")
+    ap.add_argument("--grad_checkpoint", type=str2bool, default=None,
+                    help="custom mamba only: activation checkpointing (memory/time only).")
     ap.add_argument("--out", default=None, help="Write a JSON result record here.")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
@@ -176,6 +183,12 @@ def main():
         cfg["arch"] = args.arch
     if args.decay_1d is not None:
         cfg["decay_1d"] = args.decay_1d
+    for key in ("scan", "grad_checkpoint"):
+        val = getattr(args, key)
+        if val is not None:
+            if cfg["arch"] != "mamba":
+                raise SystemExit(f"--{key} only applies to the custom mamba arch")
+            cfg["model"][key] = val
     for key in ("emb_init_std", "out_proj_depth_scale"):
         val = getattr(args, key)
         if val is not None:
@@ -234,6 +247,7 @@ def main():
         lr=cfg["lr"], betas=(0.9, 0.95))
 
     history, t0, stopped_early = [], time.time(), False
+    streak = 0   # consecutive evals strictly above early_stop_acc
 
     def make_record(final, complete):
         return {
@@ -248,6 +262,10 @@ def main():
             "seed": cfg["seed"], "batch_size": cfg["batch_size"],
             "steps_run": history[-1]["step"] if history else 0,
             "max_steps": cfg["max_steps"], "stopped_early": stopped_early,
+            "early_stop_acc": args.early_stop_acc,
+            "early_stop_evals": args.early_stop_evals,
+            "scan": model.blocks[0].ssm.scan if arch == "mamba" else None,
+            "grad_checkpoint": getattr(model, "grad_checkpoint", None),
             # False in the checkpoints written at every eval; a run killed
             # mid-way (e.g. by a budget deadline) leaves its curve so far.
             "complete": complete,
@@ -290,11 +308,14 @@ def main():
                       f"({time.time()-t0:.0f}s)", flush=True)
             if args.out:
                 write_record(make_record(None, complete=False), args.out)
-            if args.early_stop_acc is not None and ev["acc"] >= args.early_stop_acc:
-                stopped_early = True
-                if not args.quiet:
-                    print(f"  early stop: val_acc >= {args.early_stop_acc}")
-                break
+            if args.early_stop_acc is not None:
+                streak = streak + 1 if ev["acc"] > args.early_stop_acc else 0
+                if streak >= args.early_stop_evals:
+                    stopped_early = True
+                    if not args.quiet:
+                        print(f"  early stop: val_acc > {args.early_stop_acc} for "
+                              f"{streak} evals in a row")
+                    break
 
     final = evaluate(model, val_batches, device, model_kwargs)
     record = make_record(final, complete=True)
