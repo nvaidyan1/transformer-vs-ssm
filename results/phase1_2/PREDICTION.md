@@ -48,3 +48,9 @@ stop as above, one process at a time. Approved budget 10 GPU-min.
 **Prediction:** stays near chance (1/62) on every seed; **gate PASS** (selective
 0.997 / 1.000 / 0.999 from the pilots). The pilots ran with a 20,000-step schedule and
 the ablated arm runs with a 4000-step one; the gate compares final evals as specified.
+
+### Setting 1 ablated arm: outcome (appended after the run)
+
+Kaggle T4, commit 3242c64, ~7.3 GPU-min incl. setup (of 10). Ablated final 0.017 / 0.012 /
+0.019 (chance 0.016). **Setting 1 gate PASS**: selective 3/3 >= 0.95 (0.997 / 1.000 /
+0.999); selective mean - ablated mean = +0.983. As predicted.

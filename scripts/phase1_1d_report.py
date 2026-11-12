@@ -62,7 +62,7 @@ def plot(stats: dict, path: Path):
     ax.grid(color="#e6e6e6", lw=0.6)
     for s in ("top", "right"):
         ax.spines[s].set_visible(False)
-    ax.legend(fontsize=8, frameon=False, loc="lower left")
+    ax.legend(fontsize=8, frameon=False, loc="center left")
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)

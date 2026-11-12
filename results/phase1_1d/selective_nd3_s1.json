@@ -1,0 +1,92 @@
+{
+  "task": "selective_copy",
+  "task_args": {
+    "n_data": 3,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "arch": "mamba_ssm",
+  "ablate": false,
+  "n_params": 449752,
+  "n_params_ablation_only": 1120,
+  "lr": 0.001,
+  "ssm_lr_scale": 1.0,
+  "decay_1d": false,
+  "emb_init_std": 1.0,
+  "out_proj_depth_scale": true,
+  "model_cfg": {
+    "n_layers": 4,
+    "d_model": 124,
+    "d_state": 16,
+    "d_conv": 4,
+    "expand": 2,
+    "dropout": 0.0,
+    "emb_init_std": 1.0,
+    "out_proj_depth_scale": true,
+    "use_fast_path": true
+  },
+  "seed": 1,
+  "batch_size": 32,
+  "steps_run": 1750,
+  "max_steps": 4000,
+  "stopped_early": true,
+  "early_stop_acc": 0.99,
+  "early_stop_evals": 3,
+  "scan": null,
+  "grad_checkpoint": null,
+  "complete": true,
+  "final_val_acc": 0.9986979166666666,
+  "final_val_loss": 0.002211305143399992,
+  "chance_acc": 0.016129032258064516,
+  "wall_clock_s": 23.9,
+  "device": "cuda",
+  "history": [
+    {
+      "step": 250,
+      "train_loss": 4.3306965827941895,
+      "val_loss": 4.352859218915303,
+      "val_acc": 0.014322916666666666
+    },
+    {
+      "step": 500,
+      "train_loss": 3.5977134704589844,
+      "val_loss": 3.640826861063639,
+      "val_acc": 0.061197916666666664
+    },
+    {
+      "step": 750,
+      "train_loss": 0.9023430347442627,
+      "val_loss": 0.7168257186810175,
+      "val_acc": 0.78515625
+    },
+    {
+      "step": 1000,
+      "train_loss": 0.2252245545387268,
+      "val_loss": 0.1313325328131517,
+      "val_acc": 0.9635416666666666
+    },
+    {
+      "step": 1250,
+      "train_loss": 0.08267722278833389,
+      "val_loss": 0.013537706603528932,
+      "val_acc": 0.9921875
+    },
+    {
+      "step": 1500,
+      "train_loss": 0.00020306154328864068,
+      "val_loss": 0.00138438751355352,
+      "val_acc": 1.0
+    },
+    {
+      "step": 1750,
+      "train_loss": 1.6657695596222766e-05,
+      "val_loss": 0.002211305143399992,
+      "val_acc": 0.9986979166666666
+    }
+  ],
+  "slot_acc": [
+    1.0,
+    0.99609375,
+    1.0
+  ]
+}

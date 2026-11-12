@@ -78,3 +78,8 @@ n_data 1, seed 0) with `--steps 20000`; gates nothing. Approved budget 6 GPU-min
 the cosine schedule now spans 20,000 steps, so the lr at a given step is higher than in
 run 2. **Prediction:** it reaches >= 0.9 well before 20,000 steps (run 2 was still rising
 at 3000) and early-stops.
+Item 4 outcome (commit 3242c64, ~0.8 GPU-min): reached 0.984 at step 2250 (first eval
+>= 0.9) and early-stopped at 3500 with 1.000. As predicted. Note: it passed 0.9 at step
+2250, earlier than run 2's CAP of 3000; the difference between the two runs is the lr
+schedule length (20,000 vs 3000 steps), so at step 2250 this run's lr was still near its
+peak while run 2's had decayed most of the way. Not investigated further.

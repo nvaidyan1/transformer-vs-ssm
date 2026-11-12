@@ -1,0 +1,72 @@
+{
+  "task": "selective_copy",
+  "task_args": {
+    "n_data": 1,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "arch": "mamba_ssm",
+  "ablate": false,
+  "n_params": 449752,
+  "n_params_ablation_only": 1120,
+  "lr": 0.001,
+  "ssm_lr_scale": 1.0,
+  "decay_1d": false,
+  "emb_init_std": 1.0,
+  "out_proj_depth_scale": true,
+  "model_cfg": {
+    "n_layers": 4,
+    "d_model": 124,
+    "d_state": 16,
+    "d_conv": 4,
+    "expand": 2,
+    "dropout": 0.0,
+    "emb_init_std": 1.0,
+    "out_proj_depth_scale": true,
+    "use_fast_path": true
+  },
+  "seed": 0,
+  "batch_size": 32,
+  "steps_run": 1000,
+  "max_steps": 4000,
+  "stopped_early": true,
+  "early_stop_acc": 0.99,
+  "early_stop_evals": 3,
+  "scan": null,
+  "grad_checkpoint": null,
+  "complete": true,
+  "final_val_acc": 1.0,
+  "final_val_loss": 0.00012067870723342367,
+  "chance_acc": 0.016129032258064516,
+  "wall_clock_s": 13.5,
+  "device": "cuda",
+  "history": [
+    {
+      "step": 250,
+      "train_loss": 4.618556022644043,
+      "val_loss": 4.5175158977508545,
+      "val_acc": 0.03515625
+    },
+    {
+      "step": 500,
+      "train_loss": 0.0005196888814680278,
+      "val_loss": 0.006691861715808045,
+      "val_acc": 0.99609375
+    },
+    {
+      "step": 750,
+      "train_loss": 5.0963921239599586e-05,
+      "val_loss": 0.0016490676397324933,
+      "val_acc": 1.0
+    },
+    {
+      "step": 1000,
+      "train_loss": 3.6507665868157346e-07,
+      "val_loss": 0.00012067870723342367,
+      "val_acc": 1.0
+    }
+  ],
+  "slot_acc": [
+    1.0
+  ]
+}

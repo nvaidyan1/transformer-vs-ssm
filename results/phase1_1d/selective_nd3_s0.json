@@ -1,0 +1,92 @@
+{
+  "task": "selective_copy",
+  "task_args": {
+    "n_data": 3,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "arch": "mamba_ssm",
+  "ablate": false,
+  "n_params": 449752,
+  "n_params_ablation_only": 1120,
+  "lr": 0.001,
+  "ssm_lr_scale": 1.0,
+  "decay_1d": false,
+  "emb_init_std": 1.0,
+  "out_proj_depth_scale": true,
+  "model_cfg": {
+    "n_layers": 4,
+    "d_model": 124,
+    "d_state": 16,
+    "d_conv": 4,
+    "expand": 2,
+    "dropout": 0.0,
+    "emb_init_std": 1.0,
+    "out_proj_depth_scale": true,
+    "use_fast_path": true
+  },
+  "seed": 0,
+  "batch_size": 32,
+  "steps_run": 1750,
+  "max_steps": 4000,
+  "stopped_early": true,
+  "early_stop_acc": 0.99,
+  "early_stop_evals": 3,
+  "scan": null,
+  "grad_checkpoint": null,
+  "complete": true,
+  "final_val_acc": 1.0,
+  "final_val_loss": 8.503086589920865e-05,
+  "chance_acc": 0.016129032258064516,
+  "wall_clock_s": 23.8,
+  "device": "cuda",
+  "history": [
+    {
+      "step": 250,
+      "train_loss": 4.202988147735596,
+      "val_loss": 4.300114870071411,
+      "val_acc": 0.01171875
+    },
+    {
+      "step": 500,
+      "train_loss": 3.8058159351348877,
+      "val_loss": 3.729370951652527,
+      "val_acc": 0.078125
+    },
+    {
+      "step": 750,
+      "train_loss": 0.3735502064228058,
+      "val_loss": 0.34009625265995663,
+      "val_acc": 0.9114583333333334
+    },
+    {
+      "step": 1000,
+      "train_loss": 0.023966893553733826,
+      "val_loss": 0.03139513925028344,
+      "val_acc": 0.9869791666666666
+    },
+    {
+      "step": 1250,
+      "train_loss": 0.00029407176771201193,
+      "val_loss": 0.006397421339897846,
+      "val_acc": 0.9986979166666666
+    },
+    {
+      "step": 1500,
+      "train_loss": 2.7684835004038177e-05,
+      "val_loss": 0.0006913721063786701,
+      "val_acc": 1.0
+    },
+    {
+      "step": 1750,
+      "train_loss": 8.117692232190166e-06,
+      "val_loss": 8.503086589920865e-05,
+      "val_acc": 1.0
+    }
+  ],
+  "slot_acc": [
+    1.0,
+    1.0,
+    1.0
+  ]
+}
