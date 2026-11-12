@@ -50,9 +50,14 @@ def test_mamba_ssm_recipe_locked():
     assert c["decay_1d"] is False
 
 
-def test_custom_mamba_keeps_reference_init():
-    m = load("mamba_small")["model"]
-    assert m.get("emb_init_std", 0.02) == 0.02
+def test_custom_mamba_recipe_equals_mamba_ssm():
+    """Set by the author for plan2.md 1.1 Stage C (results/phase1_1/RUNLOG.md)."""
+    c, o = load("mamba_small"), load("mamba_ssm_small")
+    assert c["lr"] == o["lr"] == 1.0e-3
+    assert c["decay_1d"] is o["decay_1d"] is False
+    for k in ("emb_init_std", "out_proj_depth_scale"):
+        assert c["model"][k] == o["model"][k], k
+    assert c["model"]["scan"] == "parallel" and c["model"]["grad_checkpoint"] is False
 
 
 def test_shared_training_settings():

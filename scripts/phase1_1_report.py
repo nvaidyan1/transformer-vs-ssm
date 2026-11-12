@@ -62,15 +62,28 @@ def project_gpu_min(cap: int, n_runs: int, k: int, per_process_steps_per_s: floa
     return setup_min + waves * cap / per_process_steps_per_s / 60.0 * (1 + eval_overhead)
 
 
-def gate_c(selective: list, ablated: list) -> dict:
+def gate_c(selective: list, ablated: list, ablated_extra: dict = None) -> dict:
+    """selective, ablated: the 3-seed runs at the config lr. ablated_extra:
+    {lr: [records]} for the extra seed-0 ablated runs (amendment item 3). The gate
+    compares the selective mean against the best ablated lr, where each lr's value is
+    the mean final val_acc of its runs."""
     fs = [r["history"][-1]["val_acc"] for r in selective]
     fa = [r["history"][-1]["val_acc"] for r in ablated]
     if len(fs) < 3 or len(fa) < 3:
         return {"verdict": "INCOMPLETE"}
-    diff = sum(fs) / len(fs) - sum(fa) / len(fa)
+    by_lr = {ablated[0]["lr"]: sum(fa) / len(fa)}
+    for lr, rs in (ablated_extra or {}).items():
+        if rs:
+            by_lr[lr] = sum(r["history"][-1]["val_acc"] for r in rs) / len(rs)
+    best_lr = max(by_lr, key=by_lr.get)
+    diff = sum(fs) / len(fs) - by_lr[best_lr]
     ok = all(a >= TARGET for a in fs) and diff >= GAP
     return {"verdict": "PASS" if ok else "FAIL", "selective": fs, "ablated": fa,
-            "mean_diff": diff}
+            "ablated_by_lr": by_lr, "best_ablated_lr": best_lr, "mean_diff": diff}
+
+
+def by_best(g):
+    return g["ablated_by_lr"][g["best_ablated_lr"]]
 
 
 def main():
@@ -121,13 +134,44 @@ def main():
     else:
         lines.append("\nCAP undefined: not every pilot seed reached 0.95. Stop (see PREDICTION.md).")
 
-    sel = [json.load(open(p)) for p in glob.glob(str(d / "stage_c/custom_selective_s*.json"))]
-    abl = [json.load(open(p)) for p in glob.glob(str(d / "stage_c/custom_ablated_s*.json"))]
+    def load_c(pattern):
+        return sorted((json.load(open(p)) for p in glob.glob(str(d / "stage_c" / pattern))),
+                      key=lambda r: r["seed"])
+    sel, abl = load_c("custom_selective_s*.json"), load_c("custom_ablated_s*.json")
+    extra = {}
+    for r in load_c("custom_ablated_lr*_s0.json"):
+        if r.get("complete", True):
+            extra.setdefault(r["lr"], []).append(r)
     if sel or abl:
+        lines += ["", "## Stage C: custom Mamba, CAP 3000 steps", "",
+                  "| arm | lr | seed | steps-to-0.95 | steps run | early stop | final val_acc |",
+                  "|---|---|---|---|---|---|---|"]
+        for arm, rs in (("selective", sel), ("ablated", abl),
+                        ("ablated", [r for v in extra.values() for r in v])):
+            for r in rs:
+                s = steps_to(r)
+                lines.append(f"| {arm} | {r['lr']:g} | {r['seed']} "
+                             f"| {s if s is not None else 'not reached'} | {r['steps_run']} "
+                             f"| {r['stopped_early']} | {r['history'][-1]['val_acc']:.4f}"
+                             f"{'' if r.get('complete', True) else ' (partial)'} |")
         g = gate_c([r for r in sel if r.get("complete", True)],
-                   [r for r in abl if r.get("complete", True)])
+                   [r for r in abl if r.get("complete", True)], extra)
         summary["gate"] = g
         lines += ["", f"## Stage C gate: **{g['verdict']}**"]
+        if g["verdict"] != "INCOMPLETE":
+            fs = g["selective"]
+            by = ", ".join(f"lr {k:g}: {v:.3f}" for k, v in sorted(g["ablated_by_lr"].items()))
+            lines += ["", f"Selective final val_acc {', '.join(f'{a:.3f}' for a in fs)} "
+                          f"(>= 0.95 on {sum(a >= TARGET for a in fs)}/3). Ablated final "
+                          f"val_acc by lr ({by}); best lr {g['best_ablated_lr']:g}. "
+                          f"Selective mean - best ablated = {g['mean_diff']:+.3f} "
+                          f"(needs >= {GAP})."]
+            if g["verdict"] == "PASS":
+                lines += ["", "Claim, as the evidence supports it: within the step budget at "
+                              "which the selective model solves the task (3000 steps), the "
+                              "custom selective Mamba reaches >= 0.95 on 3/3 seeds and the "
+                              "input-independent ablation does not, at any lr tried "
+                              f"(best {by_best(g):.3f})."]
     json.dump(summary, open(d / "summary.json", "w"), indent=2)
     md = "\n".join(lines)
     (d / "report.md").write_text(md + "\n")

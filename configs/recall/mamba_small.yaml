@@ -5,17 +5,22 @@
 # Matched (plan2.md 0.3): transformer_small 452,296, tcn_small 450,212. The older
 # 677,784 figure predates the low-rank dt_proj refactor.
 #
-# This is the custom (explanatory) model; it keeps the reference LM init
-# (emb_init_std 0.02). Reported numbers use mamba_ssm_small.yaml, whose recipe is
-# locked separately; the custom model is not required to match its training curves.
+# This is the custom (explanatory) model. Recipe set equal to mamba_ssm_small.yaml
+# (lr 1e-3, emb_init_std 1.0, out_proj depth scale on, decay_1d off) by the author
+# for plan2.md 1.1 Stage C, 2026-11-11 (results/phase1_1/RUNLOG.md). Before that it
+# used lr 3e-4 and the reference init emb_init_std 0.02 (all 0.2 custom runs).
+# Execution: parallel scan, no activation checkpointing; fastest at seq_len 64 on a
+# T4 with parity 6e-07 (results/phase1_1/stage_a). Memory/time only, no maths change;
+# re-measure before using this config at much longer sequences.
 arch: mamba
 seed: 0
 vocab_size: 64
 
 max_steps: 4000
 warmup_steps: 200
-lr: 3.0e-4          # custom model: not part of the 0.3 lr check; unchanged
+lr: 1.0e-3          # = mamba_ssm_small (plan2.md 1.1 Stage C); do not change
 weight_decay: 0.1   # A_log and D are exempt via src/optim.py
+decay_1d: false
 grad_clip: 1.0
 batch_size: 32
 eval_every: 250
@@ -28,3 +33,7 @@ model:
   d_conv: 4
   expand: 2
   dropout: 0.0
+  emb_init_std: 1.0
+  out_proj_depth_scale: true
+  scan: parallel
+  grad_checkpoint: false

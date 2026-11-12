@@ -8,8 +8,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 from phase1_1_report import cap_from_pilot, gate_c, project_gpu_min, steps_to
 
 
-def rec(accs):
-    return {"history": [{"step": 250 * (i + 1), "val_acc": a} for i, a in enumerate(accs)]}
+def rec(accs, lr=1e-3):
+    return {"lr": lr, "history": [{"step": 250 * (i + 1), "val_acc": a}
+                                  for i, a in enumerate(accs)]}
 
 
 def test_steps_to_first_eval_at_or_above_target():
@@ -39,3 +40,13 @@ def test_gate_c():
     a_close = [rec([0.6]), rec([0.6]), rec([0.6])]
     assert gate_c(s, a_close)["verdict"] == "FAIL"
     assert gate_c(s[:2], a)["verdict"] == "INCOMPLETE"
+
+
+def test_gate_uses_best_ablated_lr():
+    s = [rec([0.99]), rec([0.99]), rec([0.99])]
+    a = [rec([0.05]), rec([0.05]), rec([0.05])]
+    extra = {3e-4: [rec([0.04], lr=3e-4)], 3e-3: [rec([0.6], lr=3e-3)]}
+    g = gate_c(s, a, extra)
+    assert g["best_ablated_lr"] == 3e-3 and g["verdict"] == "FAIL"   # 0.99 - 0.6 < 0.5
+    g2 = gate_c(s, a, {3e-4: [rec([0.2], lr=3e-4)]})
+    assert g2["best_ablated_lr"] == 3e-4 and g2["verdict"] == "PASS"

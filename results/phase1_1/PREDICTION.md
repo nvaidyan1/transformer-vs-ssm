@@ -62,3 +62,29 @@ Prediction:
 Gate (unchanged): custom selective >= 0.95 on 3/3 seeds AND (selective - ablated) >= 0.5
 at the final eval (mean over seeds for the difference). mamba_ssm pilot reported
 alongside as the reference arm.
+
+## Amendment before Stage C (2026-11-11, author's approval; nothing in Stage C has run)
+
+Stages A and B results are in report.md; CAP = 3000. Changes, logged in RUNLOG.md:
+1. The custom model's config now uses mamba_ssm's recipe (lr 1e-3, emb_init_std 1.0),
+   parallel scan, checkpointing off. No CLI overrides for the main arms.
+2. Custom selective and custom ablated (`--ablate`), seeds 0-2, `--steps 3000`, early stop
+   as above, one process at a time, in that order interleaved by seed
+   (sel s0, abl s0, sel s1, abl s1, sel s2, abl s2).
+3. If the ablated mean val_acc at the final eval is below 0.5, two more ablated runs,
+   seed 0, at lr 3e-4 and 3e-3 (`--lr`, the only override, as the author specified),
+   same CAP. **Best ablated lr** = the lr with the highest ablated final val_acc, taking
+   the 3-seed mean at 1e-3 and the single seed-0 value at 3e-4 and 3e-3.
+4. Budget: 70 GPU-min total for Stage C; the kernel enforces a 66-minute training
+   deadline after setup. Projection from Stage A: ~8 min per run, so ~49 min for the six
+   main runs and ~65 min with the two extra ablated runs.
+
+Revised Stage C prediction (replaces the risk note above, which assumed the old recipe):
+1. Custom selective reaches 0.95 within 3000 steps on 3/3 seeds and early-stops on most,
+   tracking the mamba_ssm pilot (weight-copy result: within 0.005 from identical weights).
+2. The ablation stays near chance, below 0.2, on every seed and at every lr tried.
+3. Gate PASS: selective >= 0.95 on 3/3 AND selective mean - best-lr ablated >= 0.5.
+
+The report states the claim only as "within the step budget at which the selective model
+solves the task" (CAP = 3000 steps), not as a statement about the ablation's capacity in
+general.
