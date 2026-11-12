@@ -70,11 +70,13 @@ def test_same_parameter_names_and_shapes(mixer_cls):
 @pytest.mark.parametrize("mixer_cls", MIXERS)
 def test_equal_trainable_parameter_count(mixer_cls):
     custom, official = _pair(mixer_cls)
-    fixed = sum(p.numel() for n, p in custom.named_parameters() if ".fixed_" in n)
-    assert count_parameters(custom) - fixed == count_parameters(official)
-    # The number the configs quote, so a stale comment is caught next time.
-    assert count_parameters(official) == 448_632
-    assert fixed == 1_120
+
+    def fixed(m):
+        return sum(p.numel() for n, p in m.named_parameters() if ".fixed_" in n)
+    assert count_parameters(custom) == count_parameters(official)
+    # The numbers the configs quote, so a stale comment is caught next time.
+    assert count_parameters(official) - fixed(official) == 448_632
+    assert fixed(custom) == fixed(official) == 1_120
 
 
 @pytest.mark.parametrize("mixer_cls", MIXERS)
@@ -182,7 +184,7 @@ def test_copy_official_to_custom_makes_parameters_identical(mixer_cls):
     custom = build_model("mamba", vocab_size=VOCAB, **SMALL)
     written = copy_official_to_custom(official, custom)
     c, o = _shared_params(custom), _shared_params(official)
-    assert sorted(written) == sorted(c)
+    assert sorted(w for w in written if ".fixed_" not in w) == sorted(c)
     for n in c:
         assert torch.equal(c[n], o[n]), n
     # tied head follows the copied embedding
@@ -201,3 +203,98 @@ def test_copied_models_agree_on_forward():
     x = torch.randint(0, VOCAB, (2, 64), device="cuda")
     with torch.no_grad():
         assert (official(x) - custom(x)).abs().max().item() < 1e-3
+
+
+# ── 1.2a: the non-selective ablation on the official model ────────────────────
+from vendor.selective_scan_ref import selective_scan_ref
+
+
+def _ablated_pair(seed=0, real=False):
+    """Custom model and an official model holding the custom weights (including the
+    ablation constants), both evaluated with input_independent=True."""
+    torch.manual_seed(seed)
+    custom = build_model("mamba", vocab_size=VOCAB, **SMALL, emb_init_std=1.0)
+    if real:
+        official = build_model("mamba_ssm", vocab_size=VOCAB, **SMALL, use_fast_path=False)
+    else:
+        official = OracleMamba(vocab_size=VOCAB, **SMALL, mixer_cls=VendoredMixer,
+                               scan_fn=selective_scan_ref)
+    from src.models.mamba_official import copy_custom_to_official
+    # train a few random steps first so the constants are not at init
+    with torch.no_grad():
+        for n, p in custom.named_parameters():
+            if ".fixed_" in n:
+                p.add_(0.05 * torch.randn_like(p))
+    copy_custom_to_official(custom, official)
+    custom.eval(); official.eval()
+    return custom, official
+
+
+def _check_ablated_match(custom, official, device):
+    custom, official = custom.to(device), official.to(device)
+    x = torch.randint(0, VOCAB, (2, 64), device=device)
+    with torch.no_grad():
+        a = custom(x, input_independent=True)
+        b = official(x, input_independent=True)
+    assert (a - b).abs().max().item() < 1e-4
+
+
+def _check_ignores_selectivity_weights(official, device):
+    official = official.to(device)
+    x = torch.randint(0, VOCAB, (2, 64), device=device)
+    with torch.no_grad():
+        before = official(x, input_independent=True)
+        for b in official.blocks:
+            b.mixer.x_proj.weight.add_(torch.randn_like(b.mixer.x_proj.weight))
+            b.mixer.dt_proj.weight.add_(torch.randn_like(b.mixer.dt_proj.weight))
+            b.mixer.dt_proj.bias.add_(torch.randn_like(b.mixer.dt_proj.bias))
+        after = official(x, input_independent=True)
+    assert torch.equal(before, after)
+
+
+def test_official_has_ablation_params_and_rest_of_init_unchanged(monkeypatch):
+    """The constants are created last, so at a given seed every other tensor is
+    exactly what it was before 1.2a (rebuilt here with the constants switched off)."""
+    import src.models.mamba_official as mo
+    torch.manual_seed(0)
+    with_c = OracleMamba(vocab_size=VOCAB, **SMALL, mixer_cls=VendoredMixer)
+    assert sum(".fixed_" in n for n, _ in with_c.named_parameters()) == 3 * SMALL["n_layers"]
+    monkeypatch.setattr(mo, "add_ablation_params", lambda mixer: None)
+    torch.manual_seed(0)
+    without = OracleMamba(vocab_size=VOCAB, **SMALL, mixer_cls=VendoredMixer)
+    ref = dict(without.named_parameters())
+    for n, p in with_c.named_parameters():
+        if ".fixed_" not in n:
+            assert torch.equal(p, ref[n]), n
+
+
+def test_official_ablation_matches_custom_ablation_cpu():
+    custom, official = _ablated_pair()
+    _check_ablated_match(custom, official, "cpu")
+
+
+def test_official_ablation_ignores_x_proj_and_dt_proj_cpu():
+    _, official = _ablated_pair()
+    _check_ignores_selectivity_weights(official, "cpu")
+
+
+def test_official_selective_path_unchanged_by_ablation_flag_default():
+    _, official = _ablated_pair()
+    # selective forward with the vendored mixer is not runnable (no kernels); the
+    # default flag must route to the mixer, which raises NotImplementedError
+    with pytest.raises(NotImplementedError):
+        official(torch.randint(0, VOCAB, (1, 8)))
+
+
+@pytest.mark.skipif(_real_mixer() is None or not torch.cuda.is_available(),
+                    reason="needs mamba-ssm and CUDA")
+def test_official_ablation_matches_custom_ablation_cuda():
+    custom, official = _ablated_pair(real=True)
+    _check_ablated_match(custom, official, "cuda")
+
+
+@pytest.mark.skipif(_real_mixer() is None or not torch.cuda.is_available(),
+                    reason="needs mamba-ssm and CUDA")
+def test_official_ablation_ignores_x_proj_and_dt_proj_cuda():
+    _, official = _ablated_pair(real=True)
+    _check_ignores_selectivity_weights(official, "cuda")

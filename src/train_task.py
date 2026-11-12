@@ -179,7 +179,7 @@ def main():
     ap.add_argument("--batch_size", type=int, default=None)
     ap.add_argument("--device", default=None)
     ap.add_argument("--ablate", action="store_true",
-                    help="Mamba only: disable position-wise selectivity (gate control).")
+                    help="mamba / mamba_ssm: disable position-wise selectivity (gate control).")
     ap.add_argument("--early_stop_acc", type=float, default=None,
                     help="Stop once validation accuracy is strictly above this (e.g. "
                          "0.99) for --early_stop_evals consecutive evals.")
@@ -233,8 +233,8 @@ def main():
     set_seed(cfg["seed"])
 
     arch = cfg["arch"]
-    if args.ablate and arch != "mamba":
-        raise SystemExit("--ablate is only meaningful for the mamba architecture")
+    if args.ablate and arch not in MAMBA_ARCHS:
+        raise SystemExit(f"--ablate is only meaningful for {MAMBA_ARCHS}")
     model_kwargs = {"input_independent": True} if args.ablate else {}
 
     model = build_model(arch, vocab_size=cfg["vocab_size"], **cfg["model"]).to(device)
