@@ -178,7 +178,12 @@ def main():
     ap.add_argument("--config", required=True)
     ap.add_argument("--task", required=True, choices=("mqar", "selective_copy"))
     ap.add_argument("--task_args", default="", help="e.g. n_pairs=4,seq_len=128")
-    ap.add_argument("--steps", type=int, default=None, help="override max_steps")
+    ap.add_argument("--steps", type=int, default=None,
+                    help="override max_steps: when the run stops (the CAP)")
+    ap.add_argument("--schedule_steps", type=int, default=None,
+                    help="length of the lr schedule (warmup + cosine). Default: the stop "
+                         "step, as before 2026-11-12. From 2026-11-12 every arm uses "
+                         "20000 (results/LOG.md); the stop step never changes it.")
     ap.add_argument("--lr", type=float, default=None, help="override config lr")
     ap.add_argument("--ssm_lr_scale", type=float, default=None,
                     help="LR multiplier for dt_proj/x_proj/A_log (see src/optim.py). "
@@ -236,6 +241,8 @@ def main():
             cfg["model"][key] = val
     if args.steps is not None:
         cfg["max_steps"] = args.steps
+    cfg["schedule_steps"] = (args.schedule_steps if args.schedule_steps is not None
+                             else cfg["max_steps"])
     if args.lr is not None:
         cfg["lr"] = args.lr
     if args.seed is not None:
@@ -300,7 +307,8 @@ def main():
             "model_cfg": cfg["model"],
             "seed": cfg["seed"], "batch_size": cfg["batch_size"],
             "steps_run": history[-1]["step"] if history else 0,
-            "max_steps": cfg["max_steps"], "stopped_early": stopped_early,
+            "max_steps": cfg["max_steps"], "schedule_steps": cfg["schedule_steps"],
+            "stopped_early": stopped_early,
             "early_stop_acc": args.early_stop_acc,
             "early_stop_evals": args.early_stop_evals,
             "scan": model.blocks[0].ssm.scan if arch == "mamba" else None,
@@ -316,7 +324,7 @@ def main():
         }
     model.train()
     for step in range(cfg["max_steps"]):
-        base_lr = get_lr(step, cfg["warmup_steps"], cfg["max_steps"], cfg["lr"])
+        base_lr = get_lr(step, cfg["warmup_steps"], cfg["schedule_steps"], cfg["lr"])
         for g in optimizer.param_groups:
             # Every group carries its own lr_scale from build_param_groups (default
             # 1.0). Multiplying it in here, every step, is required: writing the

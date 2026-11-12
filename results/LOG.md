@@ -25,3 +25,26 @@ claims worded as "input-dependent dynamics", not "selection", and with the per-s
 and 1.1c runs 2-4 reported beside it. Run 2 is re-run at CAP 20,000 as a report-only
 item that gates nothing. This is a post-hoc change and is labelled as such wherever the
 ablation result is used.
+
+## 2026-11-12: protocol change, one lr-schedule length for every arm (author's decision)
+
+From now on every arm in every setting uses a 20,000-step lr schedule (200-step warmup,
+then cosine to 10% of peak over 20,000 steps). CAP and early stopping only decide when a
+run stops; they never change the schedule. Implemented as `src/train_task.py
+--schedule_steps` (recorded in each result as `schedule_steps`); its default is still the
+stop step, so commands written before this date reproduce exactly.
+
+Schedule lengths used before the change (from the saved records, `max_steps`):
+
+| Rung | Arm | Schedule length |
+|---|---|---|
+| 1.1 Stage B | mamba_ssm selective (reference) | 20,000 |
+| 1.1 Stage C | custom selective, custom ablated (all lrs) | 3,000 |
+| 1.1d | selective and ablated, every n_data | 4,000 |
+| 1.2 seq_len 256 | mamba_ssm selective pilot, Transformer pilot | 20,000 |
+| 1.2 seq_len 256 | mamba_ssm ablated | 4,000 |
+
+Also 3,000 for both arms in 1.1b, 1.1c (runs 1-4) and 1.2a; 20,000 for 1.1c's report-only
+run 2 re-run. Within 1.1 Stage C, 1.1b, 1.1c, 1.1d and 1.2a the compared arms shared a
+schedule; in 1.2 seq_len 256 they did not (ablated shorter), and 1.1 Stage C's reference
+arm differed from its custom arms. Follow-ups (b) and (d) rerun the affected ablated cells.

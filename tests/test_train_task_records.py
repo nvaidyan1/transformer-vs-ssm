@@ -99,3 +99,25 @@ def test_dump_slot_acc_one_entry_per_slot_and_consistent(tmp_path, monkeypatch):
     assert all(0.0 <= a <= 1.0 for a in r["slot_acc"])
     # equal slot sizes, so the mean of the slots is the overall accuracy
     assert abs(sum(r["slot_acc"]) / 4 - r["final_val_acc"]) < 1e-9
+
+
+def test_schedule_length_independent_of_stop_step(tmp_path, monkeypatch):
+    """--schedule_steps sets the lr schedule; --steps only decides when to stop."""
+    seen = []
+    real = tt.get_lr
+
+    def spy(step, warmup, total, lr):
+        seen.append(total)
+        return real(step, warmup, total, lr)
+
+    monkeypatch.setattr(tt, "get_lr", spy)
+    r = _run(tmp_path, monkeypatch, "configs/recall/transformer_small.yaml", TINY_TF,
+             ["--schedule_steps", "20000"], steps=3)
+    assert r["schedule_steps"] == 20000 and r["max_steps"] == 3 and r["steps_run"] == 3
+    assert set(seen) == {20000}
+
+
+def test_schedule_defaults_to_stop_step(tmp_path, monkeypatch):
+    r = _run(tmp_path, monkeypatch, "configs/recall/transformer_small.yaml", TINY_TF, [],
+             steps=3)
+    assert r["schedule_steps"] == 3

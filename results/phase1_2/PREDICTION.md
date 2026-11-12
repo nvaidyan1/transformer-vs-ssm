@@ -54,3 +54,18 @@ the ablated arm runs with a 4000-step one; the gate compares final evals as spec
 Kaggle T4, commit 3242c64, ~7.3 GPU-min incl. setup (of 10). Ablated final 0.017 / 0.012 /
 0.019 (chance 0.016). **Setting 1 gate PASS**: selective 3/3 >= 0.95 (0.997 / 1.000 /
 0.999); selective mean - ablated mean = +0.983. As predicted.
+
+## Setting 2: seq_len 1024, n_data 4 (approved 2026-11-12; under the scheduling rule)
+
+Written before the run. Every run uses `--schedule_steps 20000`. Kernel 1 (capped at 60
+GPU-min): mamba_ssm selective pilot, seeds 0-2, up to 20,000 steps with early stop; then
+the Transformer (`transformer_small_seq1024.yaml`: max_seq_len 1024, 505,544 params =
+399,048 + 106,496 positional table), seed 0, CAP 20,000, early stop as usual, reference
+arm only, not gated. Kernel 2 (cap posted with the pilot results): mamba_ssm ablated,
+seeds 0-2 to CAP, plus seed 0 to the full 20,000 steps.
+
+**Prediction.** mamba_ssm selective reaches 0.95 on every seed, later than at 256
+(1750-2500): roughly 2500-6000 steps. The Transformer, which needed 12,750-15,000 steps
+at seq_len 256, does not reach 0.95 within 20,000 steps at 1024 (low confidence). Gate
+(once the ablated arm runs): PASS, with the ablated arm near chance, including the
+20,000-step seed.

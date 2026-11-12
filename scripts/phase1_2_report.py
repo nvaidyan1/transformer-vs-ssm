@@ -5,6 +5,9 @@ the gate once those runs exist. Writes report.md and summary.json in the directo
 
 Usage:
     python scripts/phase1_2_report.py results/phase1_2/seq256_nd4
+    # gate re-evaluated with ablated runs from another directory (report written there)
+    python scripts/phase1_2_report.py results/phase1_2/seq256_nd4 \
+        results/phase1_2/seq256_nd4_sched20k
 """
 
 import glob
@@ -39,15 +42,17 @@ def setting_gate(selective: list, ablated: list) -> dict:
 
 def main():
     d = Path(sys.argv[1])
+    out = Path(sys.argv[2]) if len(sys.argv) > 2 else d
     sel, tf = load(d, "mamba_ssm_selective"), load(d, "transformer")
-    abl = load(d, "mamba_ssm_ablated")
-    lines = [f"## {d.name}", "",
-             "| arm | seed | steps-to-0.95 | steps run | early stop | final val_acc | wall s |",
-             "|---|---|---|---|---|---|---|"]
+    abl = load(out, "mamba_ssm_ablated")
+    lines = [f"## {d.name}" + (f" (ablated arm from {out.name})" if out != d else ""), "",
+             "| arm | seed | schedule | steps-to-0.95 | steps run | early stop | final val_acc | wall s |",
+             "|---|---|---|---|---|---|---|---|"]
     for arm, rs in (("mamba_ssm selective", sel), ("transformer", tf), ("mamba_ssm ablated", abl)):
         for r in rs:
             s = steps_to(r)
-            lines.append(f"| {arm} | {r['seed']} | {s if s is not None else 'not reached'} "
+            lines.append(f"| {arm} | {r['seed']} | {r.get('schedule_steps', r['max_steps'])} "
+                         f"| {s if s is not None else 'not reached'} "
                          f"| {r['steps_run']} | {r['stopped_early']} "
                          f"| {r['history'][-1]['val_acc']:.4f}"
                          f"{'' if r.get('complete', True) else ' (partial)'} "
@@ -59,9 +64,9 @@ def main():
     lines.append(f"\nGate: **{g['verdict']}**")
     json.dump({"cap": cap, "selective_steps_to_095": sel_steps,
                "transformer_steps_to_095": [steps_to(r) for r in tf], "gate": g},
-              open(d / "summary.json", "w"), indent=2)
+              open(out / "summary.json", "w"), indent=2)
     md = "\n".join(lines)
-    (d / "report.md").write_text(md + "\n")
+    (out / "report.md").write_text(md + "\n")
     print(md)
 
 
