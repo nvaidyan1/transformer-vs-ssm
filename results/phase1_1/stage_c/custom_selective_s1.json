@@ -1,0 +1,112 @@
+{
+  "task": "selective_copy",
+  "task_args": {
+    "n_data": 4,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "arch": "mamba",
+  "ablate": false,
+  "n_params": 449752,
+  "n_params_ablation_only": 1120,
+  "lr": 0.001,
+  "ssm_lr_scale": 1.0,
+  "decay_1d": false,
+  "emb_init_std": 1.0,
+  "out_proj_depth_scale": true,
+  "model_cfg": {
+    "n_layers": 4,
+    "d_model": 124,
+    "d_state": 16,
+    "d_conv": 4,
+    "expand": 2,
+    "dropout": 0.0,
+    "emb_init_std": 1.0,
+    "out_proj_depth_scale": true,
+    "scan": "parallel",
+    "grad_checkpoint": false
+  },
+  "seed": 1,
+  "batch_size": 32,
+  "steps_run": 2750,
+  "max_steps": 3000,
+  "stopped_early": true,
+  "early_stop_acc": 0.99,
+  "early_stop_evals": 3,
+  "scan": "parallel",
+  "grad_checkpoint": false,
+  "complete": true,
+  "final_val_acc": 1.0,
+  "final_val_loss": 0.0011648801203136827,
+  "chance_acc": 0.03225806451612903,
+  "wall_clock_s": 429.7,
+  "device": "cuda",
+  "history": [
+    {
+      "step": 250,
+      "train_loss": 4.276481628417969,
+      "val_loss": 4.319417655467987,
+      "val_acc": 0.01953125
+    },
+    {
+      "step": 500,
+      "train_loss": 4.091709613800049,
+      "val_loss": 3.9451256096363068,
+      "val_acc": 0.0546875
+    },
+    {
+      "step": 750,
+      "train_loss": 3.266871452331543,
+      "val_loss": 3.3577476143836975,
+      "val_acc": 0.1376953125
+    },
+    {
+      "step": 1000,
+      "train_loss": 1.4807270765304565,
+      "val_loss": 1.5067281275987625,
+      "val_acc": 0.544921875
+    },
+    {
+      "step": 1250,
+      "train_loss": 0.24259351193904877,
+      "val_loss": 0.1612643077969551,
+      "val_acc": 0.94921875
+    },
+    {
+      "step": 1500,
+      "train_loss": 0.13147898018360138,
+      "val_loss": 0.06956021499354392,
+      "val_acc": 0.974609375
+    },
+    {
+      "step": 1750,
+      "train_loss": 0.03175630420446396,
+      "val_loss": 0.07855729572474957,
+      "val_acc": 0.98046875
+    },
+    {
+      "step": 2000,
+      "train_loss": 0.008809870108962059,
+      "val_loss": 0.052977742918301374,
+      "val_acc": 0.9873046875
+    },
+    {
+      "step": 2250,
+      "train_loss": 0.0003210713330190629,
+      "val_loss": 0.008092593270703219,
+      "val_acc": 0.998046875
+    },
+    {
+      "step": 2500,
+      "train_loss": 0.02199964039027691,
+      "val_loss": 0.0007992910586835933,
+      "val_acc": 1.0
+    },
+    {
+      "step": 2750,
+      "train_loss": 0.0002484761062078178,
+      "val_loss": 0.0011648801203136827,
+      "val_acc": 1.0
+    }
+  ]
+}

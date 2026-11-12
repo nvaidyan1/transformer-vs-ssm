@@ -82,6 +82,45 @@ def gate_c(selective: list, ablated: list, ablated_extra: dict = None) -> dict:
             "ablated_by_lr": by_lr, "best_ablated_lr": best_lr, "mean_diff": diff}
 
 
+C_REF, C_SEL, C_ABL = "#2a78d6", "#eb6834", "#1baf7a"   # categorical slots 1-3
+
+
+def plot_c(pilots, sel, abl, extra, path, chance):
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(7.5, 4.2))
+
+    def curve(r, color, ls, label):
+        ax.plot([h["step"] for h in r["history"]], [h["val_acc"] for h in r["history"]],
+                color=color, lw=2 if ls == "-" else 1.6, ls=ls, alpha=0.9, label=label)
+
+    for i, r in enumerate(pilots):
+        curve(r, C_REF, "-", "mamba_ssm selective (reference, 3 seeds)" if i == 0 else None)
+    for i, r in enumerate(sel):
+        curve(r, C_SEL, "-", "custom selective (3 seeds)" if i == 0 else None)
+    for i, r in enumerate(abl):
+        curve(r, C_ABL, "--", "custom ablated, lr 1e-3 (3 seeds)" if i == 0 else None)
+    for i, r in enumerate(x for v in extra.values() for x in v):
+        curve(r, C_ABL, ":", "custom ablated, lr 3e-4 / 3e-3 (seed 0)" if i == 0 else None)
+    ax.axhline(0.95, color="#999", lw=1)
+    ax.text(3020, 0.95, "0.95", fontsize=7, color="#777", va="center")
+    ax.axhline(chance, color="#999", lw=1, ls="--")
+    ax.text(3020, chance, "chance", fontsize=7, color="#777", va="center")
+    ax.axvline(3000, color="#bbb", lw=1, ls=":")
+    ax.set_xlim(0, 3300)
+    ax.set_xlabel("step (CAP = 3000)")
+    ax.set_ylabel("val_acc (answer positions)")
+    ax.set_title("Selective Copying, n_data=4, seq_len=64", fontsize=10)
+    ax.grid(color="#e6e6e6", lw=0.6)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    ax.legend(fontsize=8, frameon=False, loc="center right")
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
 def by_best(g):
     return g["ablated_by_lr"][g["best_ablated_lr"]]
 
@@ -154,6 +193,9 @@ def main():
                              f"| {s if s is not None else 'not reached'} | {r['steps_run']} "
                              f"| {r['stopped_early']} | {r['history'][-1]['val_acc']:.4f}"
                              f"{'' if r.get('complete', True) else ' (partial)'} |")
+        if pilots:
+            plot_c(pilots, sel, abl, extra, d / "curves_stage_c.png",
+                   pilots[0].get("chance_acc", 1 / 31))
         g = gate_c([r for r in sel if r.get("complete", True)],
                    [r for r in abl if r.get("complete", True)], extra)
         summary["gate"] = g

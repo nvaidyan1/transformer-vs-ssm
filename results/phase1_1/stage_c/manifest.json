@@ -1,0 +1,14 @@
+{
+  "status": {
+    "custom_selective_s0": "done",
+    "custom_ablated_s0": "done",
+    "custom_selective_s1": "done",
+    "custom_ablated_s1": "done",
+    "custom_selective_s2": "done",
+    "custom_ablated_s2": "done",
+    "custom_ablated_lr3e-4_s0": "done",
+    "custom_ablated_lr3e-3_s0": "done"
+  },
+  "ablated_mean_lr1e-3": 0.0185546875,
+  "train_wall_min": 61.93
+}

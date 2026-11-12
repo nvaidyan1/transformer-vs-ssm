@@ -28,3 +28,22 @@ Stage C projection (6 runs to CAP, no early stop, +3 min setup):
 
 - 1 process(es): 52 GPU-min
 - 2 process(es): 58 GPU-min
+
+## Stage C: custom Mamba, CAP 3000 steps
+
+| arm | lr | seed | steps-to-0.95 | steps run | early stop | final val_acc |
+|---|---|---|---|---|---|---|
+| selective | 0.001 | 0 | 1500 | 3000 | True | 0.9961 |
+| selective | 0.001 | 1 | 1500 | 2750 | True | 1.0000 |
+| selective | 0.001 | 2 | 2000 | 2750 | True | 0.9980 |
+| ablated | 0.001 | 0 | not reached | 3000 | False | 0.0205 |
+| ablated | 0.001 | 1 | not reached | 3000 | False | 0.0205 |
+| ablated | 0.001 | 2 | not reached | 3000 | False | 0.0146 |
+| ablated | 0.0003 | 0 | not reached | 3000 | False | 0.0205 |
+| ablated | 0.003 | 0 | not reached | 3000 | False | 0.0293 |
+
+## Stage C gate: **PASS**
+
+Selective final val_acc 0.996, 1.000, 0.998 (>= 0.95 on 3/3). Ablated final val_acc by lr (lr 0.0003: 0.021, lr 0.001: 0.019, lr 0.003: 0.029); best lr 0.003. Selective mean - best ablated = +0.969 (needs >= 0.5).
+
+Claim, as the evidence supports it: within the step budget at which the selective model solves the task (3000 steps), the custom selective Mamba reaches >= 0.95 on 3/3 seeds and the input-independent ablation does not, at any lr tried (best 0.029).

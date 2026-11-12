@@ -20,3 +20,13 @@ both Stage C arms run under the new one. The 0.2 custom results (old recipe) sta
 recorded and are not rerun: they answer a different question (0.2).
 
 Stage C budget: 70 GPU-min total (author). One process at a time.
+
+## Stage C: 2026-11-11, commit c524115, Kaggle T4, ~63 GPU-min (budget 70)
+
+All 8 runs complete, one at a time (~7.8 min each). Ablated mean at lr 1e-3 was 0.019,
+below 0.5, so the two extra seed-0 ablated runs (lr 3e-4, 3e-3) ran as specified.
+Gate: **PASS**. Selective 0.996 / 1.000 / 0.998 (steps-to-0.95: 1500 / 1500 / 2000);
+best ablated lr 3e-3 at 0.029; difference +0.969. See report.md, curves_stage_c.png.
+Caveat for comparisons with the reference arm: the mamba_ssm pilot ran with a
+20,000-step cosine schedule (Stage B), the custom arms with a 3000-step one, so their
+lr at a given step differs.
