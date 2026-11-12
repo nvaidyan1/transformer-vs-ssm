@@ -28,3 +28,15 @@ confident ordering between them.
 (not yet measured; the kernel records wall-clock per run), i.e. ~15-30 min. Runs are
 ordered mamba s0, Transformer s0, mamba s1, ... so a deadline cut leaves both arms with
 the same number of seeds.
+
+### Setting 1 pilots: outcome (appended after the run; prediction above unchanged)
+
+Kaggle T4, commit 4dee336, ~31 GPU-min of the 40 cap. 143 tests passed.
+- mamba_ssm selective: steps-to-0.95 1750 / 1750 / 2500; early stop at 3000 / 2750 / 4000;
+  final 0.997 / 1.000 / 0.999. ~46 steps/s. **CAP = 4000.**
+- Transformer: steps-to-0.95 12750 / 15000 / 14250; early stop only on seed 2 (16750);
+  seeds 0 and 1 ran the full 20,000; final 0.980 / 0.955 / 0.993. ~39.5 steps/s. It reached
+  ~0.8 within 500 steps on every seed, then rose slowly for >10,000 steps.
+- Prediction: both reach 0.95 on every seed (held); "a similar range, no confident
+  ordering" (wrong): the Transformer needed 6-8x more steps than mamba_ssm.
+- The ablated arm is blocked: the 1.1c gate failed (results/phase1_1c).
