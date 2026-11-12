@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=9 kernel_size=4 dilation_cycle=8 max_dilation=128 max_left_pad=384 receptive_field=769
+task   : selective_copy  {'n_data': 4, 'seq_len': 64, 'vocab_size': 64}
+arch   : tcn  (450,212 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=0
+  param groups (decay_1d=False):
+    decay, base-lr        :  20 tensors / 444,724 params
+    no-decay, base-lr     :  56 tensors / 5,488 params
+  step    250  train_loss 4.1321  val_loss 4.1325  val_acc 0.0117  (85s)
+  step    500  train_loss 4.1269  val_loss 4.1224  val_acc 0.0205  (178s)
+  step    750  train_loss 3.6610  val_loss 3.5666  val_acc 0.0508  (268s)
+  step   1000  train_loss 3.2162  val_loss 3.1748  val_acc 0.1016  (363s)
+  step   1250  train_loss 2.9337  val_loss 2.8843  val_acc 0.1250  (457s)
+  step   1500  train_loss 2.6619  val_loss 2.6376  val_acc 0.1914  (547s)
+  step   1750  train_loss 2.3141  val_loss 2.2615  val_acc 0.2988  (642s)
+  step   2000  train_loss 2.1140  val_loss 2.0112  val_acc 0.3594  (737s)
+  step   2250  train_loss 1.7013  val_loss 1.6738  val_acc 0.5127  (827s)
+  step   2500  train_loss 1.5985  val_loss 1.5601  val_acc 0.5527  (917s)
+  step   2750  train_loss 1.2683  val_loss 1.3779  val_acc 0.6318  (1005s)
+  step   3000  train_loss 1.2462  val_loss 1.2677  val_acc 0.6787  (1095s)
+  step   3250  train_loss 1.1096  val_loss 1.1392  val_acc 0.7549  (1183s)
+  step   3500  train_loss 1.0210  val_loss 1.0824  val_acc 0.7793  (1273s)
+  step   3750  train_loss 0.9775  val_loss 1.0163  val_acc 0.7881  (1352s)
+  step   4000  train_loss 1.0522  val_loss 0.9943  val_acc 0.7939  (1430s)
+
+final val_acc 0.7939  (chance ~0.0323)  in 1429.7s
+saved -> /kaggle/working/phase0_3_lr/tcn_lr3e-4_s0.json

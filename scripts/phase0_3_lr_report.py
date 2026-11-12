@@ -110,7 +110,7 @@ def plot(records: list, path: Path):
         ax.grid(color="#e6e6e6", lw=0.6)
         for s in ("top", "right"):
             ax.spines[s].set_visible(False)
-        ax.legend(fontsize=8, frameon=False, loc="upper left")
+        ax.legend(fontsize=8, frameon=False, loc="center right")
     axes[0].set_ylabel("val_acc (answer positions)")
     fig.suptitle("Learning-rate check: Selective Copying (n_data=4, seq_len=64), seed 0",
                  fontsize=10)

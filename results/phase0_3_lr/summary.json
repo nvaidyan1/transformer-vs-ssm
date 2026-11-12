@@ -1,0 +1,89 @@
+{
+  "transformer": {
+    "runs": [
+      {
+        "lr": 0.0003,
+        "n_params": 452296,
+        "final_val_acc": 0.9755859375,
+        "peak_val_acc": 0.986328125,
+        "steps": 4000,
+        "unstable": []
+      },
+      {
+        "lr": 0.001,
+        "n_params": 452296,
+        "final_val_acc": 1.0,
+        "peak_val_acc": 1.0,
+        "steps": 4000,
+        "unstable": []
+      },
+      {
+        "lr": 0.003,
+        "n_params": 452296,
+        "final_val_acc": 0.935546875,
+        "peak_val_acc": 0.935546875,
+        "steps": 4000,
+        "unstable": []
+      }
+    ],
+    "picked_lr": 0.001
+  },
+  "tcn": {
+    "runs": [
+      {
+        "lr": 0.0003,
+        "n_params": 450212,
+        "final_val_acc": 0.7939453125,
+        "peak_val_acc": 0.7939453125,
+        "steps": 4000,
+        "unstable": []
+      },
+      {
+        "lr": 0.001,
+        "n_params": 450212,
+        "final_val_acc": 0.2509765625,
+        "peak_val_acc": 0.2509765625,
+        "steps": 4000,
+        "unstable": []
+      },
+      {
+        "lr": 0.003,
+        "n_params": 450212,
+        "final_val_acc": 0.263671875,
+        "peak_val_acc": 0.263671875,
+        "steps": 4000,
+        "unstable": []
+      }
+    ],
+    "picked_lr": 0.0003
+  },
+  "mamba_ssm": {
+    "runs": [
+      {
+        "lr": 0.0003,
+        "n_params": 448632,
+        "final_val_acc": 0.9794921875,
+        "peak_val_acc": 0.9794921875,
+        "steps": 4000,
+        "unstable": []
+      },
+      {
+        "lr": 0.001,
+        "n_params": 448632,
+        "final_val_acc": 0.9990234375,
+        "peak_val_acc": 1.0,
+        "steps": 4000,
+        "unstable": []
+      },
+      {
+        "lr": 0.003,
+        "n_params": 448632,
+        "final_val_acc": 1.0,
+        "peak_val_acc": 1.0,
+        "steps": 4000,
+        "unstable": []
+      }
+    ],
+    "picked_lr": 0.001
+  }
+}

@@ -60,3 +60,10 @@ def test_shared_training_settings():
     for key in ("vocab_size", "batch_size", "warmup_steps", "max_steps", "eval_every",
                 "eval_batches", "weight_decay", "grad_clip"):
         assert len({load(n)[key] for n in names}) == 1, key
+
+
+def test_learning_rates_locked_by_lr_check():
+    """results/phase0_3_lr: picked by the pre-registered selection rule."""
+    assert load("transformer_small")["lr"] == 1.0e-3
+    assert load("tcn_small")["lr"] == 3.0e-4
+    assert load("mamba_ssm_small")["lr"] == 1.0e-3

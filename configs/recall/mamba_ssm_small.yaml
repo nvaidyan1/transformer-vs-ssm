@@ -16,7 +16,7 @@ vocab_size: 64
 
 max_steps: 4000
 warmup_steps: 200
-lr: 3.0e-4
+lr: 1.0e-3            # locked by plan2.md 0.3 lr check (results/phase0_3_lr); do not change
 weight_decay: 0.1   # A_log and D are exempt via src/optim.py
 decay_1d: false
 grad_clip: 1.0

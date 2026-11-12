@@ -14,7 +14,7 @@ vocab_size: 64
 
 max_steps: 4000
 warmup_steps: 200
-lr: 3.0e-4
+lr: 3.0e-4          # custom model: not part of the 0.3 lr check; unchanged
 weight_decay: 0.1   # A_log and D are exempt via src/optim.py
 grad_clip: 1.0
 batch_size: 32

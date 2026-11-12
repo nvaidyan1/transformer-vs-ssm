@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=9 kernel_size=4 dilation_cycle=8 max_dilation=128 max_left_pad=384 receptive_field=769
+task   : selective_copy  {'n_data': 4, 'seq_len': 64, 'vocab_size': 64}
+arch   : tcn  (450,212 params)
+device : cuda   lr=0.001  steps=4000  batch=32  seed=0
+  param groups (decay_1d=False):
+    decay, base-lr        :  20 tensors / 444,724 params
+    no-decay, base-lr     :  56 tensors / 5,488 params
+  step    250  train_loss 4.1231  val_loss 4.1388  val_acc 0.0117  (85s)
+  step    500  train_loss 4.1561  val_loss 4.1452  val_acc 0.0186  (178s)
+  step    750  train_loss 4.1296  val_loss 4.1359  val_acc 0.0146  (268s)
+  step   1000  train_loss 3.9482  val_loss 3.9103  val_acc 0.0293  (363s)
+  step   1250  train_loss 3.6798  val_loss 3.6459  val_acc 0.0400  (457s)
+  step   1500  train_loss 3.4724  val_loss 3.4922  val_acc 0.0410  (547s)
+  step   1750  train_loss 3.3237  val_loss 3.3757  val_acc 0.0576  (642s)
+  step   2000  train_loss 3.0692  val_loss 3.0583  val_acc 0.0703  (737s)
+  step   2250  train_loss 2.8144  val_loss 2.8235  val_acc 0.1016  (827s)
+  step   2500  train_loss 2.6050  val_loss 2.6420  val_acc 0.1260  (917s)
+  step   2750  train_loss 2.4347  val_loss 2.5106  val_acc 0.1309  (1005s)
+  step   3000  train_loss 2.3914  val_loss 2.2604  val_acc 0.2021  (1095s)
+  step   3250  train_loss 2.2112  val_loss 2.1849  val_acc 0.1992  (1183s)
+  step   3500  train_loss 2.0570  val_loss 2.0534  val_acc 0.2285  (1273s)
+  step   3750  train_loss 2.0038  val_loss 2.0490  val_acc 0.2227  (1351s)
+  step   4000  train_loss 1.9625  val_loss 1.9584  val_acc 0.2510  (1429s)
+
+final val_acc 0.2510  (chance ~0.0323)  in 1429.6s
+saved -> /kaggle/working/phase0_3_lr/tcn_lr1e-3_s0.json

@@ -1,0 +1,80 @@
+{
+  "commit": "bf65c76",
+  "workers": 4,
+  "train_deadline_min": 24,
+  "train_wall_min": 23.95,
+  "jobs": [
+    {
+      "name": "tcn_lr3e-4_s0",
+      "arch": "tcn",
+      "lr": "3e-4",
+      "cmd": "python src/train_task.py --config configs/recall/tcn_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 3e-4 --out /kaggle/working/phase0_3_lr/tcn_lr3e-4_s0.json",
+      "status": "done",
+      "wall_s": 1436.8
+    },
+    {
+      "name": "tcn_lr1e-3_s0",
+      "arch": "tcn",
+      "lr": "1e-3",
+      "cmd": "python src/train_task.py --config configs/recall/tcn_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 1e-3 --out /kaggle/working/phase0_3_lr/tcn_lr1e-3_s0.json",
+      "status": "done",
+      "wall_s": 1437.0
+    },
+    {
+      "name": "tcn_lr3e-3_s0",
+      "arch": "tcn",
+      "lr": "3e-3",
+      "cmd": "python src/train_task.py --config configs/recall/tcn_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 3e-3 --out /kaggle/working/phase0_3_lr/tcn_lr3e-3_s0.json",
+      "status": "done",
+      "wall_s": 1436.8
+    },
+    {
+      "name": "mamba_ssm_lr3e-4_s0",
+      "arch": "mamba_ssm",
+      "lr": "3e-4",
+      "cmd": "python src/train_task.py --config configs/recall/mamba_ssm_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 3e-4 --out /kaggle/working/phase0_3_lr/mamba_ssm_lr3e-4_s0.json",
+      "status": "done",
+      "wall_s": 254.3
+    },
+    {
+      "name": "mamba_ssm_lr1e-3_s0",
+      "arch": "mamba_ssm",
+      "lr": "1e-3",
+      "cmd": "python src/train_task.py --config configs/recall/mamba_ssm_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 1e-3 --out /kaggle/working/phase0_3_lr/mamba_ssm_lr1e-3_s0.json",
+      "status": "done",
+      "wall_s": 266.2
+    },
+    {
+      "name": "mamba_ssm_lr3e-3_s0",
+      "arch": "mamba_ssm",
+      "lr": "3e-3",
+      "cmd": "python src/train_task.py --config configs/recall/mamba_ssm_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 3e-3 --out /kaggle/working/phase0_3_lr/mamba_ssm_lr3e-3_s0.json",
+      "status": "done",
+      "wall_s": 267.2
+    },
+    {
+      "name": "transformer_lr3e-4_s0",
+      "arch": "transformer",
+      "lr": "3e-4",
+      "cmd": "python src/train_task.py --config configs/recall/transformer_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 3e-4 --out /kaggle/working/phase0_3_lr/transformer_lr3e-4_s0.json",
+      "status": "done",
+      "wall_s": 166.4
+    },
+    {
+      "name": "transformer_lr1e-3_s0",
+      "arch": "transformer",
+      "lr": "1e-3",
+      "cmd": "python src/train_task.py --config configs/recall/transformer_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 1e-3 --out /kaggle/working/phase0_3_lr/transformer_lr1e-3_s0.json",
+      "status": "done",
+      "wall_s": 166.4
+    },
+    {
+      "name": "transformer_lr3e-3_s0",
+      "arch": "transformer",
+      "lr": "3e-3",
+      "cmd": "python src/train_task.py --config configs/recall/transformer_small.yaml --task selective_copy --task_args n_data=4,seq_len=64,vocab_size=64 --steps 4000 --seed 0 --device cuda --lr 3e-3 --out /kaggle/working/phase0_3_lr/transformer_lr3e-3_s0.json",
+      "status": "done",
+      "wall_s": 166.5
+    }
+  ]
+}
