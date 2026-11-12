@@ -163,7 +163,8 @@ def test_mamba_ssm_registered_and_lazy():
             build_model("mamba_ssm", vocab_size=VOCAB, **SMALL)
     else:
         m = build_model("mamba_ssm", vocab_size=VOCAB, **SMALL)
-        assert count_parameters(m) == 448_632
+        fixed = sum(p.numel() for n, p in m.named_parameters() if ".fixed_" in n)
+        assert count_parameters(m) - fixed == 448_632 and fixed == 1_120
 
 
 @pytest.mark.skipif(_real_mixer() is None or not torch.cuda.is_available(),

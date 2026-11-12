@@ -33,3 +33,11 @@ stops (the Stage B pilot seed 0 reached 0.95 at step 1500); ablated stays near 1
 
 mamba-ssm install ~2.5 min, tests ~1 min, two runs of at most 3000 steps (~2-3 min each
 for mamba_ssm alone). The kernel enforces a 15-minute training deadline.
+
+## Run log
+
+- Attempt 1 (commit 006a0ba, ~2 GPU-min): all six 1.2a ablation tests passed, including
+  both CUDA tests with the real kernels. The full suite then failed on one older test,
+  `test_mamba_ssm_registered_and_lazy`, whose CUDA-only branch still expected 448,632
+  parameters without the 1,120 new ablation-only ones. The kernel stopped before any
+  training, as designed. Test fixed; no model or training change. Relaunched.

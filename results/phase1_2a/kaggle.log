@@ -1,0 +1,77 @@
+[{"stream_name":"stdout","time":0.766918497,"data":"\n"}
+,{"stream_name":"stdout","time":0.766971259,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":0.799201585,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":1.679748401,"data":"\n"}
+,{"stream_name":"stdout","time":1.679806006,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":1.69375355,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":1.6939370679999999,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":1.694521586,"data":"\n"}
+,{"stream_name":"stdout","time":1.694540956,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":1.69827704,"data":"006a0ba Phase 1.2a: ablation switch on the official model, prediction (before any run)\n"}
+,{"stream_name":"stdout","time":1.698743066,"data":"\n"}
+,{"stream_name":"stdout","time":1.6987596759999999,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":1.7285578510000001,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":1.72857558,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":1.7353512960000002,"data":"\n"}
+,{"stream_name":"stdout","time":1.735368407,"data":"$ pip install -q packaging ninja wheel psutil pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":6.568250439,"data":"\n"}
+,{"stream_name":"stdout","time":6.568286496,"data":"$ pip install -q 'causal-conv1d\u003e=1.4.0' --no-build-isolation\n"}
+,{"stream_name":"stdout","time":35.714993387,"data":"\n"}
+,{"stream_name":"stdout","time":35.715030676,"data":"$ pip install -q mamba-ssm --no-build-isolation\n"}
+,{"stream_name":"stdout","time":37.135173074,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.4/216.4 kB 2.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":43.603887837,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 MB 20.9 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":43.689103704,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 49.0 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":43.754148314,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 729.6/729.6 kB 29.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":43.877073546,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 82.9 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":45.567910409,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 MB 11.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":45.632638297,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 54.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":46.087538443,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 29.3/29.3 MB 50.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":46.150918091,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 897.8/897.8 kB 37.1 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":73.681233542,"data":"\n"}
+,{"stream_name":"stdout","time":73.681275342,"data":"$ python -m pytest tests/test_mamba_official.py -v -rs -p no:warnings -k ablation\n"}
+,{"stream_name":"stdout","time":75.208952056,"data":"============================= test session starts ==============================\n"}
+,{"stream_name":"stdout","time":75.208980119,"data":"platform linux -- Python 3.12.13, pytest-8.4.2, pluggy-1.6.0 -- /usr/bin/python3\n"}
+,{"stream_name":"stdout","time":75.208985684,"data":"cachedir: .pytest_cache\n"}
+,{"stream_name":"stdout","time":75.208989433,"data":"rootdir: /kaggle/working/transformer-vs-ssm\n"}
+,{"stream_name":"stdout","time":75.208993132,"data":"plugins: anyio-4.13.0, typeguard-4.5.1, langsmith-0.7.34\n"}
+,{"stream_name":"stdout","time":104.848516634,"data":"collecting ... collected 35 items / 29 deselected / 6 selected\n"}
+,{"stream_name":"stdout","time":104.848555817,"data":"\n"}
+,{"stream_name":"stdout","time":104.978056788,"data":"tests/test_mamba_official.py::test_official_has_ablation_params_and_rest_of_init_unchanged PASSED [ 16%]\n"}
+,{"stream_name":"stdout","time":105.229008718,"data":"tests/test_mamba_official.py::test_official_ablation_matches_custom_ablation_cpu PASSED [ 33%]\n"}
+,{"stream_name":"stdout","time":105.336172862,"data":"tests/test_mamba_official.py::test_official_ablation_ignores_x_proj_and_dt_proj_cpu PASSED [ 50%]\n"}
+,{"stream_name":"stdout","time":105.359442592,"data":"tests/test_mamba_official.py::test_official_selective_path_unchanged_by_ablation_flag_default PASSED [ 66%]\n"}
+,{"stream_name":"stdout","time":106.131372039,"data":"tests/test_mamba_official.py::test_official_ablation_matches_custom_ablation_cuda PASSED [ 83%]\n"}
+,{"stream_name":"stdout","time":107.385877258,"data":"tests/test_mamba_official.py::test_official_ablation_ignores_x_proj_and_dt_proj_cuda PASSED [100%]\n"}
+,{"stream_name":"stdout","time":107.385904778,"data":"\n"}
+,{"stream_name":"stdout","time":107.385909815,"data":"====================== 6 passed, 29 deselected in 31.02s =======================\n"}
+,{"stream_name":"stdout","time":108.94109736,"data":"\n"}
+,{"stream_name":"stdout","time":108.941137309,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":124.734735974,"data":"...............................................F........................ [ 51%]\n"}
+,{"stream_name":"stdout","time":127.08437124,"data":"...................................................................      [100%]\n"}
+,{"stream_name":"stdout","time":127.084405765,"data":"=================================== FAILURES ===================================\n"}
+,{"stream_name":"stdout","time":127.084411928,"data":"______________________ test_mamba_ssm_registered_and_lazy ______________________\n"}
+,{"stream_name":"stdout","time":127.0844192,"data":"\n"}
+,{"stream_name":"stdout","time":127.084429218,"data":"    def test_mamba_ssm_registered_and_lazy():\n"}
+,{"stream_name":"stdout","time":127.08443305,"data":"        \"\"\"build_model('mamba_ssm') is registered; without mamba-ssm it fails with an\n"}
+,{"stream_name":"stdout","time":127.084436651,"data":"        ImportError at construction, not at `import src.models`.\"\"\"\n"}
+,{"stream_name":"stdout","time":127.084440309,"data":"        if _real_mixer() is None:\n"}
+,{"stream_name":"stdout","time":127.084443672,"data":"            with pytest.raises(ImportError):\n"}
+,{"stream_name":"stdout","time":127.0844469,"data":"                build_model(\"mamba_ssm\", vocab_size=VOCAB, **SMALL)\n"}
+,{"stream_name":"stdout","time":127.084450347,"data":"        else:\n"}
+,{"stream_name":"stdout","time":127.084453563,"data":"            m = build_model(\"mamba_ssm\", vocab_size=VOCAB, **SMALL)\n"}
+,{"stream_name":"stdout","time":127.084456895,"data":"\u003e           assert count_parameters(m) == 448_632\n"}
+,{"stream_name":"stdout","time":127.084475174,"data":"E           assert 449752 == 448632\n"}
+,{"stream_name":"stdout","time":127.084478733,"data":"E            +  where 449752 = count_parameters(OracleMamba(\\n  (tok_emb): Embedding(64, 124)\\n  (blocks): ModuleList(\\n    (0-3): 4 x OracleBlock(\\n      (norm): LayerNo... LayerNorm((124,), eps=1e-05, elementwise_affine=True)\\n  (head): Linear(in_features=124, out_features=64, bias=False)\\n))\n"}
+,{"stream_name":"stdout","time":127.084483458,"data":"\n"}
+,{"stream_name":"stdout","time":127.084485925,"data":"tests/test_mamba_official.py:166: AssertionError\n"}
+,{"stream_name":"stdout","time":127.084488583,"data":"=========================== short test summary info ============================\n"}
+,{"stream_name":"stdout","time":127.084491269,"data":"FAILED tests/test_mamba_official.py::test_mamba_ssm_registered_and_lazy - ass...\n"}
+,{"stream_name":"stdout","time":127.084494054,"data":"1 failed, 138 passed in 16.00s\n"}
+,{"stream_name":"stderr","time":128.578900299,"data":"FAILED (1): python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stderr","time":130.596406585,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":130.596439854,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":132.217487651,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":132.217512047,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":132.820713047,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":133.977810808,"data":"[NbConvertApp] Writing 284525 bytes to __results__.html\n"}
+]
