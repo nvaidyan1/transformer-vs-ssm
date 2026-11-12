@@ -46,3 +46,18 @@ memory rather than from carrying only one item, run 2 could fail for the same re
 mamba-ssm install ~2.5 min and tests ~1 min; runs 2-4 on mamba_ssm ~1 min each; run 1
 on the custom model ~8 min (it is last, so a deadline cut cannot cost the gate run). The
 kernel enforces a 25-minute training deadline.
+
+## Outcome (appended after the run; predictions above unchanged)
+
+Kaggle T4, commit 4dee336, ~12 GPU-min of 30. 143 tests passed.
+
+| run | final val_acc | per-slot | vs prediction |
+|---|---|---|---|
+| 1 custom ablated, fixed, n_data=4 | 0.258 | 0.016, 0.016, 0.012, 0.988 | as predicted: one slot near 1.0 (slot 4, the 4-step carry), others at chance |
+| 2 mamba_ssm ablated, fixed, n_data=1 | 0.352 | 0.352 | **predicted >= 0.9: wrong.** Still rising at step 3000 (0.133, 0.281, 0.215, 0.230, 0.352 over the last five evals) |
+| 3 mamba_ssm ablated, random, n_data=1 | 1.000 (early stop, 2500) | 1.000 | uncertain beforehand; solved |
+| 4 mamba_ssm ablated, fixed, n_data=2 | 0.689 | 0.379, 1.000 | predicted plateau near 0.5: the near slot is 1.0, the far slot (60-step carry) 0.379 and rising |
+
+**Gate FAIL** (run 2 needs >= 0.9). Stopped per the rule; the ablation is not modified.
+Per the author's rule, the 1.1 and 1.2a ablation results are not usable in a post, and the
+1.2 ablated arms do not run.

@@ -1,0 +1,22 @@
+{
+  "gate": "FAIL",
+  "generator": "Non-data positions: one blank token (id 0). The generator starts from np.full(seq_len, NOISE_ID) and overwrites only the data tokens and the marker; there are no random noise tokens.",
+  "slot_acc": {
+    "run1_custom_fixed_nd4": [
+      0.015625,
+      0.015625,
+      0.01171875,
+      0.98828125
+    ],
+    "run2_fixed_nd1": [
+      0.3515625
+    ],
+    "run3_random_nd1": [
+      1.0
+    ],
+    "run4_fixed_nd2": [
+      0.37890625,
+      1.0
+    ]
+  }
+}
