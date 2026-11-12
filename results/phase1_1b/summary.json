@@ -1,0 +1,34 @@
+{
+  "gate": "FAIL",
+  "rerun_final_val_acc": 0.0205078125,
+  "rerun_train_loss": 4.142483711242676,
+  "hist": {
+    "n_answers": 1024,
+    "distinct_predicted": 29,
+    "distinct_targets": 62,
+    "non_data_predictions": 0,
+    "top5": [
+      [
+        42,
+        732
+      ],
+      [
+        53,
+        75
+      ],
+      [
+        4,
+        19
+      ],
+      [
+        18,
+        18
+      ],
+      [
+        26,
+        16
+      ]
+    ],
+    "pred_entropy_nats": 1.3931021449055128
+  }
+}

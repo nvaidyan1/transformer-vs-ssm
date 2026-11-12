@@ -38,3 +38,22 @@ or gate; correcting `chance_acc` is left to the author.
 Three runs of at most 3000 steps, one at a time (~8 min each at 6.45 steps/s, Phase
 1.1 Stage A), plus ~1 min setup: ~25 min. The kernel enforces a 23.5-minute training
 deadline, ordered ablated-fixed (the gate) first, selective-fixed second, the re-run last.
+
+## Outcome (appended after the run; predictions above unchanged)
+
+Kaggle T4, commit f7bee46, ~22.5 GPU-min of 25. 118 tests passed.
+
+Part 1, fixed positions: selective 1.000 (steps-to-0.95 1250, early stop at 2250).
+Ablated 0.258 at step 3000; it rose from 0.045 to 0.255 between steps 750 and 1000
+and stayed within 0.254-0.262 for the remaining 2000 steps. **Gate FAIL** (needs >= 0.9).
+The author's prediction (both > 0.95) holds for selective and fails for ablated. Stopped
+here per the gate rule; no investigation. The 1.1 ablation result is not usable in a post
+until the ablated model is shown to learn something.
+
+Part 2, re-run of 1.1 custom_ablated_s0: reproduced exactly (val_acc 0.0205 at step
+3000, same as the original). Final training loss 4.142 (last logged batch), above
+ln(31) = 3.434 and close to ln(62) = 4.127. Predicted tokens: 29 distinct ids over 1024
+answers, all data ids, but concentrated: id 42 in 732 of 1024 (71%), id 53 in 75.
+My prediction was right that the accuracy is chance (1/62 = 0.016; the recorded
+chance_acc 1/31 is wrong for this generator) and that the loss sits near ln(62); it was
+wrong that predictions would spread over most data ids: the argmax collapses onto a few.
