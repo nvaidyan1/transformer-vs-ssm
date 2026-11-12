@@ -21,10 +21,18 @@ Use as an implementation check
 This repo runs a bespoke pure-PyTorch sequential-scan Mamba (`src/models/mamba.py`), not
 `mamba-ssm`. A poor MQAR result from it is uninterpretable until it demonstrates the
 canonical capability here. Recommended control: train the same model with selection
-disabled (`input_independent=True` in `MambaSSM.forward`, which freezes delta/B/C to
-their sequence means, approximating a time-invariant SSM). A working implementation
+disabled (`input_independent=True` in `MambaSSM.forward`, which replaces delta/B/C with
+learned constants, a time-invariant SSM). A working implementation
 should show selective >> input-independent. If the two match, selection is not doing
 anything and the bug is in the model, not the story.
+
+Positive control (`fixed_positions=True`, plan2.md 1.1b)
+--------------------------------------------------------
+The data tokens sit at the SAME positions in every sequence (evenly spaced through the
+input region, a pure function of input_len and n_data). This is vanilla copying: a
+time-invariant model can solve it with fixed taps, so the non-selective ablation should
+learn it. It shows the ablated model can learn at all, so its failure on the randomised
+task is about selection, not about a broken model.
 
 Token layout for a vocabulary of size V:
     id 0                  noise / blank
@@ -62,6 +70,7 @@ def generate_selective_copy(
     vocab_size: int,
     seed: int = None,
     rng: np.random.Generator = None,
+    fixed_positions: bool = False,
 ) -> SelectiveCopySample:
     """Generate one Selective Copying example.
 
@@ -71,6 +80,8 @@ def generate_selective_copy(
         vocab_size: total vocabulary; data symbols occupy [2, vocab_size)
         seed:       seed for a fresh generator (ignored if `rng` is given)
         rng:        an existing numpy Generator, for batch generation
+        fixed_positions: positive control; data at fixed_data_positions() in every
+                    sequence instead of random positions (see module docstring)
     """
     if rng is None:
         rng = np.random.default_rng(seed)
@@ -86,7 +97,10 @@ def generate_selective_copy(
 
     # Data symbols and their RANDOM positions within the input region.
     data = rng.integers(DATA_LO, vocab_size, size=n_data)
-    positions = np.sort(rng.choice(input_len, size=n_data, replace=False))
+    if fixed_positions:
+        positions = fixed_data_positions(input_len, n_data)
+    else:
+        positions = np.sort(rng.choice(input_len, size=n_data, replace=False))
 
     tokens = np.full(seq_len, NOISE_ID, dtype=np.int64)
     tokens[positions] = data
@@ -116,8 +130,15 @@ def generate_selective_copy(
             "n_data": int(n_data),
             "seq_len": int(seq_len),
             "vocab_size": int(vocab_size),
+            "fixed_positions": bool(fixed_positions),
         },
     )
+
+
+def fixed_data_positions(input_len: int, n_data: int) -> np.ndarray:
+    """Evenly spaced, distinct positions spanning the input region (first and last
+    slot included). Depends only on its arguments, never on a seed."""
+    return np.round(np.linspace(0, input_len - 1, n_data)).astype(np.int64)
 
 
 def make_batch(
@@ -126,10 +147,12 @@ def make_batch(
     n_data: int,
     vocab_size: int,
     seed: int = None,
+    fixed_positions: bool = False,
 ):
     """Stack `batch_size` independent Selective Copying examples."""
     rng = np.random.default_rng(seed)
-    samples = [generate_selective_copy(seq_len, n_data, vocab_size, rng=rng)
+    samples = [generate_selective_copy(seq_len, n_data, vocab_size, rng=rng,
+                                       fixed_positions=bool(fixed_positions))
                for _ in range(batch_size)]
     return (
         np.stack([s.tokens for s in samples]),

@@ -139,3 +139,41 @@ def test_train_val_seed_split_has_no_collisions():
     train = {sample(s).tokens.tobytes() for s in range(0, 400)}
     val = {sample(s).tokens.tobytes() for s in range(10_000, 10_400)}
     assert not (train & val)
+
+
+# ── positive control: fixed positions (plan2.md 1.1b) ─────────────────────────
+def test_fixed_positions_identical_across_samples_and_seeds():
+    ref = None
+    for seed in range(20):
+        toks, _, _, metas = make_batch(8, 64, 4, 64, seed=seed, fixed_positions=True)
+        for m, t in zip(metas, toks):
+            pos = m["source_positions"]
+            if ref is None:
+                ref = pos
+            assert pos == ref
+            # the data really are at those positions, and nowhere else in the input
+            inp = t[:m["input_len"]]
+            assert sorted(np.flatnonzero(inp != NOISE_ID).tolist()) == ref
+    assert ref == [0, 19, 39, 58]     # input_len 59, n_data 4
+
+
+def test_fixed_positions_data_still_random_and_targets_correct():
+    toks, tgts, _, metas = make_batch(64, 64, 4, 64, seed=0, fixed_positions=True)
+    assert len({tuple(m["data"]) for m in metas}) > 60
+    for t, m in zip(tgts, metas):
+        mp = m["marker_position"]
+        assert t[mp:mp + 4].tolist() == m["data"]
+
+
+def test_fixed_positions_off_by_default_is_random():
+    _, _, _, metas = make_batch(32, 64, 4, 64, seed=0)
+    assert len({tuple(m["source_positions"]) for m in metas}) > 1
+    assert not metas[0]["fixed_positions"]
+
+
+def test_fixed_positions_via_batcher_kwarg():
+    from src.tasks import make_batcher
+    b = make_batcher("selective_copy", seq_len=64, n_data=4, vocab_size=64,
+                     fixed_positions=1)
+    _, _, _, metas = b(4, 123)
+    assert all(m["fixed_positions"] for m in metas)

@@ -81,3 +81,12 @@ def test_scan_and_checkpoint_flags_reach_custom_mamba(tmp_path, monkeypatch):
     r = _run(tmp_path, monkeypatch, "configs/recall/mamba_small.yaml", tiny,
              ["--scan", "parallel", "--grad_checkpoint", "false"], steps=2)
     assert r["scan"] == "parallel" and r["grad_checkpoint"] is False
+
+
+def test_dump_answer_hist_counts_every_answer(tmp_path, monkeypatch):
+    r = _run(tmp_path, monkeypatch, "configs/recall/transformer_small.yaml", TINY_TF,
+             ["--dump_answer_hist"], steps=2)
+    h = r["answer_hist"]
+    n_answers = 4 * 4            # eval_batches=1, batch_size=4, n_data=4
+    assert sum(h["pred"].values()) == sum(h["target"].values()) == n_answers
+    assert all(2 <= int(k) < 64 for k in h["target"])

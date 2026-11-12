@@ -138,6 +138,23 @@ def evaluate(model, val_batches, device, model_kwargs) -> dict:
             "n": tot_n}
 
 
+@torch.no_grad()
+def answer_histograms(model, val_batches, model_kwargs) -> dict:
+    """Counts of predicted and target tokens at answer positions over the validation
+    set, as {token_id: count} (diagnostic only; plan2.md 1.1b)."""
+    model.eval()
+    pred, tgt_counts = {}, {}
+    for tok, tgt, mask, _ in val_batches:
+        p = model(tok, **model_kwargs).argmax(-1)[mask].tolist()
+        t = tgt[mask].tolist()
+        for k in p:
+            pred[k] = pred.get(k, 0) + 1
+        for k in t:
+            tgt_counts[k] = tgt_counts.get(k, 0) + 1
+    model.train()
+    return {"pred": dict(sorted(pred.items())), "target": dict(sorted(tgt_counts.items()))}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -172,6 +189,9 @@ def main():
                     help="custom mamba only: scan implementation (numerically equivalent).")
     ap.add_argument("--grad_checkpoint", type=str2bool, default=None,
                     help="custom mamba only: activation checkpointing (memory/time only).")
+    ap.add_argument("--dump_answer_hist", action="store_true",
+                    help="Add histograms of predicted/target tokens at answer positions "
+                         "(validation set, final model) to the result record.")
     ap.add_argument("--out", default=None, help="Write a JSON result record here.")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
@@ -319,6 +339,8 @@ def main():
 
     final = evaluate(model, val_batches, device, model_kwargs)
     record = make_record(final, complete=True)
+    if args.dump_answer_hist:
+        record["answer_hist"] = answer_histograms(model, val_batches, model_kwargs)
     if not args.quiet:
         print(f"\nfinal val_acc {final['acc']:.4f}  "
               f"(chance ~{record['chance_acc']:.4f})  in {record['wall_clock_s']}s")
