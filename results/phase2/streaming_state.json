@@ -1,0 +1,75 @@
+{
+  "contexts": [
+    128,
+    256,
+    512,
+    1024,
+    2048,
+    4096
+  ],
+  "batch": 1,
+  "dtype": "float32",
+  "archs": {
+    "transformer": {
+      "config": "configs/recall/transformer_small.yaml",
+      "measured_bytes": [
+        319488,
+        638976,
+        1277952,
+        2555904,
+        5111808,
+        10223616
+      ],
+      "analytic_bytes": [
+        319488,
+        638976,
+        1277952,
+        2555904,
+        5111808,
+        10223616
+      ],
+      "seconds": 3.7
+    },
+    "tcn": {
+      "config": "configs/recall/tcn_small.yaml",
+      "measured_bytes": [
+        175616,
+        250880,
+        301056,
+        301056,
+        301056,
+        301056
+      ],
+      "analytic_bytes": [
+        175616,
+        250880,
+        301056,
+        301056,
+        301056,
+        301056
+      ],
+      "seconds": 6.3,
+      "receptive_field": 769
+    },
+    "mamba": {
+      "config": "configs/recall/mamba_small.yaml",
+      "measured_bytes": [
+        75392,
+        75392,
+        75392,
+        75392,
+        75392,
+        75392
+      ],
+      "analytic_bytes": [
+        75392,
+        75392,
+        75392,
+        75392,
+        75392,
+        75392
+      ],
+      "seconds": 2.5
+    }
+  }
+}

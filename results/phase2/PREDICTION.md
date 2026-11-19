@@ -30,3 +30,12 @@ loop (same state shapes as mamba_ssm).
 **Prediction (plan2):** KV cache linear in context; TCN constant once context exceeds the
 receptive field (769); Mamba constant.
 **Gate:** analytic and measured agree within 5%.
+
+## 2.2 outcome (appended after the run; prediction above unchanged)
+
+Local CPU, ~10 s. **Gate PASS**: analytic and measured identical at every context. KV cache
+linear (319,488 bytes at 128 -> 10,223,616 at 4096); Mamba constant (75,392); TCN constant
+from context 384 on (301,056). The prediction held, with one correction to its wording: the
+TCN's carried state saturates at its largest single layer window ((kernel - 1) x max
+dilation = 384), not at the receptive field (769), which is the sum over layers. Figure:
+streaming_state.png.

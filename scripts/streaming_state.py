@@ -55,7 +55,8 @@ def main():
             if t + 1 in contexts:
                 measured.append(st.state_bytes())
                 analytic.append(analytic_bytes(arch, model, t + 1))
-        extra = {"receptive_field": model.receptive_field} if arch == "tcn" else {}
+        extra = ({"receptive_field": model.receptive_field, "max_window": model.max_padding}
+                 if arch == "tcn" else {})
         rec["archs"][arch] = {"config": cfg_path, "measured_bytes": measured,
                               "analytic_bytes": analytic, "seconds": round(time.time() - t0, 1),
                               **extra}

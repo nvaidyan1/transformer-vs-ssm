@@ -106,11 +106,27 @@ def plot_22(rec, path):
     for arch, d in rec["archs"].items():
         ax.plot(rec["contexts"], [b / 1024 for b in d["measured_bytes"]], marker="o", ms=5, lw=2,
                 color=COLORS[arch], label=LABELS.get(arch, arch))
-    rf = rec["archs"].get("tcn", {}).get("receptive_field")
-    if rf:
-        ax.axvline(rf, color="#999", lw=1, ls="--")
-        ax.text(rf * 1.05, ax.get_ylim()[0] * 1.5 if ax.get_yscale() == "log" else 0,
-                f"TCN receptive field {rf}", fontsize=7, color="#777")
+    tcn = rec["archs"].get("tcn")
+    if tcn and "max_window" not in tcn:
+        # derived from the config, never written back into the raw record
+        import yaml
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from src.models import build_model
+        c = yaml.safe_load(open(Path(__file__).parent.parent / tcn["config"]))
+        tcn = dict(tcn, max_window=build_model("tcn", vocab_size=c["vocab_size"],
+                                               **c["model"]).max_padding)
+    if tcn:
+        # state saturates where the context covers the largest single layer's window
+        # ((kernel - 1) * max dilation), which is smaller than the receptive field (the
+        # sum over layers)
+        sat = next((c for c, b in zip(rec["contexts"], tcn["measured_bytes"])
+                    if b == tcn["measured_bytes"][-1]), None)
+        for x, lab, y in ((tcn.get("max_window"), "largest TCN\nlayer window", 0.62),
+                          (tcn.get("receptive_field"), "TCN receptive\nfield", 0.45)):
+            if x:
+                ax.axvline(x, color="#999", lw=1, ls="--")
+                ax.text(x * 1.04, y, f"{lab} {x}", fontsize=7, color="#777",
+                        transform=ax.get_xaxis_transform())
     ax.set_xscale("log", base=2); ax.set_yscale("log")
     ax.set_xlabel("context length (tokens already generated)")
     ax.set_ylabel("state carried to the next token (KiB)")

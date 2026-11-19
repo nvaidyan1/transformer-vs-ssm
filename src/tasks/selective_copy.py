@@ -34,6 +34,12 @@ time-invariant model can solve it with fixed taps, so the non-selective ablation
 learn it. It shows the ablated model can learn at all, so its failure on the randomised
 task is about selection, not about a broken model.
 
+Controlled distance (`min_gap=G`, plan2.md 3.1)
+-----------------------------------------------
+Data tokens are placed only in the first `input_len - G` positions of the input region,
+so every answer position (marker_pos + i) is at least G positions after the data token it
+reproduces. Positions stay random within that window. Used for the TCN reach curve.
+
 Token layout for a vocabulary of size V:
     id 0                  noise / blank
     id 1                  marker (start of output region)
@@ -71,6 +77,7 @@ def generate_selective_copy(
     seed: int = None,
     rng: np.random.Generator = None,
     fixed_positions: bool = False,
+    min_gap: int = 0,
 ) -> SelectiveCopySample:
     """Generate one Selective Copying example.
 
@@ -82,6 +89,8 @@ def generate_selective_copy(
         rng:        an existing numpy Generator, for batch generation
         fixed_positions: positive control; data at fixed_data_positions() in every
                     sequence instead of random positions (see module docstring)
+        min_gap:    every data token sits at least this many positions before the
+                    answer position that reproduces it (see module docstring)
     """
     if rng is None:
         rng = np.random.default_rng(seed)
@@ -97,10 +106,14 @@ def generate_selective_copy(
 
     # Data symbols and their RANDOM positions within the input region.
     data = rng.integers(DATA_LO, vocab_size, size=n_data)
+    window = input_len - int(min_gap)
+    if window < n_data:
+        raise ValueError(f"min_gap={min_gap} leaves {window} input positions for "
+                         f"{n_data} data tokens; raise seq_len")
     if fixed_positions:
-        positions = fixed_data_positions(input_len, n_data)
+        positions = fixed_data_positions(window, n_data)
     else:
-        positions = np.sort(rng.choice(input_len, size=n_data, replace=False))
+        positions = np.sort(rng.choice(window, size=n_data, replace=False))
 
     tokens = np.full(seq_len, NOISE_ID, dtype=np.int64)
     tokens[positions] = data
@@ -131,6 +144,7 @@ def generate_selective_copy(
             "seq_len": int(seq_len),
             "vocab_size": int(vocab_size),
             "fixed_positions": bool(fixed_positions),
+            "min_gap": int(min_gap),
         },
     )
 
@@ -148,11 +162,13 @@ def make_batch(
     vocab_size: int,
     seed: int = None,
     fixed_positions: bool = False,
+    min_gap: int = 0,
 ):
     """Stack `batch_size` independent Selective Copying examples."""
     rng = np.random.default_rng(seed)
     samples = [generate_selective_copy(seq_len, n_data, vocab_size, rng=rng,
-                                       fixed_positions=bool(fixed_positions))
+                                       fixed_positions=bool(fixed_positions),
+                                       min_gap=int(min_gap))
                for _ in range(batch_size)]
     return (
         np.stack([s.tokens for s in samples]),

@@ -1,0 +1,8 @@
+{
+  "2.2": {
+    "gate": {
+      "verdict": "PASS",
+      "worst_rel_diff": 0.0
+    }
+  }
+}

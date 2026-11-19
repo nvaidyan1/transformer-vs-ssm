@@ -177,3 +177,29 @@ def test_fixed_positions_via_batcher_kwarg():
                      fixed_positions=1)
     _, _, _, metas = b(4, 123)
     assert all(m["fixed_positions"] for m in metas)
+
+
+# ── controlled distance: min_gap (plan2.md 3.1) ───────────────────────────────
+@pytest.mark.parametrize("gap", [32, 64, 96, 160, 256, 512])
+def test_min_gap_every_answer_at_least_gap_after_its_source(gap):
+    toks, tgts, mask, metas = make_batch(64, gap + 64, 4, 64, seed=gap, min_gap=gap)
+    dists = []
+    for m in metas:
+        mp = m["marker_position"]
+        for i, p in enumerate(m["source_positions"]):
+            d = (mp + i) - p          # answer position minus source position
+            assert d >= gap
+            dists.append(d)
+    assert min(dists) < gap + 10      # the bound is reached, not just respected
+    assert len({tuple(m["source_positions"]) for m in metas}) > 50   # still random
+
+
+def test_min_gap_zero_is_unchanged_default():
+    a = make_batch(8, 64, 4, 64, seed=3)
+    b = make_batch(8, 64, 4, 64, seed=3, min_gap=0)
+    assert (a[0] == b[0]).all() and (a[1] == b[1]).all()
+
+
+def test_min_gap_too_large_raises():
+    with pytest.raises(ValueError):
+        make_batch(1, 70, 4, 64, seed=0, min_gap=64)
