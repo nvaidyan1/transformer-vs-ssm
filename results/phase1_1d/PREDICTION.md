@@ -35,3 +35,9 @@ from the schedule follow-up (d).
 **Prediction:** selective >= 0.95 at every n_data (unchanged); ablated n_data 1 solves;
 ablated n_data 4 stays near chance at CAP 4000 (it needed ~18,000 steps on the 20k schedule
 in follow-up (c)). The figure's fall with n_data becomes a fall from n_data 3 to 4.
+Outcome of the D4 rerun (lane A, commit 421845b; prediction above unchanged): selective
+1.000 / 0.996 / 0.998 / 0.996 at n_data 1-4; ablated n_data 1 0.999, n_data 4 0.022
+(0.016-0.028). With follow-up (d), every cell now shares the 20k schedule: ablated
+0.999 / 0.978 / 0.888 / 0.022. As predicted, the fall is from n_data 3 to 4. Figure:
+sched20k/items_carried.png (this is the figure for Post 2; the 4k-schedule figure one
+level up is superseded).

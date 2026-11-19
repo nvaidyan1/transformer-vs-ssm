@@ -37,3 +37,6 @@ results/**/*.png
 
 # graphify's own output
 graphify-out/
+
+# Kaggle kernel outputs (raw downloads)
+.kaggle_out/

@@ -39,3 +39,21 @@ from context 384 on (301,056). The prediction held, with one correction to its w
 TCN's carried state saturates at its largest single layer window ((kernel - 1) x max
 dilation = 384), not at the receptive field (769), which is the sum over layers. Figure:
 streaming_state.png.
+
+## 2.1 outcome (appended after the run; prediction above unchanged)
+
+Kaggle T4, commit 421845b (lane A). **Gate FAIL.** Top-three slopes:
+
+| model | memory (pred) | time (pred) |
+|---|---|---|
+| Transformer, naive | 1.92 (2) ok | 1.81 (not gated) |
+| Transformer, SDPA | 1.01 (1) ok | **1.63 (2) miss** |
+| TCN | 0.82 (1) ok | **0.60 (1) miss** |
+| mamba_ssm | 1.00 (1) ok | **0.50 (1) miss** |
+
+Every memory prediction held (naive attention quadratic; SDPA, TCN and Mamba linear;
+Mamba training memory not flat). The three time predictions missed: at batch 2 and ~450k
+parameters the TCN and Mamba passes take a flat ~10 ms up to length 1024, so the top three
+lengths still include overhead-bound points. This was the caveat recorded above. Per rule 4:
+no tuning (no batch-size change, no re-run); reported as failed. Transformer parameter count
+825,032 because of the 4096-row positional table (disclosed, D5). Figure: cost_scaling.png.

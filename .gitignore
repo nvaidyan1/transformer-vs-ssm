@@ -49,3 +49,6 @@ scripts/verify_post2_mamba.py
 
 # graphify knowledge graph (local; rebuild with /graphify, update with `graphify update .`)
 graphify-out/
+
+# Kaggle kernel outputs, downloaded before being copied into results/
+.kaggle_out/

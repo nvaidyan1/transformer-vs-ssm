@@ -10,3 +10,6 @@ val_acc > 0.99 for 3 evals, at most 20,000 steps, `--save_model`:
 - mamba_ssm_small.yaml (weights copied into the custom model locally, which returns Delta)
 
 Expected: both early-stop above 0.99 (they did in 0.3 and 1.2).
+
+Outcome (lane A, commit 421845b): transformer_s0 early-stopped at step 4500 (0.995);
+mamba_ssm_s0 at step 3000 (0.996). Weights saved as *.pt (1.8 MB each).

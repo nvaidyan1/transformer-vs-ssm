@@ -1,0 +1,119 @@
+{
+  "task": "selective_copy",
+  "task_args": {
+    "n_data": 4,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "arch": "mamba_ssm",
+  "ablate": false,
+  "n_params": 449752,
+  "n_params_ablation_only": 1120,
+  "lr": 0.001,
+  "ssm_lr_scale": 1.0,
+  "decay_1d": false,
+  "emb_init_std": 1.0,
+  "out_proj_depth_scale": true,
+  "model_cfg": {
+    "n_layers": 4,
+    "d_model": 124,
+    "d_state": 16,
+    "d_conv": 4,
+    "expand": 2,
+    "dropout": 0.0,
+    "emb_init_std": 1.0,
+    "out_proj_depth_scale": true,
+    "use_fast_path": true
+  },
+  "seed": 0,
+  "batch_size": 32,
+  "steps_run": 3000,
+  "max_steps": 20000,
+  "schedule_steps": 20000,
+  "stopped_early": true,
+  "early_stop_acc": 0.99,
+  "early_stop_evals": 3,
+  "scan": null,
+  "grad_checkpoint": null,
+  "complete": true,
+  "final_val_acc": 0.99609375,
+  "final_val_loss": 0.01590800317353569,
+  "chance_acc": 0.016129032258064516,
+  "wall_clock_s": 44.6,
+  "device": "cuda",
+  "history": [
+    {
+      "step": 250,
+      "train_loss": 4.305220127105713,
+      "val_loss": 4.3508230447769165,
+      "val_acc": 0.0107421875
+    },
+    {
+      "step": 500,
+      "train_loss": 4.312638282775879,
+      "val_loss": 4.246326804161072,
+      "val_acc": 0.029296875
+    },
+    {
+      "step": 750,
+      "train_loss": 3.632704734802246,
+      "val_loss": 3.645212173461914,
+      "val_acc": 0.099609375
+    },
+    {
+      "step": 1000,
+      "train_loss": 1.8704710006713867,
+      "val_loss": 1.666113257408142,
+      "val_acc": 0.5576171875
+    },
+    {
+      "step": 1250,
+      "train_loss": 0.27060145139694214,
+      "val_loss": 0.2467010412365198,
+      "val_acc": 0.919921875
+    },
+    {
+      "step": 1500,
+      "train_loss": 0.06741245090961456,
+      "val_loss": 0.08246258599683642,
+      "val_acc": 0.9716796875
+    },
+    {
+      "step": 1750,
+      "train_loss": 0.15539413690567017,
+      "val_loss": 0.07761398877482861,
+      "val_acc": 0.9814453125
+    },
+    {
+      "step": 2000,
+      "train_loss": 0.05777854472398758,
+      "val_loss": 0.04467747244052589,
+      "val_acc": 0.9853515625
+    },
+    {
+      "step": 2250,
+      "train_loss": 0.10088471323251724,
+      "val_loss": 0.07404181000310928,
+      "val_acc": 0.982421875
+    },
+    {
+      "step": 2500,
+      "train_loss": 0.029546549543738365,
+      "val_loss": 0.02669181631063111,
+      "val_acc": 0.9912109375
+    },
+    {
+      "step": 2750,
+      "train_loss": 0.04963954538106918,
+      "val_loss": 0.03209285536286188,
+      "val_acc": 0.9951171875
+    },
+    {
+      "step": 3000,
+      "train_loss": 0.0015680514043197036,
+      "val_loss": 0.01590800317353569,
+      "val_acc": 0.99609375
+    }
+  ],
+  "saved_model": "/kaggle/working/out/figure_models/mamba_ssm_s0.pt"
+}

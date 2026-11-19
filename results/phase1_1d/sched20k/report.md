@@ -1,12 +1,12 @@
 | arm | n_data | seeds | final val_acc mean [min, max] | per-slot mean |
 |---|---|---|---|---|
-| selective | 1 | 0 | not run | |
-| selective | 2 | 0 | not run | |
-| selective | 3 | 0 | not run | |
-| selective | 4 | 0 | not run | |
-| ablated | 1 | 0 | not run | |
+| selective | 1 | 3 | 1.000 [1.000, 1.000] | 1.00 |
+| selective | 2 | 3 | 0.996 [0.992, 0.998] | 0.99, 1.00 |
+| selective | 3 | 3 | 0.998 [0.997, 0.999] | 1.00, 1.00, 1.00 |
+| selective | 4 | 3 | 0.996 [0.995, 0.998] | 0.99, 0.99, 1.00, 1.00 |
+| ablated | 1 | 3 | 0.999 [0.996, 1.000] | 1.00 |
 | ablated | 2 | 3 | 0.978 [0.977, 0.979] | 0.98, 0.98 |
 | ablated | 3 | 3 | 0.888 [0.854, 0.926] | 0.91, 0.79, 0.97 |
-| ablated | 4 | 0 | not run | |
+| ablated | 4 | 3 | 0.022 [0.016, 0.028] | 0.02, 0.02, 0.02, 0.02 |
 
 Chance 0.0161. No gate.

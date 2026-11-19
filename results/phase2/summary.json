@@ -1,4 +1,110 @@
 {
+  "2.1": {
+    "slopes": {
+      "transformer_naive": {
+        "memory_full": 1.7633511535445048,
+        "memory_top3": 1.9184336585350814,
+        "time_full": 0.9982728768369215,
+        "time_top3": 1.8106303405158122,
+        "top3_lengths": [
+          1024,
+          2048,
+          4096
+        ],
+        "oom_lengths": []
+      },
+      "transformer_sdpa": {
+        "memory_full": 1.0030899608961197,
+        "memory_top3": 1.0094777689060788,
+        "time_full": 0.7359652400532122,
+        "time_top3": 1.632721301694862,
+        "top3_lengths": [
+          1024,
+          2048,
+          4096
+        ],
+        "oom_lengths": []
+      },
+      "tcn": {
+        "memory_full": 0.9721748832279647,
+        "memory_top3": 0.8213888974852601,
+        "time_full": 0.24607016407242116,
+        "time_top3": 0.6011055440377018,
+        "top3_lengths": [
+          1024,
+          2048,
+          4096
+        ],
+        "oom_lengths": []
+      },
+      "mamba_ssm": {
+        "memory_full": 0.9862121434359579,
+        "memory_top3": 0.9983594776352156,
+        "time_full": 0.2287921523841297,
+        "time_top3": 0.49713680225215096,
+        "top3_lengths": [
+          1024,
+          2048,
+          4096
+        ],
+        "oom_lengths": []
+      }
+    },
+    "gate": {
+      "verdict": "FAIL",
+      "checks": [
+        {
+          "arm": "transformer_naive",
+          "metric": "memory",
+          "predicted": 2.0,
+          "measured": 1.9184336585350814,
+          "ok": true
+        },
+        {
+          "arm": "transformer_sdpa",
+          "metric": "memory",
+          "predicted": 1.0,
+          "measured": 1.0094777689060788,
+          "ok": true
+        },
+        {
+          "arm": "transformer_sdpa",
+          "metric": "time",
+          "predicted": 2.0,
+          "measured": 1.632721301694862,
+          "ok": false
+        },
+        {
+          "arm": "tcn",
+          "metric": "memory",
+          "predicted": 1.0,
+          "measured": 0.8213888974852601,
+          "ok": true
+        },
+        {
+          "arm": "tcn",
+          "metric": "time",
+          "predicted": 1.0,
+          "measured": 0.6011055440377018,
+          "ok": false
+        },
+        {
+          "arm": "mamba_ssm",
+          "metric": "memory",
+          "predicted": 1.0,
+          "measured": 0.9983594776352156,
+          "ok": true
+        },
+        {
+          "arm": "mamba_ssm",
+          "metric": "time",
+          "predicted": 1.0,
+          "measured": 0.49713680225215096,
+          "ok": false
+        }
+      ]
+    }
+  },
   "2.2": {
     "gate": {
       "verdict": "PASS",

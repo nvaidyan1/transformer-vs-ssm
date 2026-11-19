@@ -1,0 +1,152 @@
+{
+  "task": "selective_copy",
+  "task_args": {
+    "n_data": 4,
+    "seq_len": 64,
+    "vocab_size": 64
+  },
+  "arch": "transformer",
+  "ablate": false,
+  "n_params": 452296,
+  "n_params_ablation_only": 0,
+  "lr": 0.001,
+  "ssm_lr_scale": 1.0,
+  "decay_1d": false,
+  "emb_init_std": null,
+  "out_proj_depth_scale": null,
+  "model_cfg": {
+    "n_layers": 3,
+    "d_model": 104,
+    "n_heads": 4,
+    "d_ff": 416,
+    "dropout": 0.0,
+    "max_seq_len": 512
+  },
+  "seed": 0,
+  "batch_size": 32,
+  "steps_run": 4500,
+  "max_steps": 20000,
+  "schedule_steps": 20000,
+  "stopped_early": true,
+  "early_stop_acc": 0.99,
+  "early_stop_evals": 3,
+  "scan": null,
+  "grad_checkpoint": null,
+  "complete": true,
+  "final_val_acc": 0.9951171875,
+  "final_val_loss": 0.026188572926912457,
+  "chance_acc": 0.016129032258064516,
+  "wall_clock_s": 48.1,
+  "device": "cuda",
+  "history": [
+    {
+      "step": 250,
+      "train_loss": 1.4008047580718994,
+      "val_loss": 1.2575526982545853,
+      "val_acc": 0.814453125
+    },
+    {
+      "step": 500,
+      "train_loss": 0.5512127876281738,
+      "val_loss": 0.5945688560605049,
+      "val_acc": 0.841796875
+    },
+    {
+      "step": 750,
+      "train_loss": 0.4966467320919037,
+      "val_loss": 0.467268705368042,
+      "val_acc": 0.861328125
+    },
+    {
+      "step": 1000,
+      "train_loss": 0.5718779563903809,
+      "val_loss": 0.39163514599204063,
+      "val_acc": 0.880859375
+    },
+    {
+      "step": 1250,
+      "train_loss": 0.3200727701187134,
+      "val_loss": 0.33869169652462006,
+      "val_acc": 0.880859375
+    },
+    {
+      "step": 1500,
+      "train_loss": 0.3045960068702698,
+      "val_loss": 0.29056038334965706,
+      "val_acc": 0.9033203125
+    },
+    {
+      "step": 1750,
+      "train_loss": 0.2083679437637329,
+      "val_loss": 0.22629954107105732,
+      "val_acc": 0.9287109375
+    },
+    {
+      "step": 2000,
+      "train_loss": 0.17020443081855774,
+      "val_loss": 0.11882488755509257,
+      "val_acc": 0.9677734375
+    },
+    {
+      "step": 2250,
+      "train_loss": 0.041726015508174896,
+      "val_loss": 0.059517450630664825,
+      "val_acc": 0.9814453125
+    },
+    {
+      "step": 2500,
+      "train_loss": 0.03893095254898071,
+      "val_loss": 0.042013413505628705,
+      "val_acc": 0.990234375
+    },
+    {
+      "step": 2750,
+      "train_loss": 0.007800913415849209,
+      "val_loss": 0.0247259559109807,
+      "val_acc": 0.9951171875
+    },
+    {
+      "step": 3000,
+      "train_loss": 0.01961325854063034,
+      "val_loss": 0.032975152134895325,
+      "val_acc": 0.98828125
+    },
+    {
+      "step": 3250,
+      "train_loss": 0.03716552257537842,
+      "val_loss": 0.025958624144550413,
+      "val_acc": 0.9921875
+    },
+    {
+      "step": 3500,
+      "train_loss": 0.00981470663100481,
+      "val_loss": 0.009343004319816828,
+      "val_acc": 0.998046875
+    },
+    {
+      "step": 3750,
+      "train_loss": 0.0023273590486496687,
+      "val_loss": 0.029406200599623844,
+      "val_acc": 0.9892578125
+    },
+    {
+      "step": 4000,
+      "train_loss": 0.005448100157082081,
+      "val_loss": 0.009177451836876571,
+      "val_acc": 0.9970703125
+    },
+    {
+      "step": 4250,
+      "train_loss": 0.06397148966789246,
+      "val_loss": 0.011867250257637352,
+      "val_acc": 0.998046875
+    },
+    {
+      "step": 4500,
+      "train_loss": 0.00504608079791069,
+      "val_loss": 0.026188572926912457,
+      "val_acc": 0.9951171875
+    }
+  ],
+  "saved_model": "/kaggle/working/out/figure_models/transformer_s0.pt"
+}
