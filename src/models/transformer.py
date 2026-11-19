@@ -16,9 +16,23 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+ATTN_IMPLS = ("naive", "sdpa")
+
+
 class CausalSelfAttention(nn.Module):
-    def __init__(self, d_model: int, n_heads: int, dropout: float, max_seq_len: int):
+    """attn_impl="naive" materialises the (B, H, T, T) attention matrix (the default,
+    used by every result so far). "sdpa" calls torch's fused
+    scaled_dot_product_attention, which never stores the matrix (plan2.md 2.1 compares
+    the two). Same parameters, same function up to float rounding; return_attention
+    needs the matrix, so it always uses the naive path."""
+
+    def __init__(self, d_model: int, n_heads: int, dropout: float, max_seq_len: int,
+                 attn_impl: str = "naive"):
         super().__init__()
+        if attn_impl not in ATTN_IMPLS:
+            raise ValueError(f"attn_impl must be one of {ATTN_IMPLS}, got {attn_impl!r}")
+        self.attn_impl = attn_impl
+        self.dropout_p = dropout
         assert d_model % n_heads == 0, "d_model must be divisible by n_heads"
         self.n_heads = n_heads
         self.d_head = d_model // n_heads
@@ -57,6 +71,13 @@ class CausalSelfAttention(nn.Module):
 
         q, k, v = split_heads(q), split_heads(k), split_heads(v)
 
+        if self.attn_impl == "sdpa" and not return_attention:
+            out = F.scaled_dot_product_attention(
+                q, k, v, is_causal=True,
+                dropout_p=self.dropout_p if self.training else 0.0)
+            out = out.transpose(1, 2).contiguous().view(B, T, C)
+            return self.resid_drop(self.out_proj(out)), None
+
         # Scaled dot-product attention
         attn = (q @ k.transpose(-2, -1)) * self.scale          # (B, H, T, T)
         attn = attn.masked_fill(self.mask[:, :, :T, :T] == 0, float("-inf"))
@@ -72,10 +93,11 @@ class CausalSelfAttention(nn.Module):
 
 
 class TransformerBlock(nn.Module):
-    def __init__(self, d_model: int, n_heads: int, d_ff: int, dropout: float, max_seq_len: int):
+    def __init__(self, d_model: int, n_heads: int, d_ff: int, dropout: float, max_seq_len: int,
+                 attn_impl: str = "naive"):
         super().__init__()
         self.ln1 = nn.LayerNorm(d_model)
-        self.attn = CausalSelfAttention(d_model, n_heads, dropout, max_seq_len)
+        self.attn = CausalSelfAttention(d_model, n_heads, dropout, max_seq_len, attn_impl)
         self.ln2 = nn.LayerNorm(d_model)
         self.ff = nn.Sequential(
             nn.Linear(d_model, d_ff),
@@ -104,6 +126,7 @@ class Transformer(nn.Module):
         d_ff:        feed-forward hidden dimension
         dropout:     dropout probability (applied in attention and FFN)
         max_seq_len: maximum sequence length (for positional embeddings and mask)
+        attn_impl:   "naive" (default) or "sdpa"; see CausalSelfAttention
     """
 
     def __init__(
@@ -115,6 +138,7 @@ class Transformer(nn.Module):
         d_ff: int,
         dropout: float,
         max_seq_len: int,
+        attn_impl: str = "naive",
     ):
         super().__init__()
         self.tok_emb = nn.Embedding(vocab_size, d_model)
@@ -122,7 +146,7 @@ class Transformer(nn.Module):
         self.drop = nn.Dropout(dropout)
 
         self.blocks = nn.ModuleList([
-            TransformerBlock(d_model, n_heads, d_ff, dropout, max_seq_len)
+            TransformerBlock(d_model, n_heads, d_ff, dropout, max_seq_len, attn_impl)
             for _ in range(n_layers)
         ])
         self.ln_f = nn.LayerNorm(d_model)

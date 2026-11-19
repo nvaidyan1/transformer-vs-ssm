@@ -25,3 +25,13 @@ Both parts of the prediction hold. Per slot, the ablated model does best on the 
 token (the shortest carry): n_data 2 slots 0.49 / 0.94, n_data 3 0.09 / 0.14 / 0.80; at
 n_data 4 every slot is at chance (0.01-0.02), unlike the fixed-position n_data 4 run in
 1.1c (last slot 0.988). Figure: items_carried.png.
+
+## Rerun of the remaining cells on the 20k schedule (2026-11-19, author decision D4)
+
+Written before the run. So every cell of the Post 2 figure shares one schedule: selective
+n_data 1-4 and ablated n_data 1 and 4, seeds 0-2, `--schedule_steps 20000`, CAP 4000, early
+stop as usual. Output `results/phase1_1d/sched20k/`, next to the ablated n_data 2-3 cells
+from the schedule follow-up (d).
+**Prediction:** selective >= 0.95 at every n_data (unchanged); ablated n_data 1 solves;
+ablated n_data 4 stays near chance at CAP 4000 (it needed ~18,000 steps on the 20k schedule
+in follow-up (c)). The figure's fall with n_data becomes a fall from n_data 3 to 4.

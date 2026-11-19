@@ -6,6 +6,7 @@ import json
 import sys
 from pathlib import Path
 
+import torch
 import yaml
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -121,3 +122,14 @@ def test_schedule_defaults_to_stop_step(tmp_path, monkeypatch):
     r = _run(tmp_path, monkeypatch, "configs/recall/transformer_small.yaml", TINY_TF, [],
              steps=3)
     assert r["schedule_steps"] == 3
+
+
+def test_save_model_roundtrip(tmp_path, monkeypatch):
+    path = tmp_path / "m.pt"
+    r = _run(tmp_path, monkeypatch, "configs/recall/transformer_small.yaml", TINY_TF,
+             ["--save_model", str(path)], steps=2)
+    ck = torch.load(path)
+    assert r["saved_model"] == str(path) and ck["arch"] == "transformer"
+    from src.models import build_model
+    m = build_model("transformer", vocab_size=ck["vocab_size"], **ck["model_cfg"])
+    m.load_state_dict(ck["state_dict"])

@@ -216,6 +216,8 @@ def main():
                          "(validation set, final model) to the result record.")
     ap.add_argument("--dump_slot_acc", action="store_true",
                     help="Add accuracy per answer slot (validation set, final model).")
+    ap.add_argument("--save_model", default=None,
+                    help="Save the final model's state_dict here (for figure scripts).")
     ap.add_argument("--out", default=None, help="Write a JSON result record here.")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
@@ -366,6 +368,11 @@ def main():
 
     final = evaluate(model, val_batches, device, model_kwargs)
     record = make_record(final, complete=True)
+    if args.save_model:
+        Path(args.save_model).parent.mkdir(parents=True, exist_ok=True)
+        torch.save({"arch": arch, "vocab_size": cfg["vocab_size"], "model_cfg": cfg["model"],
+                    "task_args": task_kwargs, "state_dict": model.state_dict()}, args.save_model)
+        record["saved_model"] = args.save_model
     if args.dump_slot_acc:
         record["slot_acc"] = slot_accuracy(model, val_batches, model_kwargs)
     if args.dump_answer_hist:
