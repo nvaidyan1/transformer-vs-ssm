@@ -13,3 +13,8 @@ Expected: both early-stop above 0.99 (they did in 0.3 and 1.2).
 
 Outcome (lane A, commit 421845b): transformer_s0 early-stopped at step 4500 (0.995);
 mamba_ssm_s0 at step 3000 (0.996). Weights saved as *.pt (1.8 MB each).
+Figures (scripts/figure_models.py, CPU): attention_maps.png (every layer, heads averaged,
+two inputs with different data positions) and delta_trace.png (Delta per channel, layer 2,
+the most varied layer). The mamba_ssm weights run through the custom model after renaming
+blocks.i.mixer.* to blocks.i.ssm.*; the copy reproduces the accuracy (0.994 on 4 validation
+batches vs 0.996 trained). Transformer re-measured at 0.992. Illustrations only.

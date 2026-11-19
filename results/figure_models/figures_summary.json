@@ -1,0 +1,5 @@
+{
+  "transformer_val_acc": 0.9921875,
+  "mamba_copied_val_acc": 0.994140625,
+  "delta_layer_shown": 2
+}
