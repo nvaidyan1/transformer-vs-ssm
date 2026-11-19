@@ -37,7 +37,16 @@ def mean_acc(rs):
     return (sum(a) / len(a), min(a), max(a), len(a)) if a else (None, None, None, 0)
 
 
-def gate(cells: dict) -> dict:
+GATE_CELLS = (("mamba_ssm_d32", 4), ("mamba_ssm_d32", 64),
+              ("transformer_m32", 4), ("transformer_m32", 64))
+
+
+def gate(cells: dict, pending: set = frozenset()) -> dict:
+    """pending: (model, pairs) cells that still need a D3 extension; the gate is only
+    evaluated after extensions (results/phase4/PREDICTION.md)."""
+    waiting = [c for c in GATE_CELLS if c in pending]
+    if waiting:
+        return {"verdict": "INCOMPLETE", "awaiting_extension": [f"{m} {p} pairs" for m, p in waiting]}
     m4, _, _, n1 = mean_acc(cells.get(("mamba_ssm_d32", 4), []))
     m64, _, _, n2 = mean_acc(cells.get(("mamba_ssm_d32", 64), []))
     t4, _, _, n3 = mean_acc(cells.get(("transformer_m32", 4), []))
@@ -62,11 +71,6 @@ def main():
             row.append(f"{mu:.3f} [{lo:.2f}, {hi:.2f}]" + ("" if n == 3 else f" (n={n})")
                        if n else "-")
         lines.append(f"| {m} | " + " | ".join(row) + " |")
-    g = gate(cells)
-    lines.append(f"\nGate (mamba_ssm_d32 drops >= 0.3 from 4 to 64 pairs; transformer_m32 "
-                 f"drops < 0.1): **{g['verdict']}**" +
-                 (f" (Mamba drop {g['mamba_drop']:+.3f}, Transformer drop "
-                  f"{g['transformer_drop']:+.3f})" if "mamba_drop" in g else ""))
     ext = []
     for p in sorted(glob.glob(str(d / "*_p*_s*.json"))):
         if (d / "ext" / Path(p).name).exists():
@@ -74,6 +78,14 @@ def main():
         why = needs_extension(json.load(open(p)))
         if why:
             ext.append({"run": Path(p).stem, "reasons": why})
+    pending = {(e["run"].rsplit("_p", 1)[0], int(e["run"].rsplit("_p", 1)[1].split("_s")[0])) for e in ext}
+    g = gate(cells, pending)
+    lines.append(f"\nGate (mamba_ssm_d32 drops >= 0.3 from 4 to 64 pairs; transformer_m32 "
+                 f"drops < 0.1): **{g['verdict']}**" +
+                 (f" (Mamba drop {g['mamba_drop']:+.3f}, Transformer drop "
+                  f"{g['transformer_drop']:+.3f})" if "mamba_drop" in g else "")
+                 + (f" (awaiting D3 extension: {', '.join(g['awaiting_extension'])})"
+                    if "awaiting_extension" in g else ""))
     lines.append(f"\nD3 extensions needed: {len(ext)}")
     lines += [f"- {e['run']}: {'; '.join(e['reasons'])}" for e in ext]
     json.dump({"gate": g, "extensions": ext}, open(d / "summary.json", "w"), indent=2)

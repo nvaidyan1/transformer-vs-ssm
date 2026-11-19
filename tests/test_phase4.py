@@ -53,3 +53,10 @@ def test_gate():
     assert gate(cells)["verdict"] == "FAIL"
     del cells[("transformer_m32", 64)]
     assert gate(cells)["verdict"] == "INCOMPLETE"
+
+
+def test_gate_waits_for_extensions():
+    cells = {("mamba_ssm_d32", 4): [rec(0.99)] * 3, ("mamba_ssm_d32", 64): [rec(0.3)] * 3,
+             ("transformer_m32", 4): [rec(0.99)] * 3, ("transformer_m32", 64): [rec(0.95)] * 3}
+    assert gate(cells, {("transformer_m32", 4)})["verdict"] == "INCOMPLETE"
+    assert gate(cells, {("mamba_ssm_d64", 4)})["verdict"] == "PASS"

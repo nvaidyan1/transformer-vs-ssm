@@ -1,0 +1,241 @@
+{
+  "gate": {
+    "verdict": "INCOMPLETE",
+    "awaiting_extension": [
+      "mamba_ssm_d32 4 pairs",
+      "transformer_m32 4 pairs"
+    ]
+  },
+  "extensions": [
+    {
+      "run": "mamba_ssm_d128_p16_s0",
+      "reasons": [
+        "ambiguous: final 0.233 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d128_p16_s1",
+      "reasons": [
+        "ambiguous: final 0.232 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d128_p16_s2",
+      "reasons": [
+        "ambiguous: final 0.232 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d128_p4_s0",
+      "reasons": [
+        "ambiguous: final 0.619 in [0.2, 0.9]",
+        "unconverged: +0.088 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d128_p4_s1",
+      "reasons": [
+        "ambiguous: final 0.740 in [0.2, 0.9]",
+        "unconverged: +0.115 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d128_p4_s2",
+      "reasons": [
+        "ambiguous: final 0.579 in [0.2, 0.9]",
+        "unconverged: +0.060 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d128_p8_s0",
+      "reasons": [
+        "ambiguous: final 0.329 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d128_p8_s1",
+      "reasons": [
+        "ambiguous: final 0.347 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d128_p8_s2",
+      "reasons": [
+        "ambiguous: final 0.345 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d32_p4_s0",
+      "reasons": [
+        "ambiguous: final 0.486 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d32_p4_s1",
+      "reasons": [
+        "ambiguous: final 0.523 in [0.2, 0.9]",
+        "unconverged: +0.087 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d32_p4_s2",
+      "reasons": [
+        "ambiguous: final 0.519 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d32_p8_s0",
+      "reasons": [
+        "ambiguous: final 0.294 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d32_p8_s1",
+      "reasons": [
+        "ambiguous: final 0.336 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d32_p8_s2",
+      "reasons": [
+        "ambiguous: final 0.339 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p16_s0",
+      "reasons": [
+        "ambiguous: final 0.236 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p16_s1",
+      "reasons": [
+        "ambiguous: final 0.219 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p16_s2",
+      "reasons": [
+        "ambiguous: final 0.208 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p4_s0",
+      "reasons": [
+        "ambiguous: final 0.529 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p4_s1",
+      "reasons": [
+        "ambiguous: final 0.594 in [0.2, 0.9]",
+        "unconverged: +0.054 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p4_s2",
+      "reasons": [
+        "ambiguous: final 0.516 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p8_s0",
+      "reasons": [
+        "ambiguous: final 0.347 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p8_s1",
+      "reasons": [
+        "ambiguous: final 0.351 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "mamba_ssm_d64_p8_s2",
+      "reasons": [
+        "ambiguous: final 0.332 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m128_p4_s0",
+      "reasons": [
+        "ambiguous: final 0.271 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m128_p4_s1",
+      "reasons": [
+        "ambiguous: final 0.269 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m128_p4_s2",
+      "reasons": [
+        "ambiguous: final 0.260 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m128_p8_s0",
+      "reasons": [
+        "ambiguous: final 0.335 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m128_p8_s1",
+      "reasons": [
+        "ambiguous: final 0.320 in [0.2, 0.9]",
+        "unconverged: +0.081 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "transformer_m128_p8_s2",
+      "reasons": [
+        "ambiguous: final 0.305 in [0.2, 0.9]",
+        "unconverged: +0.082 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "transformer_m32_p4_s0",
+      "reasons": [
+        "ambiguous: final 0.260 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m32_p4_s1",
+      "reasons": [
+        "ambiguous: final 0.268 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m32_p4_s2",
+      "reasons": [
+        "ambiguous: final 0.268 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m64_p4_s0",
+      "reasons": [
+        "ambiguous: final 0.262 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m64_p4_s1",
+      "reasons": [
+        "ambiguous: final 0.263 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m64_p4_s2",
+      "reasons": [
+        "ambiguous: final 0.267 in [0.2, 0.9]"
+      ]
+    },
+    {
+      "run": "transformer_m64_p8_s0",
+      "reasons": [
+        "ambiguous: final 0.289 in [0.2, 0.9]",
+        "unconverged: +0.054 over the last 1000 steps"
+      ]
+    }
+  ]
+}

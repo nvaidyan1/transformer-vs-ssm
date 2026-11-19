@@ -25,3 +25,13 @@ vocabulary of at least 257, so it would also need a logged config change; it is 
 unless the gate fails that way.
 
 **Budget:** ~2-3 GPU-h (CLAIM_MAP). 90 runs; the kernel stops at 3 h of training.
+
+## CAP-stage outcome (appended after the run; prediction above unchanged)
+
+Kaggle T4 lane A2, commit 9c34434, ~2.1 GPU-h, 90/90 runs, 182 tests passed. Gate:
+**INCOMPLETE**, both 4-pair gate cells await a D3 extension. At CAP 4000 no model solves
+MQAR even at 4 pairs: mamba_ssm 0.51 / 0.55 / 0.65 (d32 / d64 / d128), every Transformer
+0.26-0.27 (all sizes, all seeds), consistent with the long plateau MQAR is known for; the
+task layout was checked (key-value blocks, then key-query blocks with teacher-forced values;
+14 property tests). Accuracy falls with pairs for every model. 37 cells meet the D3 rule.
+The "Transformer stays near ceiling" prediction cannot be assessed before the extensions.

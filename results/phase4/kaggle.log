@@ -1,0 +1,133 @@
+[{"stream_name":"stdout","time":0.879094497,"data":"\n"}
+,{"stream_name":"stdout","time":0.87913548,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":0.922356803,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":1.8601213140000001,"data":"\n"}
+,{"stream_name":"stdout","time":1.8601504169999998,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":1.8973297329999999,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":1.8975829100000001,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":1.898300739,"data":"\n"}
+,{"stream_name":"stdout","time":1.898326075,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":1.9030414690000002,"data":"9c34434 Phase 4: MQAR configs, prediction, report, lane A2 kernel (before any run)\n"}
+,{"stream_name":"stdout","time":1.903527108,"data":"\n"}
+,{"stream_name":"stdout","time":1.90354496,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":1.9344011079999999,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":1.934427734,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":1.941394055,"data":"\n"}
+,{"stream_name":"stdout","time":1.941413778,"data":"$ pip install -q packaging ninja wheel psutil pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":7.189405005,"data":"\n"}
+,{"stream_name":"stdout","time":7.189464175,"data":"$ pip install -q 'causal-conv1d\u003e=1.4.0' --no-build-isolation\n"}
+,{"stream_name":"stdout","time":28.967995222,"data":"\n"}
+,{"stream_name":"stdout","time":28.968036641,"data":"$ pip install -q mamba-ssm --no-build-isolation\n"}
+,{"stream_name":"stdout","time":30.253173526,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.4/216.4 kB 3.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":36.169045855,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 MB 50.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":36.232673473,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 57.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":36.278300382,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 729.6/729.6 kB 29.8 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":36.373989734,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 93.1 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":37.292471015,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 MB 21.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":37.344151235,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 63.9 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":37.610429814,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 29.3/29.3 MB 71.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":37.662795599,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 897.8/897.8 kB 34.3 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":59.84050949,"data":"\n"}
+,{"stream_name":"stdout","time":59.840551929,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":94.833198941,"data":"........................................................................ [ 39%]\n"}
+,{"stream_name":"stdout","time":95.56167713,"data":"........................................................................ [ 79%]\n"}
+,{"stream_name":"stdout","time":98.184574202,"data":"......................................                                   [100%]\n"}
+,{"stream_name":"stdout","time":98.184609303,"data":"182 passed in 35.26s\n"}
+,{"stream_name":"stdout","time":192.191675324,"data":"[   3.2 min] mamba_ssm_d32_p4_s0: done (92s)\n"}
+,{"stream_name":"stdout","time":255.239621254,"data":"[   4.2 min] transformer_m32_p4_s0: done (63s)\n"}
+,{"stream_name":"stdout","time":344.009809065,"data":"[   5.7 min] mamba_ssm_d64_p4_s0: done (89s)\n"}
+,{"stream_name":"stdout","time":405.850812231,"data":"[   6.7 min] transformer_m64_p4_s0: done (62s)\n"}
+,{"stream_name":"stdout","time":494.267463382,"data":"[   8.2 min] mamba_ssm_d128_p4_s0: done (88s)\n"}
+,{"stream_name":"stdout","time":556.653120103,"data":"[   9.3 min] transformer_m128_p4_s0: done (62s)\n"}
+,{"stream_name":"stdout","time":670.98656382,"data":"[  11.2 min] mamba_ssm_d32_p64_s0: done (114s)\n"}
+,{"stream_name":"stdout","time":759.648041349,"data":"[  12.6 min] transformer_m32_p64_s0: done (89s)\n"}
+,{"stream_name":"stdout","time":872.481823347,"data":"[  14.5 min] mamba_ssm_d64_p64_s0: done (113s)\n"}
+,{"stream_name":"stdout","time":960.188896576,"data":"[  16.0 min] transformer_m64_p64_s0: done (88s)\n"}
+,{"stream_name":"stdout","time":1073.696387967,"data":"[  17.9 min] mamba_ssm_d128_p64_s0: done (114s)\n"}
+,{"stream_name":"stdout","time":1186.623482803,"data":"[  19.8 min] transformer_m128_p64_s0: done (113s)\n"}
+,{"stream_name":"stdout","time":1279.099112625,"data":"[  21.3 min] mamba_ssm_d32_p16_s0: done (92s)\n"}
+,{"stream_name":"stdout","time":1346.245763333,"data":"[  22.4 min] transformer_m32_p16_s0: done (67s)\n"}
+,{"stream_name":"stdout","time":1442.178671866,"data":"[  24.0 min] mamba_ssm_d64_p16_s0: done (96s)\n"}
+,{"stream_name":"stdout","time":1510.131342759,"data":"[  25.2 min] transformer_m64_p16_s0: done (68s)\n"}
+,{"stream_name":"stdout","time":1605.564112526,"data":"[  26.7 min] mamba_ssm_d128_p16_s0: done (95s)\n"}
+,{"stream_name":"stdout","time":1673.513486091,"data":"[  27.9 min] transformer_m128_p16_s0: done (68s)\n"}
+,{"stream_name":"stdout","time":1766.943966524,"data":"[  29.4 min] mamba_ssm_d32_p8_s0: done (93s)\n"}
+,{"stream_name":"stdout","time":1831.490404269,"data":"[  30.5 min] transformer_m32_p8_s0: done (65s)\n"}
+,{"stream_name":"stdout","time":1922.21507847,"data":"[  32.0 min] mamba_ssm_d64_p8_s0: done (91s)\n"}
+,{"stream_name":"stdout","time":1986.407592509,"data":"[  33.1 min] transformer_m64_p8_s0: done (64s)\n"}
+,{"stream_name":"stdout","time":2076.632390784,"data":"[  34.6 min] mamba_ssm_d128_p8_s0: done (90s)\n"}
+,{"stream_name":"stdout","time":2140.122893683,"data":"[  35.7 min] transformer_m128_p8_s0: done (63s)\n"}
+,{"stream_name":"stdout","time":2243.269842363,"data":"[  37.4 min] mamba_ssm_d32_p32_s0: done (103s)\n"}
+,{"stream_name":"stdout","time":2318.844315675,"data":"[  38.6 min] transformer_m32_p32_s0: done (76s)\n"}
+,{"stream_name":"stdout","time":2418.699919084,"data":"[  40.3 min] mamba_ssm_d64_p32_s0: done (100s)\n"}
+,{"stream_name":"stdout","time":2495.834580994,"data":"[  41.6 min] transformer_m64_p32_s0: done (77s)\n"}
+,{"stream_name":"stdout","time":2597.737199108,"data":"[  43.3 min] mamba_ssm_d128_p32_s0: done (102s)\n"}
+,{"stream_name":"stdout","time":2675.221803166,"data":"[  44.6 min] transformer_m128_p32_s0: done (77s)\n"}
+,{"stream_name":"stdout","time":2764.331367827,"data":"[  46.1 min] mamba_ssm_d32_p4_s1: done (89s)\n"}
+,{"stream_name":"stdout","time":2827.468628209,"data":"[  47.1 min] transformer_m32_p4_s1: done (63s)\n"}
+,{"stream_name":"stdout","time":2914.927983842,"data":"[  48.6 min] mamba_ssm_d64_p4_s1: done (87s)\n"}
+,{"stream_name":"stdout","time":2976.664147155,"data":"[  49.6 min] transformer_m64_p4_s1: done (62s)\n"}
+,{"stream_name":"stdout","time":3064.777347879,"data":"[  51.1 min] mamba_ssm_d128_p4_s1: done (88s)\n"}
+,{"stream_name":"stdout","time":3128.221664932,"data":"[  52.1 min] transformer_m128_p4_s1: done (63s)\n"}
+,{"stream_name":"stdout","time":3242.211716018,"data":"[  54.0 min] mamba_ssm_d32_p64_s1: done (114s)\n"}
+,{"stream_name":"stdout","time":3331.322414189,"data":"[  55.5 min] transformer_m32_p64_s1: done (89s)\n"}
+,{"stream_name":"stdout","time":3446.009500333,"data":"[  57.4 min] mamba_ssm_d64_p64_s1: done (115s)\n"}
+,{"stream_name":"stdout","time":3535.323201446,"data":"[  58.9 min] transformer_m64_p64_s1: done (89s)\n"}
+,{"stream_name":"stdout","time":3652.124063291,"data":"[  60.9 min] mamba_ssm_d128_p64_s1: done (117s)\n"}
+,{"stream_name":"stdout","time":3765.208909139,"data":"[  62.7 min] transformer_m128_p64_s1: done (113s)\n"}
+,{"stream_name":"stdout","time":3857.731464641,"data":"[  64.3 min] mamba_ssm_d32_p16_s1: done (93s)\n"}
+,{"stream_name":"stdout","time":3924.865166056,"data":"[  65.4 min] transformer_m32_p16_s1: done (67s)\n"}
+,{"stream_name":"stdout","time":4014.237100995,"data":"[  66.9 min] mamba_ssm_d64_p16_s1: done (89s)\n"}
+,{"stream_name":"stdout","time":4080.505316436,"data":"[  68.0 min] transformer_m64_p16_s1: done (66s)\n"}
+,{"stream_name":"stdout","time":4168.232303073,"data":"[  69.5 min] mamba_ssm_d128_p16_s1: done (88s)\n"}
+,{"stream_name":"stdout","time":4233.656148569,"data":"[  70.5 min] transformer_m128_p16_s1: done (65s)\n"}
+,{"stream_name":"stdout","time":4319.471931735,"data":"[  72.0 min] mamba_ssm_d32_p8_s1: done (86s)\n"}
+,{"stream_name":"stdout","time":4381.482290522,"data":"[  73.0 min] transformer_m32_p8_s1: done (62s)\n"}
+,{"stream_name":"stdout","time":4468.151084379,"data":"[  74.5 min] mamba_ssm_d64_p8_s1: done (87s)\n"}
+,{"stream_name":"stdout","time":4529.906757843,"data":"[  75.5 min] transformer_m64_p8_s1: done (62s)\n"}
+,{"stream_name":"stdout","time":4615.772203118,"data":"[  76.9 min] mamba_ssm_d128_p8_s1: done (86s)\n"}
+,{"stream_name":"stdout","time":4678.236188967,"data":"[  78.0 min] transformer_m128_p8_s1: done (62s)\n"}
+,{"stream_name":"stdout","time":4773.822746983,"data":"[  79.5 min] mamba_ssm_d32_p32_s1: done (96s)\n"}
+,{"stream_name":"stdout","time":4845.810020494,"data":"[  80.7 min] transformer_m32_p32_s1: done (72s)\n"}
+,{"stream_name":"stdout","time":4940.495296428,"data":"[  82.3 min] mamba_ssm_d64_p32_s1: done (95s)\n"}
+,{"stream_name":"stdout","time":5011.574686565,"data":"[  83.5 min] transformer_m64_p32_s1: done (71s)\n"}
+,{"stream_name":"stdout","time":5106.413905796,"data":"[  85.1 min] mamba_ssm_d128_p32_s1: done (95s)\n"}
+,{"stream_name":"stdout","time":5176.745745219,"data":"[  86.3 min] transformer_m128_p32_s1: done (70s)\n"}
+,{"stream_name":"stdout","time":5261.762720749,"data":"[  87.7 min] mamba_ssm_d32_p4_s2: done (85s)\n"}
+,{"stream_name":"stdout","time":5321.215480517,"data":"[  88.7 min] transformer_m32_p4_s2: done (59s)\n"}
+,{"stream_name":"stdout","time":5404.173664311,"data":"[  90.1 min] mamba_ssm_d64_p4_s2: done (83s)\n"}
+,{"stream_name":"stdout","time":5463.020719942,"data":"[  91.0 min] transformer_m64_p4_s2: done (59s)\n"}
+,{"stream_name":"stdout","time":5545.431411388,"data":"[  92.4 min] mamba_ssm_d128_p4_s2: done (82s)\n"}
+,{"stream_name":"stdout","time":5605.633445185,"data":"[  93.4 min] transformer_m128_p4_s2: done (60s)\n"}
+,{"stream_name":"stdout","time":5712.4015585,"data":"[  95.2 min] mamba_ssm_d32_p64_s2: done (107s)\n"}
+,{"stream_name":"stdout","time":5796.569699339,"data":"[  96.6 min] transformer_m32_p64_s2: done (84s)\n"}
+,{"stream_name":"stdout","time":5903.433706268,"data":"[  98.4 min] mamba_ssm_d64_p64_s2: done (107s)\n"}
+,{"stream_name":"stdout","time":5986.493258394,"data":"[  99.8 min] transformer_m64_p64_s2: done (83s)\n"}
+,{"stream_name":"stdout","time":6095.425992308,"data":"[ 101.6 min] mamba_ssm_d128_p64_s2: done (109s)\n"}
+,{"stream_name":"stdout","time":6207.900480789,"data":"[ 103.5 min] transformer_m128_p64_s2: done (112s)\n"}
+,{"stream_name":"stdout","time":6296.972885875,"data":"[ 104.9 min] mamba_ssm_d32_p16_s2: done (89s)\n"}
+,{"stream_name":"stdout","time":6361.535186185,"data":"[ 106.0 min] transformer_m32_p16_s2: done (65s)\n"}
+,{"stream_name":"stdout","time":6449.503635534,"data":"[ 107.5 min] mamba_ssm_d64_p16_s2: done (88s)\n"}
+,{"stream_name":"stdout","time":6512.75906464,"data":"[ 108.5 min] transformer_m64_p16_s2: done (63s)\n"}
+,{"stream_name":"stdout","time":6601.187683041,"data":"[ 110.0 min] mamba_ssm_d128_p16_s2: done (88s)\n"}
+,{"stream_name":"stdout","time":6667.352412937,"data":"[ 111.1 min] transformer_m128_p16_s2: done (66s)\n"}
+,{"stream_name":"stdout","time":6753.465048671,"data":"[ 112.5 min] mamba_ssm_d32_p8_s2: done (86s)\n"}
+,{"stream_name":"stdout","time":6818.344197296,"data":"[ 113.6 min] transformer_m32_p8_s2: done (65s)\n"}
+,{"stream_name":"stdout","time":6909.178230002,"data":"[ 115.1 min] mamba_ssm_d64_p8_s2: done (91s)\n"}
+,{"stream_name":"stdout","time":6970.592623904,"data":"[ 116.2 min] transformer_m64_p8_s2: done (61s)\n"}
+,{"stream_name":"stdout","time":7056.117529289,"data":"[ 117.6 min] mamba_ssm_d128_p8_s2: done (86s)\n"}
+,{"stream_name":"stdout","time":7117.878034159,"data":"[ 118.6 min] transformer_m128_p8_s2: done (62s)\n"}
+,{"stream_name":"stdout","time":7216.096105663,"data":"[ 120.3 min] mamba_ssm_d32_p32_s2: done (98s)\n"}
+,{"stream_name":"stdout","time":7288.08984702,"data":"[ 121.5 min] transformer_m32_p32_s2: done (72s)\n"}
+,{"stream_name":"stdout","time":7385.646174637,"data":"[ 123.1 min] mamba_ssm_d64_p32_s2: done (98s)\n"}
+,{"stream_name":"stdout","time":7459.796317039,"data":"[ 124.3 min] transformer_m64_p32_s2: done (74s)\n"}
+,{"stream_name":"stdout","time":7557.745437236,"data":"[ 125.9 min] mamba_ssm_d128_p32_s2: done (98s)\n"}
+,{"stream_name":"stdout","time":7631.133713969,"data":"[ 127.2 min] transformer_m128_p32_s2: done (73s)\n"}
+,{"stream_name":"stdout","time":7631.133750473,"data":"LANE_A2 COMPLETE\n"}
+,{"stream_name":"stderr","time":7633.191791971,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":7633.191831407,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":7633.439623241,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":7633.439646744,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":7634.074923367,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":7635.334152421,"data":"[NbConvertApp] Writing 287017 bytes to __results__.html\n"}
+]
