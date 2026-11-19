@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=9 kernel_size=4 dilation_cycle=8 max_dilation=128 max_left_pad=384 receptive_field=769
+task   : selective_copy  {'n_data': 4, 'seq_len': 160, 'vocab_size': 64, 'min_gap': 96}
+arch   : tcn  (450,212 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=1
+  param groups (decay_1d=False):
+    decay, base-lr        :  20 tensors / 444,724 params
+    no-decay, base-lr     :  56 tensors / 5,488 params
+  step    250  train_loss 4.1254  val_loss 4.1260  val_acc 0.0166  (97s)
+  step    500  train_loss 4.1315  val_loss 4.1323  val_acc 0.0137  (194s)
+  step    750  train_loss 4.1343  val_loss 4.1296  val_acc 0.0186  (291s)
+  step   1000  train_loss 4.1244  val_loss 4.1248  val_acc 0.0273  (388s)
+  step   1250  train_loss 3.8280  val_loss 3.8291  val_acc 0.0371  (485s)
+  step   1500  train_loss 3.6781  val_loss 3.6138  val_acc 0.0459  (582s)
+  step   1750  train_loss 3.5214  val_loss 3.5508  val_acc 0.0439  (678s)
+  step   2000  train_loss 3.5134  val_loss 3.4029  val_acc 0.0625  (775s)
+  step   2250  train_loss 3.1764  val_loss 3.2360  val_acc 0.0635  (872s)
+  step   2500  train_loss 3.0092  val_loss 3.0131  val_acc 0.0977  (969s)
+  step   2750  train_loss 2.7521  val_loss 2.7486  val_acc 0.1084  (1065s)
+  step   3000  train_loss 2.6089  val_loss 2.5799  val_acc 0.1348  (1162s)
+  step   3250  train_loss 2.3981  val_loss 2.4569  val_acc 0.1768  (1259s)
+  step   3500  train_loss 2.3859  val_loss 2.3650  val_acc 0.1709  (1356s)
+  step   3750  train_loss 2.2493  val_loss 2.2377  val_acc 0.1875  (1453s)
+  step   4000  train_loss 2.2161  val_loss 2.2377  val_acc 0.2031  (1550s)
+
+final val_acc 0.2031  (chance ~0.0161)  in 1550.0s
+saved -> /kaggle/working/out/phase3/tcn_small_g96_s1.json

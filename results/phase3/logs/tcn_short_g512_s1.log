@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=6 kernel_size=3 dilation_cycle=8 max_dilation=32 max_left_pad=64 receptive_field=127
+task   : selective_copy  {'n_data': 4, 'seq_len': 576, 'vocab_size': 64, 'min_gap': 512}
+arch   : tcn  (440,088 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=1
+  param groups (decay_1d=False):
+    decay, base-lr        :  14 tensors / 435,072 params
+    no-decay, base-lr     :  38 tensors / 5,016 params
+  step    250  train_loss 4.1291  val_loss 4.1244  val_acc 0.0146  (11s)
+  step    500  train_loss 4.1294  val_loss 4.1316  val_acc 0.0186  (21s)
+  step    750  train_loss 4.1354  val_loss 4.1298  val_acc 0.0166  (32s)
+  step   1000  train_loss 4.1278  val_loss 4.1254  val_acc 0.0273  (42s)
+  step   1250  train_loss 4.1254  val_loss 4.1286  val_acc 0.0186  (52s)
+  step   1500  train_loss 4.1354  val_loss 4.1274  val_acc 0.0215  (62s)
+  step   1750  train_loss 4.1360  val_loss 4.1347  val_acc 0.0107  (73s)
+  step   2000  train_loss 4.1311  val_loss 4.1303  val_acc 0.0107  (83s)
+  step   2250  train_loss 4.1239  val_loss 4.1286  val_acc 0.0186  (93s)
+  step   2500  train_loss 4.1155  val_loss 4.1241  val_acc 0.0176  (103s)
+  step   2750  train_loss 4.1206  val_loss 4.1296  val_acc 0.0146  (114s)
+  step   3000  train_loss 4.1303  val_loss 4.1281  val_acc 0.0215  (124s)
+  step   3250  train_loss 4.1194  val_loss 4.1292  val_acc 0.0215  (134s)
+  step   3500  train_loss 4.1250  val_loss 4.1268  val_acc 0.0205  (144s)
+  step   3750  train_loss 4.1281  val_loss 4.1321  val_acc 0.0107  (154s)
+  step   4000  train_loss 4.1199  val_loss 4.1288  val_acc 0.0078  (165s)
+
+final val_acc 0.0078  (chance ~0.0161)  in 164.8s
+saved -> /kaggle/working/out/phase3/tcn_short_g512_s1.json

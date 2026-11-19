@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=9 kernel_size=4 dilation_cycle=8 max_dilation=128 max_left_pad=384 receptive_field=769
+task   : selective_copy  {'n_data': 4, 'seq_len': 224, 'vocab_size': 64, 'min_gap': 160}
+arch   : tcn  (450,212 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=0
+  param groups (decay_1d=False):
+    decay, base-lr        :  20 tensors / 444,724 params
+    no-decay, base-lr     :  56 tensors / 5,488 params
+  step    250  train_loss 4.1288  val_loss 4.1322  val_acc 0.0117  (99s)
+  step    500  train_loss 4.1478  val_loss 4.1389  val_acc 0.0186  (198s)
+  step    750  train_loss 4.1266  val_loss 4.1335  val_acc 0.0146  (296s)
+  step   1000  train_loss 4.1398  val_loss 4.1294  val_acc 0.0166  (395s)
+  step   1250  train_loss 4.1381  val_loss 4.1324  val_acc 0.0195  (494s)
+  step   1500  train_loss 4.1282  val_loss 4.1306  val_acc 0.0156  (593s)
+  step   1750  train_loss 3.9703  val_loss 3.9399  val_acc 0.0254  (691s)
+  step   2000  train_loss 3.6690  val_loss 3.6715  val_acc 0.0420  (790s)
+  step   2250  train_loss 3.4813  val_loss 3.4923  val_acc 0.0625  (889s)
+  step   2500  train_loss 3.3937  val_loss 3.3628  val_acc 0.0566  (987s)
+  step   2750  train_loss 3.1437  val_loss 3.2102  val_acc 0.0557  (1086s)
+  step   3000  train_loss 2.8809  val_loss 2.9029  val_acc 0.1152  (1185s)
+  step   3250  train_loss 2.7014  val_loss 2.7238  val_acc 0.1143  (1284s)
+  step   3500  train_loss 2.6135  val_loss 2.6078  val_acc 0.1201  (1382s)
+  step   3750  train_loss 2.4830  val_loss 2.4379  val_acc 0.1465  (1481s)
+  step   4000  train_loss 2.4072  val_loss 2.3114  val_acc 0.1748  (1580s)
+
+final val_acc 0.1748  (chance ~0.0161)  in 1579.8s
+saved -> /kaggle/working/out/phase3/tcn_small_g160_s0.json

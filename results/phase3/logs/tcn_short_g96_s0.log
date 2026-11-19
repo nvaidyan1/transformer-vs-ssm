@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=6 kernel_size=3 dilation_cycle=8 max_dilation=32 max_left_pad=64 receptive_field=127
+task   : selective_copy  {'n_data': 4, 'seq_len': 160, 'vocab_size': 64, 'min_gap': 96}
+arch   : tcn  (440,088 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=0
+  param groups (decay_1d=False):
+    decay, base-lr        :  14 tensors / 435,072 params
+    no-decay, base-lr     :  38 tensors / 5,016 params
+  step    250  train_loss 4.1286  val_loss 4.1340  val_acc 0.0117  (4s)
+  step    500  train_loss 4.1469  val_loss 4.1428  val_acc 0.0137  (7s)
+  step    750  train_loss 4.1285  val_loss 4.1330  val_acc 0.0127  (10s)
+  step   1000  train_loss 4.1433  val_loss 4.1291  val_acc 0.0166  (13s)
+  step   1250  train_loss 4.1393  val_loss 4.1331  val_acc 0.0195  (16s)
+  step   1500  train_loss 4.1281  val_loss 4.1337  val_acc 0.0117  (20s)
+  step   1750  train_loss 4.1291  val_loss 4.1274  val_acc 0.0117  (23s)
+  step   2000  train_loss 4.1355  val_loss 4.1285  val_acc 0.0166  (26s)
+  step   2250  train_loss 4.1338  val_loss 4.1255  val_acc 0.0195  (29s)
+  step   2500  train_loss 4.1324  val_loss 4.1293  val_acc 0.0146  (32s)
+  step   2750  train_loss 4.1286  val_loss 4.1309  val_acc 0.0146  (35s)
+  step   3000  train_loss 4.1361  val_loss 4.1279  val_acc 0.0137  (39s)
+  step   3250  train_loss 4.1250  val_loss 4.1280  val_acc 0.0166  (42s)
+  step   3500  train_loss 4.1304  val_loss 4.1304  val_acc 0.0137  (45s)
+  step   3750  train_loss 4.1281  val_loss 4.1300  val_acc 0.0156  (48s)
+  step   4000  train_loss 4.1308  val_loss 4.1300  val_acc 0.0166  (51s)
+
+final val_acc 0.0166  (chance ~0.0161)  in 51.2s
+saved -> /kaggle/working/out/phase3/tcn_short_g96_s0.json

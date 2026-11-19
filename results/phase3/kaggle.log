@@ -1,0 +1,91 @@
+[{"stream_name":"stdout","time":1.165004328,"data":"\n"}
+,{"stream_name":"stdout","time":1.165048627,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":1.221638155,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":2.258103603,"data":"\n"}
+,{"stream_name":"stdout","time":2.25813215,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":2.295539569,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":2.295705604,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":2.296332909,"data":"\n"}
+,{"stream_name":"stdout","time":2.296348248,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":2.300381927,"data":"4fedeac Phase 3: prediction, report, CAP-extension rule, lane B kernel (before any run)\n"}
+,{"stream_name":"stdout","time":2.300864745,"data":"\n"}
+,{"stream_name":"stdout","time":2.300884564,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":2.331462839,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.331479732,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.3378615959999998,"data":"\n"}
+,{"stream_name":"stdout","time":2.33787769,"data":"$ pip install -q packaging ninja wheel psutil pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":7.910116073,"data":"\n"}
+,{"stream_name":"stdout","time":7.910155506,"data":"$ pip install -q 'causal-conv1d\u003e=1.4.0' --no-build-isolation\n"}
+,{"stream_name":"stdout","time":31.527938297,"data":"\n"}
+,{"stream_name":"stdout","time":31.527986752,"data":"$ pip install -q mamba-ssm --no-build-isolation\n"}
+,{"stream_name":"stdout","time":32.941694349,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.4/216.4 kB 2.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.423317496,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 MB 48.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.494291414,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 65.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.549290986,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 729.6/729.6 kB 32.3 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":38.681759559,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 65.1 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.542269736,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 MB 22.1 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.6044279,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 60.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.883531209,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 29.3/29.3 MB 73.5 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.973205027,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 897.8/897.8 kB 15.8 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":61.436243989,"data":"\n"}
+,{"stream_name":"stdout","time":61.436285935,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":100.728251549,"data":"........................................................................ [ 40%]\n"}
+,{"stream_name":"stdout","time":101.546919449,"data":"........................................................................ [ 80%]\n"}
+,{"stream_name":"stdout","time":104.066623513,"data":"...................................                                      [100%]\n"}
+,{"stream_name":"stdout","time":104.066648967,"data":"179 passed in 39.26s\n"}
+,{"stream_name":"stdout","time":153.069496467,"data":"[   2.5 min] tcn_short_g32_s0: done (47s)\n"}
+,{"stream_name":"stdout","time":553.705551739,"data":"[   9.2 min] tcn_small_g32_s0: done (401s)\n"}
+,{"stream_name":"stdout","time":627.064248219,"data":"[  10.4 min] tcn_short_g160_s0: done (73s)\n"}
+,{"stream_name":"stdout","time":2210.917380989,"data":"[  36.8 min] tcn_small_g160_s0: done (1584s)\n"}
+,{"stream_name":"stdout","time":2309.998126347,"data":"[  38.5 min] tcn_short_g256_s0: done (99s)\n"}
+,{"stream_name":"stdout","time":2435.087628715,"data":"[  40.6 min] tcn_small_g256_s0: done (125s)\n"}
+,{"stream_name":"stdout","time":2603.855374141,"data":"[  43.4 min] tcn_short_g512_s0: done (169s)\n"}
+,{"stream_name":"stdout","time":2821.731106271,"data":"[  47.0 min] tcn_small_g512_s0: done (218s)\n"}
+,{"stream_name":"stdout","time":2867.76717062,"data":"[  47.8 min] tcn_short_g64_s0: done (46s)\n"}
+,{"stream_name":"stdout","time":4408.577018004,"data":"[  73.5 min] tcn_small_g64_s0: done (1541s)\n"}
+,{"stream_name":"stdout","time":4463.840386121,"data":"[  74.4 min] tcn_short_g96_s0: done (55s)\n"}
+,{"stream_name":"stdout","time":6018.275550588,"data":"[ 100.3 min] tcn_small_g96_s0: done (1554s)\n"}
+,{"stream_name":"stdout","time":6044.362099469,"data":"[ 100.7 min] transformer_g64_s0: done (26s)\n"}
+,{"stream_name":"stdout","time":6116.524769875,"data":"[ 101.9 min] mamba_ssm_g64_s0: done (72s)\n"}
+,{"stream_name":"stdout","time":6215.708686856,"data":"[ 103.6 min] transformer_g256_s0: done (99s)\n"}
+,{"stream_name":"stdout","time":6362.601128092,"data":"[ 106.0 min] mamba_ssm_g256_s0: done (147s)\n"}
+,{"stream_name":"stdout","time":6409.342602025,"data":"[ 106.8 min] tcn_short_g32_s1: done (47s)\n"}
+,{"stream_name":"stdout","time":6810.107961425,"data":"[ 113.5 min] tcn_small_g32_s1: done (401s)\n"}
+,{"stream_name":"stdout","time":6883.421691833,"data":"[ 114.7 min] tcn_short_g160_s1: done (73s)\n"}
+,{"stream_name":"stdout","time":8466.964195536,"data":"[ 141.1 min] tcn_small_g160_s1: done (1584s)\n"}
+,{"stream_name":"stdout","time":8566.059570756,"data":"[ 142.7 min] tcn_short_g256_s1: done (99s)\n"}
+,{"stream_name":"stdout","time":8691.060902284,"data":"[ 144.8 min] tcn_small_g256_s1: done (125s)\n"}
+,{"stream_name":"stdout","time":8859.944352936,"data":"[ 147.6 min] tcn_short_g512_s1: done (169s)\n"}
+,{"stream_name":"stdout","time":9077.773468059,"data":"[ 151.3 min] tcn_small_g512_s1: done (218s)\n"}
+,{"stream_name":"stdout","time":9124.258735572,"data":"[ 152.1 min] tcn_short_g64_s1: done (46s)\n"}
+,{"stream_name":"stdout","time":10664.489544661,"data":"[ 177.7 min] tcn_small_g64_s1: done (1540s)\n"}
+,{"stream_name":"stdout","time":10719.751370783,"data":"[ 178.6 min] tcn_short_g96_s1: done (55s)\n"}
+,{"stream_name":"stdout","time":12273.891300888,"data":"[ 204.5 min] tcn_small_g96_s1: done (1554s)\n"}
+,{"stream_name":"stdout","time":12320.878796623,"data":"[ 205.3 min] transformer_g64_s1: done (47s)\n"}
+,{"stream_name":"stdout","time":12378.358332182,"data":"[ 206.3 min] mamba_ssm_g64_s1: done (57s)\n"}
+,{"stream_name":"stdout","time":12534.027017197,"data":"[ 208.9 min] transformer_g256_s1: done (156s)\n"}
+,{"stream_name":"stdout","time":12681.094328003,"data":"[ 211.3 min] mamba_ssm_g256_s1: done (147s)\n"}
+,{"stream_name":"stdout","time":12705.77914057,"data":"[ 211.7 min] tcn_short_g32_s2: timeout (25s)\n"}
+,{"stream_name":"stdout","time":12705.779182282,"data":"[ 211.7 min] tcn_small_g32_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779189521,"data":"[ 211.7 min] tcn_short_g160_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779194959,"data":"[ 211.7 min] tcn_small_g160_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779200069,"data":"[ 211.7 min] tcn_short_g256_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779206015,"data":"[ 211.7 min] tcn_small_g256_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779211046,"data":"[ 211.7 min] tcn_short_g512_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779216243,"data":"[ 211.7 min] tcn_small_g512_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779222175,"data":"[ 211.7 min] tcn_short_g64_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779227742,"data":"[ 211.7 min] tcn_small_g64_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779232902,"data":"[ 211.7 min] tcn_short_g96_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779252009,"data":"[ 211.7 min] tcn_small_g96_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779257788,"data":"[ 211.7 min] transformer_g64_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779278514,"data":"[ 211.7 min] mamba_ssm_g64_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779284129,"data":"[ 211.7 min] transformer_g256_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779288777,"data":"[ 211.7 min] mamba_ssm_g256_s2: not_run (deadline)\n"}
+,{"stream_name":"stdout","time":12705.779295215,"data":"LANE_B INCOMPLETE: {'tcn_short_g32_s2': 'timeout', 'tcn_small_g32_s2': 'not_run', 'tcn_short_g160_s2': 'not_run', 'tcn_small_g160_s2': 'not_run', 'tcn_short_g256_s2': 'not_run', 'tcn_small_g256_s2': 'not_run', 'tcn_short_g512_s2': 'not_run', 'tcn_small_g512_s2': 'not_run', 'tcn_short_g64_s2': 'not_run', 'tcn_small_g64_s2': 'not_run', 'tcn_short_g96_s2': 'not_run', 'tcn_small_g96_s2': 'not_run', 'transformer_g64_s2': 'not_run', 'mamba_ssm_g64_s2': 'not_run', 'transformer_g256_s2': 'not_run', 'mamba_ssm_g256_s2': 'not_run'}\n"}
+,{"stream_name":"stderr","time":12708.042151121,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":12708.042182118,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":12708.308002332,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":12708.308030117,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":12708.967117266,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":12710.313168525,"data":"[NbConvertApp] Writing 288277 bytes to __results__.html\n"}
+]

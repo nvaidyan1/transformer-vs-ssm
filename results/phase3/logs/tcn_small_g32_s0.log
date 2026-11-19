@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=9 kernel_size=4 dilation_cycle=8 max_dilation=128 max_left_pad=384 receptive_field=769
+task   : selective_copy  {'n_data': 4, 'seq_len': 96, 'vocab_size': 64, 'min_gap': 32}
+arch   : tcn  (450,212 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=0
+  param groups (decay_1d=False):
+    decay, base-lr        :  20 tensors / 444,724 params
+    no-decay, base-lr     :  56 tensors / 5,488 params
+  step    250  train_loss 4.1277  val_loss 4.1318  val_acc 0.0176  (24s)
+  step    500  train_loss 4.1479  val_loss 4.1353  val_acc 0.0156  (49s)
+  step    750  train_loss 4.0892  val_loss 4.0460  val_acc 0.0254  (75s)
+  step   1000  train_loss 3.6804  val_loss 3.6639  val_acc 0.0420  (99s)
+  step   1250  train_loss 3.5307  val_loss 3.5253  val_acc 0.0439  (124s)
+  step   1500  train_loss 3.4065  val_loss 3.4182  val_acc 0.0508  (148s)
+  step   1750  train_loss 3.3497  val_loss 3.3266  val_acc 0.0625  (173s)
+  step   2000  train_loss 3.1338  val_loss 3.0810  val_acc 0.0820  (198s)
+  step   2250  train_loss 2.8961  val_loss 2.8886  val_acc 0.0840  (223s)
+  step   2500  train_loss 2.7291  val_loss 2.6313  val_acc 0.1562  (247s)
+  step   2750  train_loss 2.5205  val_loss 2.5558  val_acc 0.1152  (272s)
+  step   3000  train_loss 2.4532  val_loss 2.3705  val_acc 0.1738  (297s)
+  step   3250  train_loss 2.3531  val_loss 2.2559  val_acc 0.1865  (322s)
+  step   3500  train_loss 2.3238  val_loss 2.2065  val_acc 0.1729  (347s)
+  step   3750  train_loss 2.0643  val_loss 2.0246  val_acc 0.2578  (372s)
+  step   4000  train_loss 1.9021  val_loss 1.9187  val_acc 0.2598  (397s)
+
+final val_acc 0.2598  (chance ~0.0161)  in 396.6s
+saved -> /kaggle/working/out/phase3/tcn_small_g32_s0.json

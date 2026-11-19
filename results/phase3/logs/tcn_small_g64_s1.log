@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=9 kernel_size=4 dilation_cycle=8 max_dilation=128 max_left_pad=384 receptive_field=769
+task   : selective_copy  {'n_data': 4, 'seq_len': 128, 'vocab_size': 64, 'min_gap': 64}
+arch   : tcn  (450,212 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=1
+  param groups (decay_1d=False):
+    decay, base-lr        :  20 tensors / 444,724 params
+    no-decay, base-lr     :  56 tensors / 5,488 params
+  step    250  train_loss 4.1251  val_loss 4.1266  val_acc 0.0166  (96s)
+  step    500  train_loss 4.1292  val_loss 4.1310  val_acc 0.0137  (192s)
+  step    750  train_loss 4.1348  val_loss 4.1301  val_acc 0.0117  (288s)
+  step   1000  train_loss 4.1263  val_loss 4.1251  val_acc 0.0215  (384s)
+  step   1250  train_loss 4.1263  val_loss 4.1276  val_acc 0.0166  (480s)
+  step   1500  train_loss 3.7498  val_loss 3.7669  val_acc 0.0420  (576s)
+  step   1750  train_loss 3.5675  val_loss 3.5701  val_acc 0.0430  (672s)
+  step   2000  train_loss 3.3516  val_loss 3.4316  val_acc 0.0400  (768s)
+  step   2250  train_loss 3.1738  val_loss 3.0959  val_acc 0.0850  (864s)
+  step   2500  train_loss 2.8755  val_loss 2.8338  val_acc 0.1230  (960s)
+  step   2750  train_loss 2.6049  val_loss 2.5757  val_acc 0.1719  (1056s)
+  step   3000  train_loss 2.3591  val_loss 2.3685  val_acc 0.2021  (1152s)
+  step   3250  train_loss 2.1640  val_loss 2.0822  val_acc 0.2871  (1248s)
+  step   3500  train_loss 2.0629  val_loss 1.9403  val_acc 0.3301  (1344s)
+  step   3750  train_loss 1.8320  val_loss 1.6037  val_acc 0.4678  (1440s)
+  step   4000  train_loss 1.4568  val_loss 1.4493  val_acc 0.5293  (1536s)
+
+final val_acc 0.5293  (chance ~0.0161)  in 1536.2s
+saved -> /kaggle/working/out/phase3/tcn_small_g64_s1.json

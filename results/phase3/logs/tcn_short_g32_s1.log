@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=6 kernel_size=3 dilation_cycle=8 max_dilation=32 max_left_pad=64 receptive_field=127
+task   : selective_copy  {'n_data': 4, 'seq_len': 96, 'vocab_size': 64, 'min_gap': 32}
+arch   : tcn  (440,088 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=1
+  param groups (decay_1d=False):
+    decay, base-lr        :  14 tensors / 435,072 params
+    no-decay, base-lr     :  38 tensors / 5,016 params
+  step    250  train_loss 4.1288  val_loss 4.1242  val_acc 0.0234  (3s)
+  step    500  train_loss 4.1292  val_loss 4.1323  val_acc 0.0146  (6s)
+  step    750  train_loss 4.1365  val_loss 4.1281  val_acc 0.0166  (8s)
+  step   1000  train_loss 3.7811  val_loss 3.8018  val_acc 0.0527  (11s)
+  step   1250  train_loss 3.1748  val_loss 3.0563  val_acc 0.1807  (14s)
+  step   1500  train_loss 2.4218  val_loss 2.4046  val_acc 0.3369  (16s)
+  step   1750  train_loss 1.8700  val_loss 1.9503  val_acc 0.4688  (19s)
+  step   2000  train_loss 1.4090  val_loss 1.4534  val_acc 0.6445  (22s)
+  step   2250  train_loss 1.0773  val_loss 1.0374  val_acc 0.7637  (24s)
+  step   2500  train_loss 0.8118  val_loss 0.7803  val_acc 0.8281  (27s)
+  step   2750  train_loss 0.5642  val_loss 0.5719  val_acc 0.8730  (29s)
+  step   3000  train_loss 0.3480  val_loss 0.4884  val_acc 0.8750  (32s)
+  step   3250  train_loss 0.4207  val_loss 0.3472  val_acc 0.9131  (35s)
+  step   3500  train_loss 0.3310  val_loss 0.3244  val_acc 0.9102  (37s)
+  step   3750  train_loss 0.4299  val_loss 0.2729  val_acc 0.9238  (40s)
+  step   4000  train_loss 0.2853  val_loss 0.2969  val_acc 0.9229  (43s)
+
+final val_acc 0.9229  (chance ~0.0161)  in 42.7s
+saved -> /kaggle/working/out/phase3/tcn_short_g32_s1.json

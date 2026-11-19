@@ -1,0 +1,113 @@
+{
+  "gate": {
+    "verdict": "INCOMPLETE",
+    "checks": [
+      {
+        "gap": 160,
+        "mean": 0.01318359375,
+        "n": 2,
+        "ok": false
+      },
+      {
+        "gap": 256,
+        "mean": 0.0146484375,
+        "n": 2,
+        "ok": false
+      },
+      {
+        "gap": 512,
+        "mean": 0.01416015625,
+        "n": 2,
+        "ok": false
+      },
+      {
+        "gap": 32,
+        "mean": 0.93603515625,
+        "n": 2,
+        "ok": false
+      }
+    ]
+  },
+  "extensions": [
+    {
+      "run": "tcn_short_g32_s2",
+      "reasons": [
+        "ambiguous: final 0.771 in [0.2, 0.9]",
+        "unconverged: +0.555 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_short_g64_s0",
+      "reasons": [
+        "ambiguous: final 0.358 in [0.2, 0.9]",
+        "unconverged: +0.265 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_short_g64_s1",
+      "reasons": [
+        "unconverged: +0.107 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g160_s0",
+      "reasons": [
+        "unconverged: +0.060 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g160_s1",
+      "reasons": [
+        "ambiguous: final 0.234 in [0.2, 0.9]",
+        "unconverged: +0.096 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g256_s1",
+      "reasons": [
+        "unconverged: +0.091 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g32_s0",
+      "reasons": [
+        "ambiguous: final 0.260 in [0.2, 0.9]",
+        "unconverged: +0.086 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g32_s1",
+      "reasons": [
+        "ambiguous: final 0.238 in [0.2, 0.9]",
+        "unconverged: +0.074 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g64_s0",
+      "reasons": [
+        "ambiguous: final 0.289 in [0.2, 0.9]",
+        "unconverged: +0.102 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g64_s1",
+      "reasons": [
+        "ambiguous: final 0.529 in [0.2, 0.9]",
+        "unconverged: +0.327 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g96_s0",
+      "reasons": [
+        "unconverged: +0.062 over the last 1000 steps"
+      ]
+    },
+    {
+      "run": "tcn_small_g96_s1",
+      "reasons": [
+        "ambiguous: final 0.203 in [0.2, 0.9]",
+        "unconverged: +0.068 over the last 1000 steps"
+      ]
+    }
+  ]
+}

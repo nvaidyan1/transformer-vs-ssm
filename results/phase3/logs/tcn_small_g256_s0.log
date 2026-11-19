@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=9 kernel_size=4 dilation_cycle=8 max_dilation=128 max_left_pad=384 receptive_field=769
+task   : selective_copy  {'n_data': 4, 'seq_len': 320, 'vocab_size': 64, 'min_gap': 256}
+arch   : tcn  (450,212 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=0
+  param groups (decay_1d=False):
+    decay, base-lr        :  20 tensors / 444,724 params
+    no-decay, base-lr     :  56 tensors / 5,488 params
+  step    250  train_loss 4.1280  val_loss 4.1322  val_acc 0.0117  (8s)
+  step    500  train_loss 4.1490  val_loss 4.1394  val_acc 0.0186  (16s)
+  step    750  train_loss 4.1277  val_loss 4.1348  val_acc 0.0195  (23s)
+  step   1000  train_loss 4.1402  val_loss 4.1290  val_acc 0.0234  (31s)
+  step   1250  train_loss 4.1402  val_loss 4.1314  val_acc 0.0195  (39s)
+  step   1500  train_loss 4.1271  val_loss 4.1320  val_acc 0.0195  (46s)
+  step   1750  train_loss 4.1302  val_loss 4.1276  val_acc 0.0117  (54s)
+  step   2000  train_loss 4.1380  val_loss 4.1281  val_acc 0.0166  (61s)
+  step   2250  train_loss 4.1344  val_loss 4.1252  val_acc 0.0215  (69s)
+  step   2500  train_loss 4.1343  val_loss 4.1289  val_acc 0.0107  (76s)
+  step   2750  train_loss 4.1296  val_loss 4.1312  val_acc 0.0205  (83s)
+  step   3000  train_loss 4.1356  val_loss 4.1283  val_acc 0.0117  (91s)
+  step   3250  train_loss 4.0961  val_loss 4.0795  val_acc 0.0273  (98s)
+  step   3500  train_loss 3.9579  val_loss 3.9243  val_acc 0.0293  (106s)
+  step   3750  train_loss 3.5876  val_loss 3.5648  val_acc 0.0303  (113s)
+  step   4000  train_loss 3.5402  val_loss 3.4414  val_acc 0.0615  (121s)
+
+final val_acc 0.0615  (chance ~0.0161)  in 121.1s
+saved -> /kaggle/working/out/phase3/tcn_small_g256_s0.json

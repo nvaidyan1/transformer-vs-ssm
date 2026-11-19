@@ -37,3 +37,15 @@ fixed; with RF 127 three gaps are above it, and all three are gated (the stricte
 
 **Budget:** ~3 GPU-h (CLAIM_MAP). The kernel stops at 3.5 h of training; cut runs keep
 their curves. Extensions (D3) run in a follow-up kernel once the list is known.
+
+## Run outcome (appended after the run; prediction above unchanged)
+
+Kaggle T4 lane B, commit 4fedeac, 3.5 h of training (the cap), 179 tests passed. Seeds 0
+and 1 complete for every cell (32 runs); seed 2 not run (deadline), one seed-2 run cut
+(tcn_short_g32_s2, partial). The TCN is slower than estimated (~6.6 min per CAP-4000 run).
+Gate: **INCOMPLETE** (needs 3 seeds). With 2 seeds: tcn_short 0.936 at gap 32 (> 0.9) and
+0.012-0.015 at gaps 96-512 (below 2x chance, 0.032), i.e. on track to pass; 0.258 and rising
+at gap 64. tcn_small (RF 769, no prediction) at CAP 4000: 0.25 / 0.41 / 0.20 / 0.21 / 0.12 /
+0.01 at gaps 32-512, mostly still rising. Transformer 0.984 (gap 64) and 0.995 (gap 256);
+mamba_ssm 0.997 (gap 64) and 0.521 at gap 256 (one seed 0.993, the other 0.049). 12 cells
+meet the D3 extension rule (11 are TCN cells, each ~5x a CAP run).

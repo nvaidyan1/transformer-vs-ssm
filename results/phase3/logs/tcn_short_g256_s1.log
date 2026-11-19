@@ -1,0 +1,29 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+[tcn.py] n_layers=6 kernel_size=3 dilation_cycle=8 max_dilation=32 max_left_pad=64 receptive_field=127
+task   : selective_copy  {'n_data': 4, 'seq_len': 320, 'vocab_size': 64, 'min_gap': 256}
+arch   : tcn  (440,088 params)
+device : cuda   lr=0.0003  steps=4000  batch=32  seed=1
+  param groups (decay_1d=False):
+    decay, base-lr        :  14 tensors / 435,072 params
+    no-decay, base-lr     :  38 tensors / 5,016 params
+  step    250  train_loss 4.1291  val_loss 4.1244  val_acc 0.0146  (6s)
+  step    500  train_loss 4.1294  val_loss 4.1316  val_acc 0.0186  (12s)
+  step    750  train_loss 4.1354  val_loss 4.1298  val_acc 0.0166  (18s)
+  step   1000  train_loss 4.1278  val_loss 4.1254  val_acc 0.0273  (24s)
+  step   1250  train_loss 4.1254  val_loss 4.1286  val_acc 0.0186  (30s)
+  step   1500  train_loss 4.1355  val_loss 4.1275  val_acc 0.0215  (36s)
+  step   1750  train_loss 4.1357  val_loss 4.1344  val_acc 0.0107  (42s)
+  step   2000  train_loss 4.1311  val_loss 4.1303  val_acc 0.0107  (48s)
+  step   2250  train_loss 4.1240  val_loss 4.1287  val_acc 0.0205  (54s)
+  step   2500  train_loss 4.1164  val_loss 4.1239  val_acc 0.0176  (60s)
+  step   2750  train_loss 4.1197  val_loss 4.1297  val_acc 0.0176  (66s)
+  step   3000  train_loss 4.1302  val_loss 4.1281  val_acc 0.0186  (72s)
+  step   3250  train_loss 4.1200  val_loss 4.1291  val_acc 0.0254  (77s)
+  step   3500  train_loss 4.1234  val_loss 4.1267  val_acc 0.0166  (83s)
+  step   3750  train_loss 4.1277  val_loss 4.1320  val_acc 0.0117  (89s)
+  step   4000  train_loss 4.1203  val_loss 4.1284  val_acc 0.0078  (95s)
+
+final val_acc 0.0078  (chance ~0.0161)  in 95.1s
+saved -> /kaggle/working/out/phase3/tcn_short_g256_s1.json
