@@ -1,0 +1,22 @@
+# Phase 4 capacity sweep: Transformer matched to mamba_ssm_d64 (147,584).
+# 143,192 params (-3.0%); without the positional table 128,856
+# (-12.7%), disclosed per D5.
+arch: transformer
+seed: 0
+vocab_size: 256       # MQAR needs >= 64 keys; (256 - 1) // 2 = 127 keys, chance 1/127
+max_steps: 4000
+warmup_steps: 200
+lr: 1.0e-3            # locked in 0.3 for both archs; do not change
+weight_decay: 0.1
+grad_clip: 1.0
+batch_size: 32
+eval_every: 250
+eval_batches: 8
+
+model:
+  n_layers: 3
+  d_model: 56
+  n_heads: 4
+  d_ff: 224
+  dropout: 0.0
+  max_seq_len: 256
