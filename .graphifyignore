@@ -1,0 +1,39 @@
+# graphify scope for this repo. The graph is built with .gitignore handling OFF
+# (graphify-out/.graphify_build.json: "gitignore": false) so that posts/, README.md,
+# PLAN.md and SERIES_REVIEW.md are included; this file therefore has to exclude
+# everything else .gitignore would have.
+
+# from .gitignore: local data, outputs, environments, tooling
+data/
+checkpoints/
+figures/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.DS_Store
+.vscode/
+.idea/
+.claude/
+expert_review/
+.kaggle/
+.git/
+
+# notebooks: large outputs, and the code they run lives in src/ and scripts/
+notebooks/
+
+# results: keep the markdown (predictions, reports, logs); drop raw run records,
+# Kaggle logs and figures
+results/**/*.json
+results/**/*.log
+results/**/*.png
+
+# graphify's own output
+graphify-out/

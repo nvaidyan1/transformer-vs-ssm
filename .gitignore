@@ -46,3 +46,6 @@ SERIES_REVIEW.md
 PLAN.md
 scripts/verify_post1.py
 scripts/verify_post2_mamba.py
+
+# graphify knowledge graph (local; rebuild with /graphify, update with `graphify update .`)
+graphify-out/
