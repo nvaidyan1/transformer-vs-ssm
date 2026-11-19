@@ -9,9 +9,9 @@ edited here; W0/W1-W3 in plan2.md do that. Toy tasks on one T4 support "illustra
 
 | Claim / figure in the draft | Settled by | plan2 | Status |
 |---|---|---|---|
-| Fig 1: memory and time grow as n^2 with sequence length (slope placeholder) | log-log sweep 128-4096, naive vs SDPA attention | 2.1 | **not run** |
-| Fig 2: TCN scales linearly where the Transformer is quadratic | same sweep, TCN | 2.1 | **not run** |
-| Figs 3-4 (PENDING): attention re-routes per input | attention maps from the trained Selective Copying Transformer, two inputs | W1 (uses 1.1) | **needs a saved checkpoint** (trainer saves none yet) |
+| Fig 1: memory and time grow as n^2 with sequence length (slope placeholder) | log-log sweep 128-4096, naive vs SDPA attention | 2.1 | **memory: have it** (naive 1.92, i.e. quadratic; SDPA 1.01). **Time: naive attention only** (1.81, ungated). The SDPA timing slope failed its gate and may not be used (author, 2026-11-19) |
+| Fig 2: TCN scales linearly where the Transformer is quadratic | same sweep, TCN | 2.1 | **memory only** (TCN 0.82); TCN timing failed its gate, not usable |
+| Figs 3-4 (PENDING): attention re-routes per input | attention maps from the trained Selective Copying Transformer, two inputs | W1 (uses 1.1) | **have it** (results/figure_models/attention_maps.png; illustration) |
 | Fig 5 + text (PENDING): the TCN's locality bet breaks past its reach | accuracy vs min_gap, RF line (tcn_short) | 3.1, 3.2 | **not run** |
 | Quadratic cost is a worst-case conditional bound | citation (Duman Keles et al. 2023) | W0.1 | done |
 
@@ -19,11 +19,11 @@ edited here; W0/W1-W3 in plan2.md do that. Toy tasks on one T4 support "illustra
 
 | Claim / figure in the draft | Settled by | plan2 | Status |
 |---|---|---|---|
-| Fig 2: training cost is linear (not flat) | 2.1 sweep, mamba_ssm | 2.1 | **not run** |
-| "Mamba's memory is flat" (streaming state only) | carried state vs context, analytic = measured | 2.2 | **not run** |
+| Fig 2: training cost is linear (not flat) | 2.1 sweep, mamba_ssm | 2.1 | **memory: have it** (1.00, linear, not flat); Mamba timing failed its gate, not usable |
+| "Mamba's memory is flat" (streaming state only) | carried state vs context, analytic = measured | 2.2 | **have it** (PASS: KV cache linear, Mamba constant, TCN constant from its largest layer window 384) |
 | Fig 3: selectivity matters (replaces enwik8 bpc) | selective vs input-independent ablation | 1.1, 1.2 | **have it**: 0.99+ vs chance at seq 64 (3000 steps) and 256; with a matched 20k schedule the ablation reaches 0.978 at 64 (slower) and 0.08 at 256 (fails within budget) |
-| Items-carried figure (author's Post 2 figure) | 1.1d | 1.1d | **mixed schedules**: n_data 2-3 ablated rerun on 20k, the other cells on 4k; rerun the rest or drop |
-| Fig 4: Delta_t trace (illustration only) | Delta from a trained custom model on Selective Copying | W2 | **needs a saved checkpoint** |
+| Items-carried figure (author's Post 2 figure) | 1.1d | 1.1d | **have it**, one schedule (results/phase1_1d/sched20k/items_carried.png): ablated 1.00 / 0.98 / 0.89 / 0.02 |
+| Fig 4: Delta_t trace (illustration only) | Delta from a trained custom model on Selective Copying | W2 | **have it** (results/figure_models/delta_trace.png; illustration) |
 | New section "what compression costs" | accuracy vs number of KV pairs, 3 Mamba sizes vs Transformer | 4.1 | **not run** |
 | From-scratch model is a faithful reference; numbers from mamba-ssm | weight-copy parity, scan parity | 0.2, 1.2a | **have it** |
 

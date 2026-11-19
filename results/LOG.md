@@ -65,3 +65,18 @@ the full 20,000 steps only if, at CAP, it is
 - **unconverged**: val_acc rose by more than 0.05 over its last 1000 steps (4 evals).
 A cell below 0.2 and flat, or above 0.9, is final at CAP. Extensions run once; no further
 extension.
+
+## 2026-11-19: Phase 2.1 failed gate, claims restricted (author decision)
+
+2.1 failed on three timing slopes (SDPA 1.63 vs 2; TCN 0.60 and Mamba 0.50 vs 1). Decision:
+the original results are preserved and reported as failed. Posts may use the memory scaling
+(all four memory slopes as predicted) and the naive-attention timing slope (1.81, reported,
+not gated); no claim rests on the SDPA, TCN or Mamba timing slopes. A larger-batch timing
+rerun would be a separately logged, predeclared follow-up and would not replace these
+results. Not scheduled.
+
+## 2026-11-19: Phase 1 closed (author decision)
+
+1.2 closed at seq_len 64 and 256 (gates PASS). seq_len 1024 is a partial pilot (mamba_ssm
+selective CAP 9000 found; Transformer reference cut at step 6500). The seq_len 1024 ablated
+arm and n_data 16 are follow-ups, not scheduled.
