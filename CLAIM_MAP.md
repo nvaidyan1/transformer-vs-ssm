@@ -74,4 +74,4 @@ local CPU alongside them.
 | 6 | 1.1d remaining cells on 20k (if kept) | either session | ~20 GPU-min |
 | 7 | W0.2, W0.3, then W1-W3, F1 | text | after results |
 
-**Author decisions needed before starting** are listed in plan2.md under "Cruise decisions".
+**Author decisions (answered 2026-11-19, plan2.md "Cruise decisions"):** small configs; Phase 3 reduced; Phase 4 CAP 4000 with the extension rule in results/LOG.md; 1.1d rerun; total-parameter matching with the non-positional difference disclosed; standing approval per phase.

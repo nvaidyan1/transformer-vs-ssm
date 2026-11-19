@@ -48,3 +48,20 @@ Also 3,000 for both arms in 1.1b, 1.1c (runs 1-4) and 1.2a; 20,000 for 1.1c's re
 run 2 re-run. Within 1.1 Stage C, 1.1b, 1.1c, 1.1d and 1.2a the compared arms shared a
 schedule; in 1.2 seq_len 256 they did not (ablated shorter), and 1.1 Stage C's reference
 arm differed from its custom arms. Follow-ups (b) and (d) rerun the affected ablated cells.
+
+## 2026-11-19: cruise decisions D1-D6 (author) and the CAP-extension rule
+
+Recorded in plan2.md and CLAIM_MAP.md. D1: Phase 2 uses the small matched configs (~450k).
+D2: Phase 3 reduced (both TCNs x 6 gaps x 3 seeds; Transformer and mamba_ssm at 2 gaps).
+D4: 1.1d remaining cells rerun on the 20k schedule. D5: parameter matching stays on totals
+(positional table counted); the Transformer's non-positional count (399,048, -11.1%) is
+disclosed wherever matching is claimed. D6: standing approval per phase within the
+CLAIM_MAP budgets; no experiment outside a CLAIM_MAP row.
+
+D3, CAP extension rule (fixed before any Phase 3/4 run): every cell runs on the 20,000-step
+schedule and stops at CAP 4000 (or earlier by the usual early stop). A cell is extended to
+the full 20,000 steps only if, at CAP, it is
+- **ambiguous**: final val_acc in [0.2, 0.9], or
+- **unconverged**: val_acc rose by more than 0.05 over its last 1000 steps (4 evals).
+A cell below 0.2 and flat, or above 0.9, is final at CAP. Extensions run once; no further
+extension.
