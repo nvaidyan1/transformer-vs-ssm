@@ -1,0 +1,5 @@
+/kaggle/working/transformer-vs-ssm/src/train_filter.py:105: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  history.append({"step": step + 1, "train_mse": float(loss), "val_mse": val_mse()})
+[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)
+stationary mamba L2 s1: val_mse 0.1021 (kalman 0.1015, const 0.1113) 300.7s

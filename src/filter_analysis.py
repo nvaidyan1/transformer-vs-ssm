@@ -15,7 +15,10 @@ def effective_gain(model, u: torch.Tensor, **kw) -> np.ndarray:
     """u: (B, T, C), observation in channel 0. Returns (B, T)."""
     model.eval()
     u = u.clone().requires_grad_(True)
-    out = model(u, **kw)                                   # (B, T)
+    # cuDNN refuses RNN backward in eval mode; the models have no dropout, so turning
+    # cuDNN off here changes nothing but the kernel used (found on Kaggle, 2026-11-19).
+    with torch.backends.cudnn.flags(enabled=False):
+        out = model(u, **kw)                               # (B, T)
     B, T = out.shape
     g = np.zeros((B, T))
     for t in range(T):

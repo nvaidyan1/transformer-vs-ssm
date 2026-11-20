@@ -49,3 +49,25 @@ above, the ablation may also vary.)
 5.4 (pendulum) is optional and only if 5.2 and 5.3 pass; not run here.
 
 **Budget:** 54 runs at <= 5 GPU-min each plus the 5.3 analysis; the kernel stops at 4.5 h.
+
+## 5.2 outcome (appended after the run; prediction above unchanged)
+
+Kaggle T4 lane C, commit 48e3ac4, ~2.4 h, 54/54 runs; 18 Mamba runs (selective and
+ablated, 2 layers and some 1-layer) hit the 5-min cap at ~2850 of 3000 steps
+(stopped_by_time_cap, valid by plan2's cap). **Gate 5.2: FAIL** on (b).
+- (a) stationary, 1 layer: ablation within 0.3% of selective; all three models within 3% of
+  the Kalman MSE. As predicted.
+- (b) switching, 1 layer: ablation / selective MSE = 1.12, 1.08, 1.12 by seed; the gate
+  needs >= 1.15 on 3/3. Selective Mamba 1.06x Kalman, GRU 1.03x, ablation 1.18x; the
+  constant-gain filter is 1.79x. The ablation is worse, but far closer to Kalman than to the
+  constant-gain baseline, so "the ablation sits closer to the constant-gain baseline" is
+  wrong. Consistent with the caveat recorded above (the ablation keeps the input-dependent
+  output gate and conv path, through which the flag can act).
+- (c) dropout: all three within 5% of Kalman, including the ablation (plan2 marked this
+  uncertain; the ablation does well, as plan2 anticipated could happen).
+Per plan2 5.2: stopped and reported; Post 3 is to be written around this (W3).
+
+5.3 did not run: the analysis step crashed on its first GRU model (cuDNN refuses RNN
+backward in eval mode; a GPU-only failure the CPU tests could not catch). Fixed in
+src/filter_analysis.py after the run. No 5.3 numbers exist. Running it now would be a
+descriptive analysis after a failed 5.2 gate and needs the author's decision.

@@ -1,0 +1,87 @@
+{
+  "task": "switching",
+  "arch": "gru",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 1,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": null,
+  "n_params": 6465,
+  "kalman_mse": 0.09363547256794368,
+  "const_gain_mse": 0.17690833178360008,
+  "const_gain_k": 0.07025,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.18501612544059753,
+      "val_mse": 0.133257195353508
+    },
+    {
+      "step": 500,
+      "train_mse": 0.14604926109313965,
+      "val_mse": 0.10749389231204987
+    },
+    {
+      "step": 750,
+      "train_mse": 0.10137276351451874,
+      "val_mse": 0.09957343339920044
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.08816924691200256,
+      "val_mse": 0.1029343232512474
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.1014847680926323,
+      "val_mse": 0.09699639678001404
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.09409259259700775,
+      "val_mse": 0.0960579439997673
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10784176737070084,
+      "val_mse": 0.09838251024484634
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.11024678498506546,
+      "val_mse": 0.09603411704301834
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.12760551273822784,
+      "val_mse": 0.10004112124443054
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.09352424740791321,
+      "val_mse": 0.09556986391544342
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.09724586457014084,
+      "val_mse": 0.09551140666007996
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.09508875757455826,
+      "val_mse": 0.09990876913070679
+    }
+  ],
+  "final_val_mse": 0.09990876913070679,
+  "ratio_to_kalman": 1.0669970086199019,
+  "ratio_to_const_gain": 0.5647488059121963,
+  "wall_clock_s": 13.0,
+  "saved_model": "/kaggle/working/out/phase5/models/switching_gru_L1_s1.pt"
+}

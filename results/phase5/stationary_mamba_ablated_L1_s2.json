@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "mamba_ablated",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 2,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 10145,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.24973106384277344,
+      "val_mse": 0.24451585114002228
+    },
+    {
+      "step": 500,
+      "train_mse": 0.13973569869995117,
+      "val_mse": 0.1379242241382599
+    },
+    {
+      "step": 750,
+      "train_mse": 0.11785322427749634,
+      "val_mse": 0.11557149887084961
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.09985162317752838,
+      "val_mse": 0.10613743215799332
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.1111956462264061,
+      "val_mse": 0.10787013173103333
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.10447147488594055,
+      "val_mse": 0.10663606226444244
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10540908575057983,
+      "val_mse": 0.10412649810314178
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10535469651222229,
+      "val_mse": 0.10418795794248581
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.09518034756183624,
+      "val_mse": 0.10259775817394257
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.10297046601772308,
+      "val_mse": 0.10407638549804688
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.10413381457328796,
+      "val_mse": 0.10444173961877823
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.10247466713190079,
+      "val_mse": 0.10285791754722595
+    }
+  ],
+  "final_val_mse": 0.10285791754722595,
+  "ratio_to_kalman": 1.0136859341099744,
+  "ratio_to_const_gain": 0.9242531745874363,
+  "wall_clock_s": 159.9,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_mamba_ablated_L1_s2.pt"
+}

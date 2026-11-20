@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "gru",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 2,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": null,
+  "n_params": 6433,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.10208816826343536,
+      "val_mse": 0.10456088185310364
+    },
+    {
+      "step": 500,
+      "train_mse": 0.10244031250476837,
+      "val_mse": 0.10404403507709503
+    },
+    {
+      "step": 750,
+      "train_mse": 0.10813874006271362,
+      "val_mse": 0.10203291475772858
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.09529420733451843,
+      "val_mse": 0.1036657840013504
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.10295343399047852,
+      "val_mse": 0.10390392690896988
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.10298772901296616,
+      "val_mse": 0.1036633849143982
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10322485864162445,
+      "val_mse": 0.10464763641357422
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10264286398887634,
+      "val_mse": 0.10190661251544952
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.09411783516407013,
+      "val_mse": 0.10245964676141739
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.1026616245508194,
+      "val_mse": 0.10245884209871292
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.10058721154928207,
+      "val_mse": 0.103197380900383
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.10039673745632172,
+      "val_mse": 0.10290443897247314
+    }
+  ],
+  "final_val_mse": 0.10290443897247314,
+  "ratio_to_kalman": 1.0141444123247039,
+  "ratio_to_const_gain": 0.9246712034178499,
+  "wall_clock_s": 10.2,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_gru_L1_s2.pt"
+}

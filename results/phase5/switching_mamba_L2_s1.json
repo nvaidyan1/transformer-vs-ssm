@@ -1,0 +1,87 @@
+{
+  "task": "switching",
+  "arch": "mamba",
+  "n_layers": 2,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 1,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 20161,
+  "kalman_mse": 0.09363547256794368,
+  "const_gain_mse": 0.17690833178360008,
+  "const_gain_k": 0.07025,
+  "complete": true,
+  "stopped_by_time_cap": true,
+  "steps_run": 2849,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.19974958896636963,
+      "val_mse": 0.1396341323852539
+    },
+    {
+      "step": 500,
+      "train_mse": 0.15951082110404968,
+      "val_mse": 0.11449553072452545
+    },
+    {
+      "step": 750,
+      "train_mse": 0.10606828331947327,
+      "val_mse": 0.1055709570646286
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.09281367808580399,
+      "val_mse": 0.10990298539400101
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.11130524426698685,
+      "val_mse": 0.10107281804084778
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.10477793961763382,
+      "val_mse": 0.09801428765058517
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.1078043207526207,
+      "val_mse": 0.10077732056379318
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10956092923879623,
+      "val_mse": 0.09708809852600098
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.1279219388961792,
+      "val_mse": 0.10078856348991394
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.09177157282829285,
+      "val_mse": 0.10016217827796936
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.09986947476863861,
+      "val_mse": 0.09851296246051788
+    },
+    {
+      "step": 2849,
+      "train_mse": 0.10239781439304352,
+      "val_mse": 0.09918780624866486
+    }
+  ],
+  "final_val_mse": 0.09918780624866486,
+  "ratio_to_kalman": 1.0592973317531162,
+  "ratio_to_const_gain": 0.5606734586700787,
+  "wall_clock_s": 300.7,
+  "saved_model": "/kaggle/working/out/phase5/models/switching_mamba_L2_s1.pt"
+}

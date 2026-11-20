@@ -19,6 +19,7 @@ Kaggle log, and a report generated from the JSON by a script in `scripts/`.
 | figure_models | saved models for W1/W2 figures | both trained (0.995, 0.996) |
 | phase3 | 3.2 TCN reach curve | gate INCOMPLETE: seeds 0-1 done, seed 2 cut by the deadline; tcn_short on track (0.94 at gap 32, chance beyond its RF) |
 | phase4 | 4.1 MQAR capacity | gate INCOMPLETE: awaits D3 extensions; no model solves MQAR within CAP 4000 |
+| phase5 | 5.1-5.3 filtering (Post 3) | 5.1 PASS; 5.2 FAIL on (b): ablation only 8-12% worse than selective on switching noise (needs 15%); 5.3 not run |
 | phase1_2 | 1.2 lengthen the gate | seq_len 256: gate PASS (also on the 20k-schedule rerun); seq_len 1024: pilot done, CAP 9000, ablated arm pending |
 
 Log of changes that affect how results are read: [LOG.md](LOG.md).

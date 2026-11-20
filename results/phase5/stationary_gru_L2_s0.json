@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "gru",
+  "n_layers": 2,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 0,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": null,
+  "n_params": 12769,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.1033506765961647,
+      "val_mse": 0.10417366027832031
+    },
+    {
+      "step": 500,
+      "train_mse": 0.09883850812911987,
+      "val_mse": 0.10568778216838837
+    },
+    {
+      "step": 750,
+      "train_mse": 0.09193381667137146,
+      "val_mse": 0.1029711663722992
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.0986386090517044,
+      "val_mse": 0.10374024510383606
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.10864291340112686,
+      "val_mse": 0.10242971777915955
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.11151823401451111,
+      "val_mse": 0.10201223194599152
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10037478804588318,
+      "val_mse": 0.10328691452741623
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10444227606058121,
+      "val_mse": 0.10199020802974701
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.10146462172269821,
+      "val_mse": 0.10248743742704391
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.10676760226488113,
+      "val_mse": 0.10265516489744186
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.10965429246425629,
+      "val_mse": 0.10326159000396729
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.10567440092563629,
+      "val_mse": 0.10296032577753067
+    }
+  ],
+  "final_val_mse": 0.10296032577753067,
+  "ratio_to_kalman": 1.014695188283814,
+  "ratio_to_const_gain": 0.9251733869951935,
+  "wall_clock_s": 11.8,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_gru_L2_s0.pt"
+}

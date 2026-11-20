@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "mamba_ablated",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 0,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 10145,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.2980651259422302,
+      "val_mse": 0.25665903091430664
+    },
+    {
+      "step": 500,
+      "train_mse": 0.15351569652557373,
+      "val_mse": 0.15289951860904694
+    },
+    {
+      "step": 750,
+      "train_mse": 0.10568448901176453,
+      "val_mse": 0.11202342063188553
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.0994015783071518,
+      "val_mse": 0.10581336915493011
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.11058159917593002,
+      "val_mse": 0.10728812217712402
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.11208409070968628,
+      "val_mse": 0.10350261628627777
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10417741537094116,
+      "val_mse": 0.1045965775847435
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10438410192728043,
+      "val_mse": 0.10448235273361206
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.10303965210914612,
+      "val_mse": 0.10310327261686325
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.10713596642017365,
+      "val_mse": 0.10323570668697357
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.11065267026424408,
+      "val_mse": 0.10446116328239441
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.10587124526500702,
+      "val_mse": 0.10306882858276367
+    }
+  ],
+  "final_val_mse": 0.10306882858276367,
+  "ratio_to_kalman": 1.0157645057471554,
+  "ratio_to_const_gain": 0.9261483635898946,
+  "wall_clock_s": 160.0,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_mamba_ablated_L1_s0.pt"
+}

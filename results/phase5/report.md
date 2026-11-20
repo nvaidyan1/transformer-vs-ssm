@@ -1,0 +1,26 @@
+## 5.2 MSE against exact baselines
+
+| task | model | layers | MSE mean [min, max] | / Kalman | / constant gain |
+|---|---|---|---|---|---|
+| stationary | selective Mamba | 1 | 0.1030 [0.1028, 0.1032] | 1.01 | 0.93 |
+| stationary | Mamba ablation | 1 | 0.1032 [0.1029, 0.1038] | 1.02 | 0.93 |
+| stationary | GRU | 1 | 0.1030 [0.1026, 0.1035] | 1.01 | 0.93 |
+| stationary | selective Mamba | 2 | 0.1050 [0.1021, 0.1085] | 1.03 | 0.94 |
+| stationary | Mamba ablation | 2 | 0.1040 [0.1025, 0.1049] | 1.03 | 0.93 |
+| stationary | GRU | 2 | 0.1023 [0.1019, 0.1030] | 1.01 | 0.92 |
+| switching | selective Mamba | 1 | 0.0996 [0.0967, 0.1034] | 1.06 | 0.56 |
+| switching | Mamba ablation | 1 | 0.1102 [0.1083, 0.1116] | 1.18 | 0.62 |
+| switching | GRU | 1 | 0.0969 [0.0953, 0.0999] | 1.03 | 0.55 |
+| switching | selective Mamba | 2 | 0.0986 [0.0960, 0.1007] | 1.05 | 0.56 |
+| switching | Mamba ablation | 2 | 0.1143 [0.1036, 0.1224] | 1.22 | 0.65 |
+| switching | GRU | 2 | 0.0965 [0.0958, 0.0973] | 1.03 | 0.55 |
+| dropout | selective Mamba | 1 | 0.0388 [0.0382, 0.0394] | 1.04 | 0.11 |
+| dropout | Mamba ablation | 1 | 0.0392 [0.0387, 0.0399] | 1.05 | 0.11 |
+| dropout | GRU | 1 | 0.0377 [0.0377, 0.0378] | 1.01 | 0.11 |
+| dropout | selective Mamba | 2 | 0.0388 [0.0382, 0.0395] | 1.04 | 0.11 |
+| dropout | Mamba ablation | 2 | 0.0388 [0.0385, 0.0391] | 1.04 | 0.11 |
+| dropout | GRU | 2 | 0.0380 [0.0377, 0.0385] | 1.02 | 0.11 |
+
+Gate 5.2 ((a) stationary ablation within 10%; (b) switching ablation >= 15% worse on 3/3 seeds; 1 layer): **FAIL**
+- (a) relative difference +0.3% (ok)
+- (b) ablated / selective by seed: s0 1.12, s1 1.08, s2 1.12 (MISS)

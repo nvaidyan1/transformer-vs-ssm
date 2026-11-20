@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "gru",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 1,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": null,
+  "n_params": 6433,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.12387306988239288,
+      "val_mse": 0.10304181277751923
+    },
+    {
+      "step": 500,
+      "train_mse": 0.1261751353740692,
+      "val_mse": 0.10231731086969376
+    },
+    {
+      "step": 750,
+      "train_mse": 0.1031632125377655,
+      "val_mse": 0.10239451378583908
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.0967620313167572,
+      "val_mse": 0.10274337232112885
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.09906426072120667,
+      "val_mse": 0.10236895084381104
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.10012820363044739,
+      "val_mse": 0.1032724678516388
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.09856469929218292,
+      "val_mse": 0.10253949463367462
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.1056983470916748,
+      "val_mse": 0.10298687219619751
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.1087244376540184,
+      "val_mse": 0.10257431864738464
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.10310351103544235,
+      "val_mse": 0.10176664590835571
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.09340459108352661,
+      "val_mse": 0.10326582193374634
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.09852622449398041,
+      "val_mse": 0.1034577265381813
+    }
+  ],
+  "final_val_mse": 0.1034577265381813,
+  "ratio_to_kalman": 1.0195971750896002,
+  "ratio_to_const_gain": 0.9296428944773226,
+  "wall_clock_s": 10.4,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_gru_L1_s1.pt"
+}

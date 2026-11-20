@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "mamba",
+  "n_layers": 2,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 2,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 20129,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": true,
+  "steps_run": 2850,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.10995261371135712,
+      "val_mse": 0.12150761485099792
+    },
+    {
+      "step": 500,
+      "train_mse": 0.10949647426605225,
+      "val_mse": 0.10932306945323944
+    },
+    {
+      "step": 750,
+      "train_mse": 0.11257541179656982,
+      "val_mse": 0.10831398516893387
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.09992913156747818,
+      "val_mse": 0.10402131825685501
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.10657119750976562,
+      "val_mse": 0.10403906553983688
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.10316774249076843,
+      "val_mse": 0.10470041632652283
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10390140861272812,
+      "val_mse": 0.10344070941209793
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10731422901153564,
+      "val_mse": 0.10398846864700317
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.09457071870565414,
+      "val_mse": 0.10216840356588364
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.10454106330871582,
+      "val_mse": 0.10255225002765656
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.10274085402488708,
+      "val_mse": 0.10371857136487961
+    },
+    {
+      "step": 2850,
+      "train_mse": 0.09874944388866425,
+      "val_mse": 0.10852651298046112
+    }
+  ],
+  "final_val_mse": 0.10852651298046112,
+  "ratio_to_kalman": 1.0695511080689188,
+  "ratio_to_const_gain": 0.9751896260493661,
+  "wall_clock_s": 300.7,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_mamba_L2_s2.pt"
+}

@@ -1,0 +1,87 @@
+{
+  "task": "switching",
+  "arch": "mamba",
+  "n_layers": 2,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 0,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 20161,
+  "kalman_mse": 0.09363547256794368,
+  "const_gain_mse": 0.17690833178360008,
+  "const_gain_k": 0.07025,
+  "complete": true,
+  "stopped_by_time_cap": true,
+  "steps_run": 2847,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.17209085822105408,
+      "val_mse": 0.1309552788734436
+    },
+    {
+      "step": 500,
+      "train_mse": 0.09246701002120972,
+      "val_mse": 0.11717867106199265
+    },
+    {
+      "step": 750,
+      "train_mse": 0.12511087954044342,
+      "val_mse": 0.10634288191795349
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.10093598067760468,
+      "val_mse": 0.10186228156089783
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.1311393678188324,
+      "val_mse": 0.10299505293369293
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.11919207125902176,
+      "val_mse": 0.09865353256464005
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10353231430053711,
+      "val_mse": 0.09978943318128586
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.1062624529004097,
+      "val_mse": 0.10058528929948807
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.09551859647035599,
+      "val_mse": 0.10157238692045212
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.11821529269218445,
+      "val_mse": 0.09811728447675705
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.09579362720251083,
+      "val_mse": 0.09752591699361801
+    },
+    {
+      "step": 2847,
+      "train_mse": 0.11953456699848175,
+      "val_mse": 0.09600626677274704
+    }
+  ],
+  "final_val_mse": 0.09600626677274704,
+  "ratio_to_kalman": 1.0253194023566556,
+  "ratio_to_const_gain": 0.5426893454073434,
+  "wall_clock_s": 300.7,
+  "saved_model": "/kaggle/working/out/phase5/models/switching_mamba_L2_s0.pt"
+}

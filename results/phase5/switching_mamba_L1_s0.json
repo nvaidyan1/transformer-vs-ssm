@@ -1,0 +1,87 @@
+{
+  "task": "switching",
+  "arch": "mamba",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 0,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 10177,
+  "kalman_mse": 0.09363547256794368,
+  "const_gain_mse": 0.17690833178360008,
+  "const_gain_k": 0.07025,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.19609224796295166,
+      "val_mse": 0.16022413969039917
+    },
+    {
+      "step": 500,
+      "train_mse": 0.10179859399795532,
+      "val_mse": 0.1149786040186882
+    },
+    {
+      "step": 750,
+      "train_mse": 0.1269647777080536,
+      "val_mse": 0.10527318716049194
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.09896901249885559,
+      "val_mse": 0.10664314031600952
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.12828314304351807,
+      "val_mse": 0.1035429984331131
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.11665776371955872,
+      "val_mse": 0.0992969498038292
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10330747067928314,
+      "val_mse": 0.0996045470237732
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10405183583498001,
+      "val_mse": 0.09968483448028564
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.09788579493761063,
+      "val_mse": 0.09953363984823227
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.11692005395889282,
+      "val_mse": 0.09957009553909302
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.09436073154211044,
+      "val_mse": 0.09936940670013428
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.11392907798290253,
+      "val_mse": 0.0987638533115387
+    }
+  ],
+  "final_val_mse": 0.0987638533115387,
+  "ratio_to_kalman": 1.0547696359397745,
+  "ratio_to_const_gain": 0.5582770032128831,
+  "wall_clock_s": 161.7,
+  "saved_model": "/kaggle/working/out/phase5/models/switching_mamba_L1_s0.pt"
+}

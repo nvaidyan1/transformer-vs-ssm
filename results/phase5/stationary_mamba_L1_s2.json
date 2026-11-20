@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "mamba",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 2,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 10145,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.11989565193653107,
+      "val_mse": 0.12877856194972992
+    },
+    {
+      "step": 500,
+      "train_mse": 0.10950517654418945,
+      "val_mse": 0.10758829116821289
+    },
+    {
+      "step": 750,
+      "train_mse": 0.11095376312732697,
+      "val_mse": 0.10996405780315399
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.0965372771024704,
+      "val_mse": 0.10531570017337799
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.10561922192573547,
+      "val_mse": 0.10512630641460419
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.10437381267547607,
+      "val_mse": 0.10520344972610474
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.1048608273267746,
+      "val_mse": 0.10507421940565109
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10703153908252716,
+      "val_mse": 0.10386752337217331
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.09473147988319397,
+      "val_mse": 0.10370849072933197
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.1028539389371872,
+      "val_mse": 0.10292017459869385
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.10460932552814484,
+      "val_mse": 0.10328388214111328
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.10181644558906555,
+      "val_mse": 0.10292710363864899
+    }
+  ],
+  "final_val_mse": 0.10292710363864899,
+  "ratio_to_kalman": 1.0143677772717261,
+  "ratio_to_const_gain": 0.9248748619223532,
+  "wall_clock_s": 161.1,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_mamba_L1_s2.pt"
+}

@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "mamba",
+  "n_layers": 2,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 1,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 20129,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": true,
+  "steps_run": 2850,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.13348135352134705,
+      "val_mse": 0.11839593946933746
+    },
+    {
+      "step": 500,
+      "train_mse": 0.13080844283103943,
+      "val_mse": 0.10434557497501373
+    },
+    {
+      "step": 750,
+      "train_mse": 0.10318157821893692,
+      "val_mse": 0.10577154904603958
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.09855308383703232,
+      "val_mse": 0.10657091438770294
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.1030595451593399,
+      "val_mse": 0.10240831226110458
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.1013547033071518,
+      "val_mse": 0.10580123960971832
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10229197889566422,
+      "val_mse": 0.10403744876384735
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10546707361936569,
+      "val_mse": 0.10529665648937225
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.10727974027395248,
+      "val_mse": 0.10302659124135971
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.10825365781784058,
+      "val_mse": 0.10424038022756577
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.0962175503373146,
+      "val_mse": 0.10360243916511536
+    },
+    {
+      "step": 2850,
+      "train_mse": 0.09789076447486877,
+      "val_mse": 0.10208120197057724
+    }
+  ],
+  "final_val_mse": 0.10208120197057724,
+  "ratio_to_kalman": 1.0060312423407054,
+  "ratio_to_const_gain": 0.9172738204007305,
+  "wall_clock_s": 300.7,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_mamba_L2_s1.pt"
+}

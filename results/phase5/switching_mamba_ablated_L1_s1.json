@@ -1,0 +1,87 @@
+{
+  "task": "switching",
+  "arch": "mamba_ablated",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 1,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 10177,
+  "kalman_mse": 0.09363547256794368,
+  "const_gain_mse": 0.17690833178360008,
+  "const_gain_k": 0.07025,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.528301477432251,
+      "val_mse": 0.4086923897266388
+    },
+    {
+      "step": 500,
+      "train_mse": 0.26702696084976196,
+      "val_mse": 0.19404245913028717
+    },
+    {
+      "step": 750,
+      "train_mse": 0.12314733117818832,
+      "val_mse": 0.13293200731277466
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.11380944401025772,
+      "val_mse": 0.1331770420074463
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.12623098492622375,
+      "val_mse": 0.1198212206363678
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.11609061062335968,
+      "val_mse": 0.1170647144317627
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.11647200584411621,
+      "val_mse": 0.11514613777399063
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.12288511544466019,
+      "val_mse": 0.11393559724092484
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.14706376194953918,
+      "val_mse": 0.11528614163398743
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.10708655416965485,
+      "val_mse": 0.11253638565540314
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.10449173301458359,
+      "val_mse": 0.11227895319461823
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.11196068674325943,
+      "val_mse": 0.1115797609090805
+    }
+  ],
+  "final_val_mse": 0.1115797609090805,
+  "ratio_to_kalman": 1.1916398545232536,
+  "ratio_to_const_gain": 0.6307207794235968,
+  "wall_clock_s": 159.9,
+  "saved_model": "/kaggle/working/out/phase5/models/switching_mamba_ablated_L1_s1.pt"
+}

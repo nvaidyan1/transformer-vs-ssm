@@ -1,0 +1,87 @@
+{
+  "task": "switching",
+  "arch": "gru",
+  "n_layers": 2,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 1,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": null,
+  "n_params": 12801,
+  "kalman_mse": 0.09363547256794368,
+  "const_gain_mse": 0.17690833178360008,
+  "const_gain_k": 0.07025,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.18007636070251465,
+      "val_mse": 0.13872727751731873
+    },
+    {
+      "step": 500,
+      "train_mse": 0.1414070576429367,
+      "val_mse": 0.10604549199342728
+    },
+    {
+      "step": 750,
+      "train_mse": 0.09769860655069351,
+      "val_mse": 0.09839096665382385
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.0876581072807312,
+      "val_mse": 0.10676710307598114
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.10089901089668274,
+      "val_mse": 0.09610821306705475
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.0934118926525116,
+      "val_mse": 0.095807746052742
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10472576320171356,
+      "val_mse": 0.09808510541915894
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.11191423237323761,
+      "val_mse": 0.09505811333656311
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.1303081214427948,
+      "val_mse": 0.09763395041227341
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.0932140201330185,
+      "val_mse": 0.09555774927139282
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.10046820342540741,
+      "val_mse": 0.09777425229549408
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.09506049752235413,
+      "val_mse": 0.0963314026594162
+    }
+  ],
+  "final_val_mse": 0.0963314026594162,
+  "ratio_to_kalman": 1.0287917604037968,
+  "ratio_to_const_gain": 0.5445272231567467,
+  "wall_clock_s": 14.8,
+  "saved_model": "/kaggle/working/out/phase5/models/switching_gru_L2_s1.pt"
+}

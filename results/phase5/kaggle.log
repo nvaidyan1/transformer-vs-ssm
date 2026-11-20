@@ -1,0 +1,104 @@
+[{"stream_name":"stdout","time":0.733409715,"data":"\n"}
+,{"stream_name":"stdout","time":0.73345727,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":0.761116009,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":2.44125648,"data":"\n"}
+,{"stream_name":"stdout","time":2.4412888710000002,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":2.475448729,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":2.475533341,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":2.476270356,"data":"\n"}
+,{"stream_name":"stdout","time":2.476288925,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":2.480101523,"data":"2478756 Record author decisions: 2.1 claims restricted to memory + naive timing; Phase 1 closed\n"}
+,{"stream_name":"stdout","time":2.480608016,"data":"\n"}
+,{"stream_name":"stdout","time":2.480626213,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":2.511295755,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.511326794,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":2.518719807,"data":"\n"}
+,{"stream_name":"stdout","time":2.518766499,"data":"$ pip install -q pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":7.346574793,"data":"\n"}
+,{"stream_name":"stdout","time":7.34661017,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":23.747804236,"data":"......................................................s.s....ss......... [ 39%]\n"}
+,{"stream_name":"stdout","time":24.472794472,"data":"........................................................................ [ 79%]\n"}
+,{"stream_name":"stdout","time":26.509953572,"data":"......................................                                   [100%]\n"}
+,{"stream_name":"stdout","time":26.510004829,"data":"178 passed, 4 skipped in 16.77s\n"}
+,{"stream_name":"stdout","time":195.956906507,"data":"[   3.3 min] switching_mamba_L1_s0: done (166s)\n"}
+,{"stream_name":"stdout","time":360.529071872,"data":"[   6.0 min] switching_mamba_ablated_L1_s0: done (165s)\n"}
+,{"stream_name":"stdout","time":378.49979347,"data":"[   6.3 min] switching_gru_L1_s0: done (18s)\n"}
+,{"stream_name":"stdout","time":544.285142447,"data":"[   9.1 min] stationary_mamba_L1_s0: done (166s)\n"}
+,{"stream_name":"stdout","time":708.761352063,"data":"[  11.8 min] stationary_mamba_ablated_L1_s0: done (164s)\n"}
+,{"stream_name":"stdout","time":723.869866947,"data":"[  12.1 min] stationary_gru_L1_s0: done (15s)\n"}
+,{"stream_name":"stdout","time":889.703839634,"data":"[  14.8 min] dropout_mamba_L1_s0: done (166s)\n"}
+,{"stream_name":"stdout","time":1054.234179033,"data":"[  17.6 min] dropout_mamba_ablated_L1_s0: done (165s)\n"}
+,{"stream_name":"stdout","time":1070.646496911,"data":"[  17.8 min] dropout_gru_L1_s0: done (16s)\n"}
+,{"stream_name":"stdout","time":1236.521301579,"data":"[  20.6 min] switching_mamba_L1_s1: done (166s)\n"}
+,{"stream_name":"stdout","time":1400.996963013,"data":"[  23.3 min] switching_mamba_ablated_L1_s1: done (164s)\n"}
+,{"stream_name":"stdout","time":1418.612901341,"data":"[  23.6 min] switching_gru_L1_s1: done (18s)\n"}
+,{"stream_name":"stdout","time":1584.236107414,"data":"[  26.4 min] stationary_mamba_L1_s1: done (166s)\n"}
+,{"stream_name":"stdout","time":1748.698062908,"data":"[  29.1 min] stationary_mamba_ablated_L1_s1: done (164s)\n"}
+,{"stream_name":"stdout","time":1763.656553326,"data":"[  29.4 min] stationary_gru_L1_s1: done (15s)\n"}
+,{"stream_name":"stdout","time":1929.579643016,"data":"[  32.1 min] dropout_mamba_L1_s1: done (166s)\n"}
+,{"stream_name":"stdout","time":2094.207826445,"data":"[  34.9 min] dropout_mamba_ablated_L1_s1: done (165s)\n"}
+,{"stream_name":"stdout","time":2110.921076448,"data":"[  35.2 min] dropout_gru_L1_s1: done (17s)\n"}
+,{"stream_name":"stdout","time":2276.84782727,"data":"[  37.9 min] switching_mamba_L1_s2: done (166s)\n"}
+,{"stream_name":"stdout","time":2441.35494382,"data":"[  40.7 min] switching_mamba_ablated_L1_s2: done (165s)\n"}
+,{"stream_name":"stdout","time":2458.821483341,"data":"[  41.0 min] switching_gru_L1_s2: done (17s)\n"}
+,{"stream_name":"stdout","time":2624.513124898,"data":"[  43.7 min] stationary_mamba_L1_s2: done (166s)\n"}
+,{"stream_name":"stdout","time":2788.844578484,"data":"[  46.5 min] stationary_mamba_ablated_L1_s2: done (164s)\n"}
+,{"stream_name":"stdout","time":2803.652835001,"data":"[  46.7 min] stationary_gru_L1_s2: done (15s)\n"}
+,{"stream_name":"stdout","time":2969.513780323,"data":"[  49.5 min] dropout_mamba_L1_s2: done (166s)\n"}
+,{"stream_name":"stdout","time":3134.274340483,"data":"[  52.2 min] dropout_mamba_ablated_L1_s2: done (165s)\n"}
+,{"stream_name":"stdout","time":3151.091872595,"data":"[  52.5 min] dropout_gru_L1_s2: done (17s)\n"}
+,{"stream_name":"stdout","time":3456.505913303,"data":"[  57.6 min] switching_mamba_L2_s0: done (305s)\n"}
+,{"stream_name":"stdout","time":3761.917710276,"data":"[  62.7 min] switching_mamba_ablated_L2_s0: done (305s)\n"}
+,{"stream_name":"stdout","time":3781.189582223,"data":"[  63.0 min] switching_gru_L2_s0: done (19s)\n"}
+,{"stream_name":"stdout","time":4086.561939036,"data":"[  68.1 min] stationary_mamba_L2_s0: done (305s)\n"}
+,{"stream_name":"stdout","time":4391.867340725,"data":"[  73.2 min] stationary_mamba_ablated_L2_s0: done (305s)\n"}
+,{"stream_name":"stdout","time":4408.381759074,"data":"[  73.5 min] stationary_gru_L2_s0: done (17s)\n"}
+,{"stream_name":"stdout","time":4713.692049253,"data":"[  78.5 min] dropout_mamba_L2_s0: done (305s)\n"}
+,{"stream_name":"stdout","time":5019.004817999,"data":"[  83.6 min] dropout_mamba_ablated_L2_s0: done (305s)\n"}
+,{"stream_name":"stdout","time":5037.372463325,"data":"[  83.9 min] dropout_gru_L2_s0: done (18s)\n"}
+,{"stream_name":"stdout","time":5342.627779917,"data":"[  89.0 min] switching_mamba_L2_s1: done (305s)\n"}
+,{"stream_name":"stdout","time":5647.809530739,"data":"[  94.1 min] switching_mamba_ablated_L2_s1: done (305s)\n"}
+,{"stream_name":"stdout","time":5667.182173842,"data":"[  94.4 min] switching_gru_L2_s1: done (19s)\n"}
+,{"stream_name":"stdout","time":5972.555340936,"data":"[  99.5 min] stationary_mamba_L2_s1: done (305s)\n"}
+,{"stream_name":"stdout","time":6277.768874926,"data":"[ 104.6 min] stationary_mamba_ablated_L2_s1: done (305s)\n"}
+,{"stream_name":"stdout","time":6294.685212316,"data":"[ 104.9 min] stationary_gru_L2_s1: done (17s)\n"}
+,{"stream_name":"stdout","time":6600.021667119,"data":"[ 110.0 min] dropout_mamba_L2_s1: done (305s)\n"}
+,{"stream_name":"stdout","time":6905.342773522,"data":"[ 115.1 min] dropout_mamba_ablated_L2_s1: done (305s)\n"}
+,{"stream_name":"stdout","time":6923.160176783,"data":"[ 115.4 min] dropout_gru_L2_s1: done (18s)\n"}
+,{"stream_name":"stdout","time":7228.450115692,"data":"[ 120.5 min] switching_mamba_L2_s2: done (305s)\n"}
+,{"stream_name":"stdout","time":7533.595460319,"data":"[ 125.5 min] switching_mamba_ablated_L2_s2: done (305s)\n"}
+,{"stream_name":"stdout","time":7552.515728665,"data":"[ 125.9 min] switching_gru_L2_s2: done (19s)\n"}
+,{"stream_name":"stdout","time":7857.755336894,"data":"[ 131.0 min] stationary_mamba_L2_s2: done (305s)\n"}
+,{"stream_name":"stdout","time":8162.987951007,"data":"[ 136.0 min] stationary_mamba_ablated_L2_s2: done (305s)\n"}
+,{"stream_name":"stdout","time":8179.500684973,"data":"[ 136.3 min] stationary_gru_L2_s2: done (17s)\n"}
+,{"stream_name":"stdout","time":8484.81207825,"data":"[ 141.4 min] dropout_mamba_L2_s2: done (305s)\n"}
+,{"stream_name":"stdout","time":8789.825624404,"data":"[ 146.5 min] dropout_mamba_ablated_L2_s2: done (305s)\n"}
+,{"stream_name":"stdout","time":8806.931655746,"data":"[ 146.8 min] dropout_gru_L2_s2: done (17s)\n"}
+,{"stream_name":"stdout","time":8806.931700366,"data":"[ 146.8 min] 5.3 gain analysis\n"}
+,{"stream_name":"stdout","time":8806.931704714,"data":"\n"}
+,{"stream_name":"stdout","time":8806.931707666,"data":"$ python scripts/phase5_gain.py --models /kaggle/working/out/phase5/models --out /kaggle/working/out/phase5/gain.json --device cuda\n"}
+,{"stream_name":"stderr","time":8809.222639466,"data":"Traceback (most recent call last):\n"}
+,{"stream_name":"stderr","time":8809.22267574,"data":"  File \"/kaggle/working/transformer-vs-ssm/scripts/phase5_gain.py\", line 72, in \u003cmodule\u003e\n"}
+,{"stream_name":"stdout","time":8809.222642486,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stderr","time":8809.222817111,"data":"    main()\n"}
+,{"stream_name":"stderr","time":8809.222841413,"data":"  File \"/kaggle/working/transformer-vs-ssm/scripts/phase5_gain.py\", line 53, in main\n"}
+,{"stream_name":"stderr","time":8809.223007573,"data":"    g = effective_gain(m, ut, **kw)\n"}
+,{"stream_name":"stderr","time":8809.223020641,"data":"        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"}
+,{"stream_name":"stderr","time":8809.223026204,"data":"  File \"/kaggle/working/transformer-vs-ssm/src/filter_analysis.py\", line 22, in effective_gain\n"}
+,{"stream_name":"stderr","time":8809.2231247,"data":"    (grad,) = torch.autograd.grad(out[:, t].sum(), u, retain_graph=t \u003c T - 1)\n"}
+,{"stream_name":"stderr","time":8809.223197929,"data":"              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"}
+,{"stream_name":"stderr","time":8809.223206216,"data":"  File \"/usr/local/lib/python3.12/dist-packages/torch/autograd/__init__.py\", line 515, in grad\n"}
+,{"stream_name":"stderr","time":8809.224137363,"data":"    result = _engine_run_backward(\n"}
+,{"stream_name":"stderr","time":8809.224149834,"data":"             ^^^^^^^^^^^^^^^^^^^^^\n"}
+,{"stream_name":"stderr","time":8809.224155172,"data":"  File \"/usr/local/lib/python3.12/dist-packages/torch/autograd/graph.py\", line 865, in _engine_run_backward\n"}
+,{"stream_name":"stderr","time":8809.225430449,"data":"    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass\n"}
+,{"stream_name":"stderr","time":8809.225441921,"data":"           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"}
+,{"stream_name":"stderr","time":8809.225446488,"data":"RuntimeError: cudnn RNN backward can only be called in training mode\n"}
+,{"stream_name":"stdout","time":8809.764096963,"data":"LANE_C INCOMPLETE: {'5.3': 'rc=1'}\n"}
+,{"stream_name":"stderr","time":8811.692556683,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":8811.692583273,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":8811.905760554,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":8811.905784483,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":8812.539046287,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":8813.68188377,"data":"[NbConvertApp] Writing 288044 bytes to __results__.html\n"}
+]

@@ -1,0 +1,87 @@
+{
+  "task": "dropout",
+  "arch": "gru",
+  "n_layers": 2,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 1,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": null,
+  "n_params": 12801,
+  "kalman_mse": 0.03737268890264495,
+  "const_gain_mse": 0.3472078450999071,
+  "const_gain_k": 0.0945,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.08461388200521469,
+      "val_mse": 0.05295025184750557
+    },
+    {
+      "step": 500,
+      "train_mse": 0.06688141077756882,
+      "val_mse": 0.040834806859493256
+    },
+    {
+      "step": 750,
+      "train_mse": 0.03823404386639595,
+      "val_mse": 0.03828378766775131
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.03890635073184967,
+      "val_mse": 0.038684144616127014
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.036877669394016266,
+      "val_mse": 0.03874196857213974
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.03635687381029129,
+      "val_mse": 0.03895312920212746
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.04167923331260681,
+      "val_mse": 0.03764478117227554
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.03897489607334137,
+      "val_mse": 0.03912665694952011
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.03901638835668564,
+      "val_mse": 0.03828795999288559
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.040241241455078125,
+      "val_mse": 0.03801175579428673
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.0371563658118248,
+      "val_mse": 0.037859611213207245
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.039463698863983154,
+      "val_mse": 0.037655774503946304
+    }
+  ],
+  "final_val_mse": 0.037655774503946304,
+  "ratio_to_kalman": 1.0075746650726358,
+  "ratio_to_const_gain": 0.10845312119347726,
+  "wall_clock_s": 13.2,
+  "saved_model": "/kaggle/working/out/phase5/models/dropout_gru_L2_s1.pt"
+}

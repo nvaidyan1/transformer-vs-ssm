@@ -1,0 +1,87 @@
+{
+  "task": "switching",
+  "arch": "gru",
+  "n_layers": 2,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 2,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": null,
+  "n_params": 12801,
+  "kalman_mse": 0.09363547256794368,
+  "const_gain_mse": 0.17690833178360008,
+  "const_gain_k": 0.07025,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.1268913447856903,
+      "val_mse": 0.14388272166252136
+    },
+    {
+      "step": 500,
+      "train_mse": 0.09861136972904205,
+      "val_mse": 0.1049811989068985
+    },
+    {
+      "step": 750,
+      "train_mse": 0.11720620095729828,
+      "val_mse": 0.09829550236463547
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.10350625216960907,
+      "val_mse": 0.09922903031110764
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.1020689308643341,
+      "val_mse": 0.09903571754693985
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.08008281886577606,
+      "val_mse": 0.0970463976264
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.09944376349449158,
+      "val_mse": 0.09785918891429901
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10155293345451355,
+      "val_mse": 0.09595222771167755
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.09634077548980713,
+      "val_mse": 0.09590287506580353
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.09192152321338654,
+      "val_mse": 0.0980248972773552
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.096771240234375,
+      "val_mse": 0.09646202623844147
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.09813110530376434,
+      "val_mse": 0.09582047164440155
+    }
+  ],
+  "final_val_mse": 0.09582047164440155,
+  "ratio_to_kalman": 1.023335163656833,
+  "ratio_to_const_gain": 0.5416391115010468,
+  "wall_clock_s": 14.3,
+  "saved_model": "/kaggle/working/out/phase5/models/switching_gru_L2_s2.pt"
+}

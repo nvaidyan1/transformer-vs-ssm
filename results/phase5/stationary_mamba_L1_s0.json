@@ -1,0 +1,87 @@
+{
+  "task": "stationary",
+  "arch": "mamba",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 0,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 10145,
+  "kalman_mse": 0.10146921653552995,
+  "const_gain_mse": 0.11128759995132197,
+  "const_gain_k": 0.11,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.13935375213623047,
+      "val_mse": 0.13075193762779236
+    },
+    {
+      "step": 500,
+      "train_mse": 0.10571137070655823,
+      "val_mse": 0.10894858092069626
+    },
+    {
+      "step": 750,
+      "train_mse": 0.09472723305225372,
+      "val_mse": 0.10504209995269775
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.09768297523260117,
+      "val_mse": 0.10379180312156677
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.11241075396537781,
+      "val_mse": 0.10457895696163177
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.11397682130336761,
+      "val_mse": 0.10335071384906769
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.10315403342247009,
+      "val_mse": 0.10369887948036194
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.10463999211788177,
+      "val_mse": 0.10480000078678131
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.10259158909320831,
+      "val_mse": 0.10309649258852005
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.10644316673278809,
+      "val_mse": 0.1027848869562149
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.10988637804985046,
+      "val_mse": 0.10482184588909149
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.10572531819343567,
+      "val_mse": 0.10316543281078339
+    }
+  ],
+  "final_val_mse": 0.10316543281078339,
+  "ratio_to_kalman": 1.0167165602846602,
+  "ratio_to_const_gain": 0.9270164228171757,
+  "wall_clock_s": 161.1,
+  "saved_model": "/kaggle/working/out/phase5/models/stationary_mamba_L1_s0.pt"
+}

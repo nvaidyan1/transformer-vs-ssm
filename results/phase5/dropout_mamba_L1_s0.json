@@ -1,0 +1,87 @@
+{
+  "task": "dropout",
+  "arch": "mamba",
+  "n_layers": 1,
+  "d_model": 32,
+  "seq_len": 256,
+  "seed": 0,
+  "lr": 0.001,
+  "steps": 3000,
+  "schedule_steps": 20000,
+  "device": "cuda",
+  "scan": "parallel",
+  "n_params": 10177,
+  "kalman_mse": 0.03737268890264495,
+  "const_gain_mse": 0.3472078450999071,
+  "const_gain_k": 0.0945,
+  "complete": true,
+  "stopped_by_time_cap": false,
+  "steps_run": 3000,
+  "history": [
+    {
+      "step": 250,
+      "train_mse": 0.10412037372589111,
+      "val_mse": 0.08876228332519531
+    },
+    {
+      "step": 500,
+      "train_mse": 0.044160306453704834,
+      "val_mse": 0.047716837376356125
+    },
+    {
+      "step": 750,
+      "train_mse": 0.04554241895675659,
+      "val_mse": 0.042414553463459015
+    },
+    {
+      "step": 1000,
+      "train_mse": 0.03770722448825836,
+      "val_mse": 0.040146902203559875
+    },
+    {
+      "step": 1250,
+      "train_mse": 0.04412128031253815,
+      "val_mse": 0.03972886502742767
+    },
+    {
+      "step": 1500,
+      "train_mse": 0.04161912575364113,
+      "val_mse": 0.03964293748140335
+    },
+    {
+      "step": 1750,
+      "train_mse": 0.04166910797357559,
+      "val_mse": 0.03927391767501831
+    },
+    {
+      "step": 2000,
+      "train_mse": 0.03948315978050232,
+      "val_mse": 0.0386730432510376
+    },
+    {
+      "step": 2250,
+      "train_mse": 0.039745159447193146,
+      "val_mse": 0.03898332267999649
+    },
+    {
+      "step": 2500,
+      "train_mse": 0.03631503880023956,
+      "val_mse": 0.039882972836494446
+    },
+    {
+      "step": 2750,
+      "train_mse": 0.040466830134391785,
+      "val_mse": 0.038567304611206055
+    },
+    {
+      "step": 3000,
+      "train_mse": 0.041582703590393066,
+      "val_mse": 0.03944389894604683
+    }
+  ],
+  "final_val_mse": 0.03944389894604683,
+  "ratio_to_kalman": 1.0554204180704614,
+  "ratio_to_const_gain": 0.11360313282868673,
+  "wall_clock_s": 161.3,
+  "saved_model": "/kaggle/working/out/phase5/models/dropout_mamba_L1_s0.pt"
+}
