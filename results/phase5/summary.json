@@ -15,5 +15,13 @@
       },
       "ok": false
     }
+  },
+  "5.3": {
+    "verdict": "PASS",
+    "r": {
+      "switching_mamba_L1_s0": 0.9798004652194136,
+      "switching_mamba_L1_s1": 0.9709276018311471,
+      "switching_mamba_L1_s2": 0.9785867177413674
+    }
   }
 }

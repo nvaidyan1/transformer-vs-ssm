@@ -58,3 +58,7 @@ Other seed-2 cells (P3b) and the 12 D3 extensions (P3c) are not run.
 **Prediction:** gap 32 > 0.9 (seeds 0-1: 0.923, 0.949); gaps 160-512 at chance (<= 0.032);
 gate PASS. If seed 2 at gap 32 lands in [0.2, 0.9] or is still rising, D3 calls for an
 extension before the gate is read.
+P3a outcome (lane D, commit 8b4dcaa): seed 2 at gap 32 0.923; gaps 160 / 256 / 512 at
+chance. **Gate PASS** (3 seeds): tcn_short 0.932 at gap 32; 0.014 / 0.015 / 0.015 at gaps
+160 / 256 / 512 (<= 0.032). As predicted. Seed 2 for the other cells (P3b) and the D3
+extensions (P3c) were not run.

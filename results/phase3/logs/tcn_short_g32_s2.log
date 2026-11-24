@@ -8,13 +8,22 @@ device : cuda   lr=0.0003  steps=4000  batch=32  seed=2
   param groups (decay_1d=False):
     decay, base-lr        :  14 tensors / 435,072 params
     no-decay, base-lr     :  38 tensors / 5,016 params
-  step    250  train_loss 4.1373  val_loss 4.1379  val_acc 0.0186  (3s)
-  step    500  train_loss 4.1236  val_loss 4.1317  val_acc 0.0146  (6s)
-  step    750  train_loss 4.1239  val_loss 4.1313  val_acc 0.0107  (8s)
-  step   1000  train_loss 4.1333  val_loss 4.1267  val_acc 0.0205  (11s)
-  step   1250  train_loss 3.5128  val_loss 3.5305  val_acc 0.1006  (13s)
-  step   1500  train_loss 2.7588  val_loss 2.7614  val_acc 0.2158  (16s)
-  step   1750  train_loss 2.1349  val_loss 2.1440  val_acc 0.4277  (18s)
-  step   2000  train_loss 1.8403  val_loss 1.7482  val_acc 0.5625  (21s)
-  step   2250  train_loss 1.4209  val_loss 1.3764  val_acc 0.6670  (24s)
-  step   2500  train_loss 1.1719  val_loss 1.0110  val_acc 0.7705  (26s)
+  step    250  train_loss 4.1373  val_loss 4.1379  val_acc 0.0186  (4s)
+  step    500  train_loss 4.1236  val_loss 4.1317  val_acc 0.0146  (7s)
+  step    750  train_loss 4.1239  val_loss 4.1313  val_acc 0.0107  (9s)
+  step   1000  train_loss 4.1333  val_loss 4.1267  val_acc 0.0205  (12s)
+  step   1250  train_loss 3.4882  val_loss 3.4967  val_acc 0.1143  (14s)
+  step   1500  train_loss 2.7543  val_loss 2.7076  val_acc 0.2520  (16s)
+  step   1750  train_loss 2.2015  val_loss 2.1193  val_acc 0.4141  (19s)
+  step   2000  train_loss 1.8397  val_loss 1.7352  val_acc 0.5674  (21s)
+  step   2250  train_loss 1.3826  val_loss 1.3639  val_acc 0.6543  (24s)
+  step   2500  train_loss 1.2186  val_loss 1.0026  val_acc 0.7549  (26s)
+  step   2750  train_loss 0.7458  val_loss 0.7533  val_acc 0.8330  (28s)
+  step   3000  train_loss 0.4680  val_loss 0.5665  val_acc 0.8672  (31s)
+  step   3250  train_loss 0.4828  val_loss 0.4316  val_acc 0.8896  (33s)
+  step   3500  train_loss 0.5396  val_loss 0.3877  val_acc 0.9062  (36s)
+  step   3750  train_loss 0.3380  val_loss 0.2941  val_acc 0.9365  (38s)
+  step   4000  train_loss 0.3310  val_loss 0.2882  val_acc 0.9248  (40s)
+
+final val_acc 0.9248  (chance ~0.0161)  in 40.5s
+saved -> /kaggle/working/out/phase3/tcn_short_g32_s2.json

@@ -1,10 +1,8 @@
 {
   "gate": {
-    "verdict": "INCOMPLETE",
-    "awaiting_extension": [
-      "mamba_ssm_d32 4 pairs",
-      "transformer_m32 4 pairs"
-    ]
+    "verdict": "FAIL",
+    "mamba_drop": 0.4952189127604167,
+    "transformer_drop": 0.23154703776041666
   },
   "extensions": [
     {
@@ -62,25 +60,6 @@
       "run": "mamba_ssm_d128_p8_s2",
       "reasons": [
         "ambiguous: final 0.345 in [0.2, 0.9]"
-      ]
-    },
-    {
-      "run": "mamba_ssm_d32_p4_s0",
-      "reasons": [
-        "ambiguous: final 0.486 in [0.2, 0.9]"
-      ]
-    },
-    {
-      "run": "mamba_ssm_d32_p4_s1",
-      "reasons": [
-        "ambiguous: final 0.523 in [0.2, 0.9]",
-        "unconverged: +0.087 over the last 1000 steps"
-      ]
-    },
-    {
-      "run": "mamba_ssm_d32_p4_s2",
-      "reasons": [
-        "ambiguous: final 0.519 in [0.2, 0.9]"
       ]
     },
     {
@@ -192,24 +171,6 @@
       "reasons": [
         "ambiguous: final 0.305 in [0.2, 0.9]",
         "unconverged: +0.082 over the last 1000 steps"
-      ]
-    },
-    {
-      "run": "transformer_m32_p4_s0",
-      "reasons": [
-        "ambiguous: final 0.260 in [0.2, 0.9]"
-      ]
-    },
-    {
-      "run": "transformer_m32_p4_s1",
-      "reasons": [
-        "ambiguous: final 0.268 in [0.2, 0.9]"
-      ]
-    },
-    {
-      "run": "transformer_m32_p4_s2",
-      "reasons": [
-        "ambiguous: final 0.268 in [0.2, 0.9]"
       ]
     },
     {

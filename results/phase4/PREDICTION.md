@@ -49,3 +49,12 @@ Transformer condition (drop < 0.1) needs it near ceiling at 64 pairs too, which 
 CAP and is not extended, so I expect the Transformer condition, and the gate, to FAIL unless
 its 64-pair cell is final-and-low only because of the CAP. Recorded honestly: the gate as
 designed compares an extended 4-pair cell with an unextended 64-pair cell.
+P4a outcome (lane D, commit 8b4dcaa): both 4-pair gate cells ran the full 20,000 steps
+without escaping their plateaus: transformer_m32 0.26 on every seed for all 20,000 steps
+(0.25-0.27 throughout); mamba_ssm_d32 rose to ~0.52 by step 2000 and stayed there.
+**Gate FAIL**: Mamba drop 0.495 (>= 0.3, ok); Transformer drop 0.232 (needs < 0.1). My
+prediction that the Transformer would leave its plateau was wrong. The fixed plateaus near
+1/4 (Transformer) and 1/2 (Mamba) at 4 pairs, unchanged for 16,000 extra steps, are
+suspicious for this small task (16 tokens, 4 queries); I have not investigated (gate failed:
+stop and report). Per-slot accuracy would show whether each model answers a fixed subset of
+query slots; that would need the author's approval.

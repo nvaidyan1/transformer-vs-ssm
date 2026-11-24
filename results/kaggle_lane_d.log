@@ -1,0 +1,77 @@
+[{"stream_name":"stdout","time":1.295382966,"data":"\n"}
+,{"stream_name":"stdout","time":1.295422104,"data":"$ git clone https://github.com/nvaidyan1/transformer-vs-ssm.git\n"}
+,{"stream_name":"stderr","time":1.352087737,"data":"Cloning into 'transformer-vs-ssm'...\n"}
+,{"stream_name":"stdout","time":3.072250668,"data":"\n"}
+,{"stream_name":"stdout","time":3.072274183,"data":"$ git checkout main\n"}
+,{"stream_name":"stderr","time":3.117913003,"data":"Already on 'main'\n"}
+,{"stream_name":"stdout","time":3.118200164,"data":"Your branch is up to date with 'origin/main'.\n"}
+,{"stream_name":"stdout","time":3.118621197,"data":"\n"}
+,{"stream_name":"stdout","time":3.118637545,"data":"$ git log --oneline -1\n"}
+,{"stream_name":"stdout","time":3.123063397,"data":"8b4dcaa Lane D: P3a + P4a gate completion and 5.3 post hoc (predictions before the run)\n"}
+,{"stream_name":"stdout","time":3.123502814,"data":"\n"}
+,{"stream_name":"stdout","time":3.123519152,"data":"$ nvidia-smi --query-gpu=name --format=csv,noheader\n"}
+,{"stream_name":"stdout","time":3.153589617,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":3.153607486,"data":"Tesla T4\n"}
+,{"stream_name":"stdout","time":3.159909545,"data":"\n"}
+,{"stream_name":"stdout","time":3.159926467,"data":"$ pip install -q packaging ninja wheel psutil pyyaml pytest einops\n"}
+,{"stream_name":"stdout","time":10.047718167,"data":"\n"}
+,{"stream_name":"stdout","time":10.047782404,"data":"$ pip install -q 'causal-conv1d\u003e=1.4.0' --no-build-isolation\n"}
+,{"stream_name":"stdout","time":41.461574955,"data":"\n"}
+,{"stream_name":"stdout","time":41.461607609,"data":"$ pip install -q mamba-ssm --no-build-isolation\n"}
+,{"stream_name":"stdout","time":42.770217521,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.4/216.4 kB 5.0 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":47.847832921,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.5/43.5 MB 48.8 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":47.89678236,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 59.1 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":47.928687785,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 729.6/729.6 kB 32.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":48.005282861,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.1/3.1 MB 67.8 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":49.35656611,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 MB 18.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":49.418257943,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 31.2 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":49.85157789,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 29.3/29.3 MB 47.7 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":49.888537077,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 897.8/897.8 kB 32.3 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":73.770933861,"data":"\n"}
+,{"stream_name":"stdout","time":73.77097117,"data":"$ python -m pytest tests/ -q -p no:warnings\n"}
+,{"stream_name":"stdout","time":123.794292829,"data":"........................................................................ [ 36%]\n"}
+,{"stream_name":"stdout","time":128.009677244,"data":"........................................................................ [ 73%]\n"}
+,{"stream_name":"stdout","time":130.565601586,"data":"...................................................                      [100%]\n"}
+,{"stream_name":"stdout","time":130.56562956,"data":"195 passed in 53.47s\n"}
+,{"stream_name":"stdout","time":132.212363906,"data":"[   2.2 min] 5.3 post-hoc gain analysis\n"}
+,{"stream_name":"stdout","time":132.212600065,"data":"\n"}
+,{"stream_name":"stdout","time":132.212611567,"data":"$ python scripts/phase5_gain.py --models results/phase5/models --out /kaggle/working/out/phase5/gain.json --device cuda\n"}
+,{"stream_name":"stdout","time":142.975210774,"data":"[mamba.py] scan='sequential' (O(n) memory, honest wall-clock — see docstring)\n"}
+,{"stream_name":"stdout","time":142.975252394,"data":"switching_gru_L1_s0: r=0.980 gain low 0.379 high 0.036\n"}
+,{"stream_name":"stdout","time":151.156854497,"data":"switching_gru_L1_s1: r=0.975 gain low 0.374 high 0.034\n"}
+,{"stream_name":"stdout","time":159.363501301,"data":"switching_gru_L1_s2: r=0.980 gain low 0.385 high 0.035\n"}
+,{"stream_name":"stdout","time":175.66077364,"data":"switching_gru_L2_s0: r=0.991 gain low 0.387 high 0.037\n"}
+,{"stream_name":"stdout","time":191.986379116,"data":"switching_gru_L2_s1: r=0.991 gain low 0.362 high 0.033\n"}
+,{"stream_name":"stdout","time":208.419586709,"data":"switching_gru_L2_s2: r=0.969 gain low 0.383 high 0.035\n"}
+,{"stream_name":"stdout","time":217.036386239,"data":"switching_mamba_L1_s0: r=0.980 gain low 0.385 high 0.035\n"}
+,{"stream_name":"stdout","time":225.476995523,"data":"switching_mamba_L1_s1: r=0.971 gain low 0.400 high 0.036\n"}
+,{"stream_name":"stdout","time":233.913930964,"data":"switching_mamba_L1_s2: r=0.979 gain low 0.396 high 0.033\n"}
+,{"stream_name":"stdout","time":250.624060213,"data":"switching_mamba_L2_s0: r=0.984 gain low 0.367 high 0.031\n"}
+,{"stream_name":"stdout","time":267.317346042,"data":"switching_mamba_L2_s1: r=0.983 gain low 0.389 high 0.035\n"}
+,{"stream_name":"stdout","time":284.01001698,"data":"switching_mamba_L2_s2: r=0.985 gain low 0.382 high 0.037\n"}
+,{"stream_name":"stdout","time":287.056014376,"data":"switching_mamba_ablated_L1_s0: r=0.984 gain low 0.470 high 0.036\n"}
+,{"stream_name":"stdout","time":290.107637035,"data":"switching_mamba_ablated_L1_s1: r=0.979 gain low 0.456 high 0.043\n"}
+,{"stream_name":"stdout","time":293.166306016,"data":"switching_mamba_ablated_L1_s2: r=0.989 gain low 0.424 high 0.036\n"}
+,{"stream_name":"stdout","time":299.134597524,"data":"switching_mamba_ablated_L2_s0: r=0.981 gain low 0.423 high 0.041\n"}
+,{"stream_name":"stdout","time":305.102209925,"data":"switching_mamba_ablated_L2_s1: r=0.969 gain low 0.397 high 0.040\n"}
+,{"stream_name":"stdout","time":311.06229736,"data":"switching_mamba_ablated_L2_s2: r=0.977 gain low 0.400 high 0.039\n"}
+,{"stream_name":"stdout","time":311.68108612,"data":"[   5.2 min] P3a\n"}
+,{"stream_name":"stdout","time":356.759636963,"data":"[   5.9 min] tcn_short_g32_s2: done (45s)\n"}
+,{"stream_name":"stdout","time":429.269273234,"data":"[   7.1 min] tcn_short_g160_s2: done (73s)\n"}
+,{"stream_name":"stdout","time":527.552490561,"data":"[   8.8 min] tcn_short_g256_s2: done (98s)\n"}
+,{"stream_name":"stdout","time":695.775326836,"data":"[  11.6 min] tcn_short_g512_s2: done (168s)\n"}
+,{"stream_name":"stdout","time":695.775363259,"data":"[  11.6 min] P4a\n"}
+,{"stream_name":"stdout","time":1072.55085134,"data":"[  17.9 min] mamba_ssm_d32_p4_s0: done (377s)\n"}
+,{"stream_name":"stdout","time":1361.846450817,"data":"[  22.7 min] transformer_m32_p4_s0: done (289s)\n"}
+,{"stream_name":"stdout","time":1732.716971993,"data":"[  28.9 min] mamba_ssm_d32_p4_s1: done (371s)\n"}
+,{"stream_name":"stdout","time":2017.020769192,"data":"[  33.6 min] transformer_m32_p4_s1: done (284s)\n"}
+,{"stream_name":"stdout","time":2399.892444822,"data":"[  40.0 min] mamba_ssm_d32_p4_s2: done (383s)\n"}
+,{"stream_name":"stdout","time":2691.447183089,"data":"[  44.8 min] transformer_m32_p4_s2: done (292s)\n"}
+,{"stream_name":"stdout","time":2691.447224185,"data":"LANE_D COMPLETE\n"}
+,{"stream_name":"stderr","time":2693.859522032,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":2693.859551863,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":2694.224022675,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":2694.22404959,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":2694.935208309,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":2696.524968949,"data":"[NbConvertApp] Writing 290619 bytes to __results__.html\n"}
+]

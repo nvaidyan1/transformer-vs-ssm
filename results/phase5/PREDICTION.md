@@ -82,3 +82,14 @@ the 18 switching models), with the cuDNN fix. The 5.3 gate (r > 0.7 for selectiv
 **Expectation (mine):** selective Mamba's effective gain correlates with K_t and is higher in
 the low-noise regime; the ablation also varies by regime (through the output gate), less
 than selective; the GRU tracks K_t closely (its MSE is 1.03x Kalman).
+5.3 outcome, post hoc and descriptive (lane D, commit 8b4dcaa): Kalman gain 0.379 low noise,
+0.035 high. Every model's effective gain tracks K_t: Pearson r 0.97-0.99 for selective Mamba
+(1 layer 0.980 / 0.971 / 0.979), the ablation (0.984 / 0.979 / 0.989) and the GRU (0.980 /
+0.975 / 0.980). The 5.3 gate formally passes (r > 0.7, 3/3) but does not discriminate: the
+ablation passes it too. Mean effective gain, low / high noise: selective 0.39 / 0.035, GRU
+0.38 / 0.035, ablation 0.42-0.47 / 0.04 (it overshoots in low noise). plan2's "the
+ablation's effective gain varies much less across regimes" is wrong: it switches by a
+similar factor, through the input-dependent gate and conv path, as the caveat anticipated.
+Selective Mamba's mean Delta is higher in the low-noise regime (0.040 vs 0.023; 0.128 vs
+0.035; 0.046 vs 0.028 by seed; 55-64% of channels), in the direction of a gain, with wide
+per-channel spread. Figures: gain_scatter.png, delta_regime.png, example_trace.png.

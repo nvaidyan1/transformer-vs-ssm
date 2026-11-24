@@ -24,3 +24,33 @@
 Gate 5.2 ((a) stationary ablation within 10%; (b) switching ablation >= 15% worse on 3/3 seeds; 1 layer): **FAIL**
 - (a) relative difference +0.3% (ok)
 - (b) ablated / selective by seed: s0 1.12, s1 1.08, s2 1.12 (MISS)
+
+## 5.3 effective gain vs Kalman gain (switching, held-out)
+
+Kalman gain: low-noise 0.379, high-noise 0.035.
+
+| model | Pearson r with K_t | mean gain, low noise | mean gain, high noise |
+|---|---|---|---|
+| switching_gru_L1_s0 | 0.980 | 0.379 | 0.036 |
+| switching_gru_L1_s1 | 0.975 | 0.374 | 0.034 |
+| switching_gru_L1_s2 | 0.980 | 0.385 | 0.035 |
+| switching_gru_L2_s0 | 0.991 | 0.387 | 0.037 |
+| switching_gru_L2_s1 | 0.991 | 0.362 | 0.033 |
+| switching_gru_L2_s2 | 0.969 | 0.383 | 0.035 |
+| switching_mamba_L1_s0 | 0.980 | 0.385 | 0.035 |
+| switching_mamba_L1_s1 | 0.971 | 0.400 | 0.036 |
+| switching_mamba_L1_s2 | 0.979 | 0.396 | 0.033 |
+| switching_mamba_L2_s0 | 0.984 | 0.367 | 0.031 |
+| switching_mamba_L2_s1 | 0.983 | 0.389 | 0.035 |
+| switching_mamba_L2_s2 | 0.985 | 0.382 | 0.037 |
+| switching_mamba_ablated_L1_s0 | 0.984 | 0.470 | 0.036 |
+| switching_mamba_ablated_L1_s1 | 0.979 | 0.456 | 0.043 |
+| switching_mamba_ablated_L1_s2 | 0.989 | 0.424 | 0.036 |
+| switching_mamba_ablated_L2_s0 | 0.981 | 0.423 | 0.041 |
+| switching_mamba_ablated_L2_s1 | 0.969 | 0.397 | 0.040 |
+| switching_mamba_ablated_L2_s2 | 0.977 | 0.400 | 0.039 |
+
+Gate 5.3 (selective Mamba, 1 layer, r > 0.7 on 3/3 seeds): **PASS**
+- Delta (layer 1): low-noise mean 0.0403 (channel std 0.0557), high-noise 0.0233 (0.0370); channels higher in low noise 64%
+- Delta (layer 1): low-noise mean 0.1282 (channel std 0.1656), high-noise 0.0354 (0.0364); channels higher in low noise 61%
+- Delta (layer 1): low-noise mean 0.0456 (channel std 0.0751), high-noise 0.0277 (0.0480); channels higher in low noise 55%
