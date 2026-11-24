@@ -58,3 +58,13 @@ prediction that the Transformer would leave its plateau was wrong. The fixed pla
 suspicious for this small task (16 tokens, 4 queries); I have not investigated (gate failed:
 stop and report). Per-slot accuracy would show whether each model answers a fixed subset of
 query slots; that would need the author's approval.
+
+## Diagnosis of the 4-pair plateaus (author approval, 2026-11-24; written before the run)
+
+Descriptive, post hoc, decides nothing; the Phase 4 gate stays FAILED. transformer_m32 and
+mamba_ssm_d32 at 4 pairs (seq_len 16), seeds 0-2, CAP 4000 on the 20k schedule (the plateaus
+were in place by step 2000), `--dump_slot_acc --save_model`. Output results/phase4/diag/.
+**Question:** does each model answer a fixed subset of the 4 query slots (accuracy near 1 on
+some slots, near chance on others), or is accuracy spread evenly (~0.26 / ~0.52 on every
+slot)? **Expectation (mine):** a fixed subset: the Transformer ~1 slot of 4, Mamba ~2 of 4,
+most likely the later query slots. No fix is attempted whatever the outcome.
