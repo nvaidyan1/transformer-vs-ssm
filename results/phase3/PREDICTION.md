@@ -49,3 +49,12 @@ at gap 64. tcn_small (RF 769, no prediction) at CAP 4000: 0.25 / 0.41 / 0.20 / 0
 0.01 at gaps 32-512, mostly still rising. Transformer 0.984 (gap 64) and 0.995 (gap 256);
 mamba_ssm 0.997 (gap 64) and 0.521 at gap 256 (one seed 0.993, the other 0.049). 12 cells
 meet the D3 extension rule (11 are TCN cells, each ~5x a CAP run).
+
+## Gate completion, P3a (author approval, 2026-11-23; written before the run)
+
+Seed 2 for the four tcn_short gate cells only (gaps 32, 160, 256, 512), same settings (CAP
+4000, 20k schedule, early stop). The partial seed-2 gap-32 run is replaced by a full one.
+Other seed-2 cells (P3b) and the 12 D3 extensions (P3c) are not run.
+**Prediction:** gap 32 > 0.9 (seeds 0-1: 0.923, 0.949); gaps 160-512 at chance (<= 0.032);
+gate PASS. If seed 2 at gap 32 lands in [0.2, 0.9] or is still rising, D3 calls for an
+extension before the gate is read.

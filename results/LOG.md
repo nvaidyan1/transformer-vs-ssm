@@ -80,3 +80,11 @@ results. Not scheduled.
 1.2 closed at seq_len 64 and 256 (gates PASS). seq_len 1024 is a partial pilot (mamba_ssm
 selective CAP 9000 found; Transformer reference cut at step 6500). The seq_len 1024 ablated
 arm and n_data 16 are follow-ups, not scheduled.
+
+## 2026-11-23: gate completion for Phases 3 and 4; 5.3 post hoc (author approval)
+
+Approved: P3a (seed 2 for the four tcn_short gate cells) and P4a (D3 extensions for the six
+4-pair gate cells), one kernel. Not approved yet: P3b, P3c, P4b. Phase 5.3 is run after the
+failed 5.2 gate as a **post-hoc descriptive analysis**, labelled as such; it decides nothing.
+Phase 3 exceeded its ~3 GPU-h budget (3.5 h) and Phase 4 reached ~2.1 of 2-3 GPU-h before
+this; the overrun was approved with these items.

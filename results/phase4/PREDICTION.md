@@ -35,3 +35,17 @@ MQAR even at 4 pairs: mamba_ssm 0.51 / 0.55 / 0.65 (d32 / d64 / d128), every Tra
 task layout was checked (key-value blocks, then key-query blocks with teacher-forced values;
 14 property tests). Accuracy falls with pairs for every model. 37 cells meet the D3 rule.
 The "Transformer stays near ceiling" prediction cannot be assessed before the extensions.
+
+## Gate completion, P4a (author approval, 2026-11-23; written before the run)
+
+D3 extensions for the six gate cells only: mamba_ssm_d32 and transformer_m32 at 4 pairs,
+seeds 0-2, rerun to 20,000 steps on the same 20k schedule (same seed, so the first 4000
+steps repeat the CAP run up to GPU nondeterminism), early stop as usual. Output in
+results/phase4/ext/. The 64-pair gate cells were flat near chance and final at CAP.
+**Prediction:** the Transformer leaves its 0.26 plateau and approaches ceiling at 4 pairs
+(Zoology-style MQAR is solvable by attention given steps); mamba_ssm_d32 rises above 0.51.
+Gate: mamba_d32 drop (4 -> 64 pairs) >= 0.3 is very likely (0.51 already vs 0.03); the
+Transformer condition (drop < 0.1) needs it near ceiling at 64 pairs too, which was 0.03 at
+CAP and is not extended, so I expect the Transformer condition, and the gate, to FAIL unless
+its 64-pair cell is final-and-low only because of the CAP. Recorded honestly: the gate as
+designed compares an extended 4-pair cell with an unextended 64-pair cell.

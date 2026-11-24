@@ -71,3 +71,14 @@ Per plan2 5.2: stopped and reported; Post 3 is to be written around this (W3).
 backward in eval mode; a GPU-only failure the CPU tests could not catch). Fixed in
 src/filter_analysis.py after the run. No 5.3 numbers exist. Running it now would be a
 descriptive analysis after a failed 5.2 gate and needs the author's decision.
+
+## 5.3 run as a post-hoc descriptive analysis (author approval, 2026-11-23)
+
+Written before the run. Gate 5.2 failed, so per plan2 Phase 5 stopped; the author approved
+running 5.3 anyway as a descriptive analysis for W3 ("where selection lives in the block").
+It is labelled post hoc wherever used. Same script and saved models (results/phase5/models,
+the 18 switching models), with the cuDNN fix. The 5.3 gate (r > 0.7 for selective Mamba,
+3/3 seeds) is still computed and reported, but it no longer decides anything.
+**Expectation (mine):** selective Mamba's effective gain correlates with K_t and is higher in
+the low-noise regime; the ablation also varies by regime (through the output gate), less
+than selective; the GRU tracks K_t closely (its MSE is 1.03x Kalman).
